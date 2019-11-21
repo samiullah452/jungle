@@ -1,0 +1,573 @@
+{% extends 'Base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    .bs-example {
+        margin: 150px 50px;
+    }
+</style>
+<script>
+    $(document).ready(function () {
+        $('[data-toggle="popover"]').popover(
+            {
+                title: "Suleamn",
+                template: '<div class="popover" role="tooltip"><div class="arrow"></div><div class="card" style="width: 18rem;"><div class="card-body"><a href="https://www.youtube.com/embed/gQz-4YgxpUU" class="btn btn-primary"><i class="fab fa-youtube mr-2"></i>Tutorial - Product Tracker</a></div</div><div class="popover-body"></div></div>'
+            }
+        );
+    });
+</script>
+
+<link rel="stylesheet" href="{% static 'mysite/css/findProductStyleSheet.css' %}">
+<style>
+  /* Style the tab */
+
+/* Create an active/current tablink class */
+.tab {
+  overflow: hidden;
+  border: 1px solid #ccc;
+  position: relative; 
+  float: left;
+  background-color: #f1f1f1;
+}
+
+/* Style the buttons inside the tab */
+.tab button {
+  background-color: inherit;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  transition: 0.3s;
+  font-size: 12px;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+  background-color: #ddd;
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+  background-color: #ccc;
+}
+th{
+  border: 1px solid #ccc;
+  background-color: #f1f1f1;
+
+}
+td{
+  font-size:11px;
+}
+/* Style the tab content */
+.tabcontent {
+  clear: both;
+  display: none;
+  padding: 6px 12px;
+}
+
+    p[id="check1"]:hover {
+        background-color: #ffeeba;
+    }
+
+    p[id="check1"] {
+        color: black;
+    }
+
+    .dropdown-menu {
+        width: 250px;
+        max-width: 250px;
+    }
+
+    .custom-checkbox:hover {
+        background-color: #ffeeba;
+    }
+
+    button[id="profileButton"] {
+    background: #f57706;
+    opacity: 1;
+    border: 1px solid #f57706;
+  }
+
+  button[id="profileButton"]:hover,
+  button[id="profileButton"]:focus,
+  button[id="profileButton"]:active {
+
+    background-color: #ffc107;
+    border-color: #ffc107;
+    outline: none !important;
+    box-shadow: none !important;
+  }
+
+
+
+  a[id="profileButton"] {
+    background: #f57706;
+    opacity: 1;
+    border: 1px solid #f57706;
+  }
+
+  a[id="profileButton"]:hover,
+  a[id="profileButton"]:focus,
+  a[id="profileButton"]:active {
+
+    background-color: #ffc107;
+    border-color: #ffc107;
+    outline: none !important;
+    box-shadow: none !important;
+  }
+</style>
+
+
+<main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+        <select class="form-control" id="groupmove">          
+           <option value="Uncategorized" >Uncategorized</option>
+            {% for grp in groups %}
+           <option value="{{grp}}" >{{grp}}</option>
+            {%endfor%}
+        </select>
+
+        <input type="button" class="btn btn-primary" id="move" onclick="mov1(document.getElementById('move').getAttribute('data'))" style="margin-top:10px;" value="Move"></input>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+
+  <div class="modal fade" id="NewGroup" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+        <input type="text" id="new-group" class="form-control name_list" placeholder="Enter Name of Group" />
+        <input type="button" class="btn btn-primary" onclick="create()" style="margin-top:10px;" value="Create"></input>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+
+
+    <div class="modal fade" id="DeleteGroup" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+         <select class="form-control" id="groupdelete">          
+            {% for grp in groups %}
+           <option value="{{grp}}" >{{grp}}</option>
+            {%endfor%}
+        </select>
+
+        <input type="button" class="btn btn-primary" onclick="dele()" style="margin-top:10px;" value="Delete"></input>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+
+              <div class="card mx-auto shadow-lg p-3 mb-5 bg-white rounded" style="width: 100%;">
+                    <div class="card-body">
+                      <h5 class="card-title">Welcome to the Product Tracker!</h5>
+                      <form action="." method="POST">
+                          {% csrf_token %}
+                            <div class="form-group">
+                                    <label for="exampleFormControlSelect1">SELECT WEBSITE TO DOWN</label>
+                                    <select class="form-control" id="exampleFormControlSelect1">
+                                      <option value="TAOBAO" selected >TAOBAO.com</option>
+                                      <option value="1688">1688.com</option>
+                                      <option value="Alibaba">Alibaba.com</option>
+                                    </select>
+                                  </div>
+                                          
+                                        <div class="form-group">
+                                                    <div class="table-responsive">
+                                                        <table class="table table-bordered" id="dynamic_field">
+                                                            <tr>
+                                                                <td><input type="text" name="name" placeholder="HTTP:// Paste Product URL" class="form-control name_list" /></td>
+                                                                <td><button type="button" name="add" id="add" class="btn btn-success"><i class="fas fa-plus"></i></button></td>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                            </div>
+                                                                                  <div class="form-group">
+                                      <div class="row">
+                                            <div class="col">
+                                             <div class="form-group mb-2" style="float:left;" >
+                                                <a href="#" class="btn btn-primary" onclick="download_table_as_csv('response');" id="profileButton">Save As .CSV FILE <i class="fas fa-download"></i></a>
+                                          </div>
+
+                                                    <input type="button" style="margin-left: 10px"class="btn btn-primary" id="starting" value="Start"></input>
+                                                    <img src="{% static 'mysite/images/giphy.gif' %}" style="display:none" id="loading" width="100px" height=40px></img>
+                                            </div>
+                                          </div>
+                                        </div>
+
+                      </form>
+  <div style="float:right;margin-right: 50px">
+    <p onclick="deleteselected()" style="float:left;padding-right:5px;cursor:pointer;font-size: 12px;color:black;font-weight:bold;"><i class="fas fa-minus"></i>Delete Selected</p>
+ <p onclick="moveselected()" style="float:right;cursor:pointer;font-size: 12px;color:black;font-weight:bold;">Move Selected</p>
+  </div>
+    <div class="tab">
+  <button class="tablinks" onclick="openCity(event, 'Uncategorized')" id="defaultOpen">Overview</button>
+  {% for grp in groups %}
+  <button class="tablinks" onclick="openCity(event, '{{grp}}')" id="{{grp}}">{{grp}}</button>
+
+  {%endfor%}
+   <button type="button" class="tablinks" onclick="  $('#NewGroup').modal('show');" class="btn btn-success"><i class="fas fa-plus"></i>New Group</button>
+   <button type="button" class="tablinks" onclick="  $('#DeleteGroup').modal('show');" class="btn btn-success"><i class="fas fa-minus"></i>Delete Group</button>  
+</div>
+<div id="Uncategorized" class="tabcontent">
+  
+          <div class="table-responsive">
+        <table class="table table-bordered" id="response">
+          <tr id='head'>
+            <th style="cursor:pointer;" onclick="selectall()">Selected</th>
+            <th>Group</th>
+            <th>Store Name</th>
+            <th>Thumbnail</th>
+            <th>Product Name</th>
+            <th>Price RMB</th>
+            <th>Details</th>
+            <th>Product Url</th>
+            <th>Manage</th>
+          </tr>
+      
+                                                     </table>
+                                                    </div>
+
+</div>
+
+                    </div>
+                  </div>
+</main>
+
+
+
+<script>
+  var overview={{overview|safe}};
+  var table = document.getElementById("response");
+  var i=1;
+  addentry(overview)
+  var selected=false
+  function selectall(){
+  $('#response input[type=checkbox]').each(function(){
+    $(this).prop('checked', !selected);
+        });
+  selected=!selected
+                                              }
+  function download_table_as_csv(table_id) {
+    // Select rows from table_id
+    var rows = document.querySelectorAll('table#' + table_id + ' tr');
+    // Construct csv
+    var csv = [];
+    for (var i = 0; i < rows.length; i++) {
+        var row = [], cols = rows[i].querySelectorAll('td, th');
+        for (var j = 1; j < cols.length-2; j++) {
+            // Clean innertext to remove multiple spaces and jumpline (break csv)
+            var data = cols[j].innerText
+            // Escape double-quote with double-double-quote (see https://stackoverflow.com/questions/17808511/properly-escape-a-double-quote-in-csv)
+            data = data.replace(/"/g, '""');
+            // Push escaped string
+            row.push('"' + data + '"');
+        }
+
+        if(i!=0){
+          data=cols[j]
+            row.push('"' + $(cols[j])[0].childNodes[0].href + '"');
+        }
+        else{
+                      row.push('"Product Url"');
+
+        }
+        csv.push(row.join(';'));
+    }
+    var csv_string = csv.join('\n');
+    // Download it
+    var filename = 'export_' + table_id + '_' + new Date().toLocaleDateString() + '.csv';
+    var link = document.createElement('a');
+    link.style.display = 'none';
+    link.setAttribute('target', '_blank');
+    link.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv_string));
+    link.setAttribute('download', filename);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
+
+  function addentry(result){
+   for (var key in result) {
+      var row = table.insertRow(i++);
+            row.id=result[key]['id']
+
+      j=0;
+      var cell = row.insertCell(j++);              
+      cell.innerHTML="<input type='checkbox'>"    
+      for (var k in result[key]){
+      if (result[key].hasOwnProperty(k)) {           
+          if(k=='id'){
+            continue
+          }
+
+          var cell = row.insertCell(j++);
+          if(k=="details"){
+              cell.innerHTML = result[key][k];
+              cell.style.width="300px";
+          }
+          if(k=='image'){
+               cell.innerHTML = "<img src='"+result[key][k]+"' widht=96px height=96px></img>"; 
+                       }
+          else{
+
+            if(k=='url'){
+            cell.innerHTML="<a style='color:blue;'href='"+result[key][k]+"'>Open Link</a>"    
+
+            }
+          else{
+              cell.innerHTML = result[key][k];
+              }
+            }
+                }
+                     }
+
+     var cell = row.insertCell(j++);              
+      cell.innerHTML="<a href='javascript:del("+row.id+");' >Delete</a>   <a href=javascript:mov("+row.id+");>Move</a>"    
+                                   
+                      }
+  }
+function mov1(id){
+  if(id=='selected'){
+          active=document.getElementsByClassName('tablinks active')[0].textContent
+      $('input:checkbox:checked').each(function(){
+        if (active!="Overview"){
+          if(active==$(this).parent().parent()[0].childNodes[1].textContent){
+             mov1($(this).parent().parent().attr('id'))
+                }
+
+              }
+              else{
+                  mov1($(this).parent().parent().attr('id'))
+              }
+
+      
+});
+  }
+  else{
+       $.ajax({
+       url:"/content-downloader/",
+       method:"GET",
+       dataType: 'json',
+       data:{move:id,group:document.getElementById('groupmove').value},
+       success:function(result)
+       {
+          $('#myModal').modal('hide'); 
+          document.getElementById(id).childNodes[1].textContent=document.getElementById('groupmove').value
+                       
+          document.getElementsByClassName("tablinks active")[0].click();
+
+                       }
+                });
+}
+  }
+function deleteselected(){
+active=document.getElementsByClassName('tablinks active')[0].textContent
+
+      $('input:checkbox:checked').each(function(){
+        if (active!="Overview"){
+          if(active==$(this).parent().parent()[0].childNodes[1].textContent){
+         del($(this).parent().parent().attr('id'))
+                }
+
+              }
+              else{
+                  del($(this).parent().parent().attr('id'))
+              }
+
+      
+});
+
+  }
+
+  function moveselected(){
+          document.getElementById('groupmove').value='Uncategorized'
+          $('#myModal').modal('show'); 
+          document.getElementById('move').setAttribute('data','selected')
+
+
+  }
+  function dele(){
+      var deleted_group=document.getElementById('groupdelete').value
+
+      $.ajax({
+           url:"/content-downloader/",
+           method:"GET",
+           dataType: 'json',
+           data:{groupdelete:deleted_group},
+           success:function(result)
+                    { 
+          location.reload();
+
+                    }});
+
+      
+                  }
+  function create(){
+                            var created_group=document.getElementById('new-group').value
+
+      $.ajax({
+           url:"/content-downloader/",
+           method:"GET",
+           dataType: 'json',
+           data:{create:created_group},
+           success:function(result)
+                    { 
+          location.reload()
+
+                    }});
+
+      
+                  }
+
+  function mov(id){
+          document.getElementById('groupmove').value=document.getElementById(id).childNodes[1].textContent
+          $('#myModal').modal('show'); 
+          document.getElementById('move').setAttribute('data',id)
+  }
+  function del(id){
+
+     $.ajax({
+       url:"/content-downloader/",
+       method:"GET",
+       dataType: 'json',
+       data:{delete:id},
+        success:function(result)
+                    {
+
+              var row = document.getElementById(id);
+              row.parentNode.removeChild(row)
+	      i--;
+                       }
+                });
+
+
+  }
+  function openCity(evt, cityName) {
+    var k, tablinks;
+    a= $('#response tr').not(document.getElementById( "head" )).each(function(){
+      cell=$(this)
+      if(cityName!="Uncategorized"){
+         if(cell[0].childNodes[1].textContent!=cityName){
+          cell.hide()
+         }
+         else{
+          cell.show()
+         }
+        }
+        else{
+          cell.show()
+        }
+    })
+        tablinks = document.getElementsByClassName("tablinks");
+        for (k = 0; k < tablinks.length; k++) {
+          tablinks[k].className = tablinks[k].className.replace(" active", "");
+                                              }
+          document.getElementById(cityName).style.display = "block";
+          evt.currentTarget.className += " active";
+                                              }
+
+        $(document).ready(function(){
+
+          document.getElementById("defaultOpen").click();
+
+          
+    var z=0;
+    $('#add').click(function(){
+                z++;
+                $('#dynamic_field').append('<tr id="row'+z+'"><td><input type="url" name="name" placeholder="HTTP:// Paste Product URL" class="form-control name_list" /></td><td><button type="button" name="remove" id="'+z+'" class="btn btn-danger btn_remove">X</button></td></tr>');
+            });
+
+            
+            $(document).on('click', '.btn_remove', function(){
+                var button_id = $(this).attr("id"); 
+                $('#row'+button_id+'').remove();
+            });
+
+
+            $('#starting').click(function(){    
+                document.getElementById("starting").style.display="none";
+                document.getElementById("loading").style.display="block"
+                var array=[];
+                urls=document.getElementsByName('name')
+                for (var k=0;k<urls.length;k++){
+                  
+                  if(urls[k].value!=""){
+                  array.push(urls[k].value)
+                }
+                }
+                if (array.length==0){
+                document.getElementById("starting").style.display="";
+                document.getElementById("loading").style.display="none"
+
+                      return  
+                }
+                 $.ajaxSetup({
+                   headers: { "X-CSRFToken": '{{ csrf_token }}' }
+                                 });
+                
+                $.ajax({
+                    url:"/content-downloader/",
+                    method:"POST",
+                    dataType: 'json',
+                    data:{urls:array,website:document.getElementById('exampleFormControlSelect1').value},
+                    success:function(result)
+                    {
+                    document.getElementById("starting").style.display="";
+                    document.getElementById("loading").style.display="none"
+                     addentry(result)
+                    },
+                    error:function (xhr, ajaxOptions, thrownError) {
+                                          document.getElementById("starting").style.display="";
+                    document.getElementById("loading").style.display="none"
+
+                             alert("Try Again");
+                                                  }
+                });
+        
+            });
+
+           }); 
+        </script>
+        
+
+
+{% endblock %}

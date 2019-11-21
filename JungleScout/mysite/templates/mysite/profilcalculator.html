@@ -1,0 +1,802 @@
+{% extends 'Base.html' %}
+{% block content %}
+{% load static %}
+
+<style>
+  /* Style the tab */
+
+/* Create an active/current tablink class */
+.tab {
+  overflow: hidden;
+  border: 1px solid #ccc;
+  position: relative; 
+  float: left;
+  background-color: #f1f1f1;
+}
+
+/* Style the buttons inside the tab */
+.tab button {
+  background-color: inherit;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  transition: 0.3s;
+  font-size: 12px;
+}
+th{
+  border: 1px solid #ccc;
+  background-color: #f1f1f1;
+
+}
+td{
+font-size:11px;
+
+}
+/* Change background color of buttons on hover */
+.tab button:hover {
+  background-color: #ddd;
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+  background-color: #ccc;
+}
+
+/* Style the tab content */
+.tabcontent {
+  clear: both;
+  display: none;
+  padding: 6px 12px;
+}
+
+    p[id="check1"]:hover {
+        background-color: #ffeeba;
+    }
+
+    p[id="check1"] {
+        color: black;
+    }
+
+    .dropdown-menu {
+        width: 250px;
+        max-width: 250px;
+    }
+
+    .custom-checkbox:hover {
+        background-color: #ffeeba;
+    }
+
+    button[id="profileButton"] {
+    background: #f57706;
+    opacity: 1;
+    border: 1px solid #f57706;
+  }
+
+  button[id="profileButton"]:hover,
+  button[id="profileButton"]:focus,
+  button[id="profileButton"]:active {
+
+    background-color: #ffc107;
+    border-color: #ffc107;
+    outline: none !important;
+    box-shadow: none !important;
+  }
+
+
+
+  a[id="profileButton"] {
+    background: #f57706;
+    opacity: 1;
+    border: 1px solid #f57706;
+  }
+
+  a[id="profileButton"]:hover,
+  a[id="profileButton"]:focus,
+  a[id="profileButton"]:active {
+
+    background-color: #ffc107;
+    border-color: #ffc107;
+    outline: none !important;
+    box-shadow: none !important;
+  }
+</style>
+
+<main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+      <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+        <select class="form-control" id="groupmove">          
+           <option value="Uncategorized" >Uncategorized</option>
+            {% for grp in groups %}
+           <option value="{{grp}}" >{{grp}}</option>
+            {%endfor%}
+        </select>
+
+        <input type="button" class="btn btn-primary" id="move" onclick="mov1(document.getElementById('move').getAttribute('data'))" style="margin-top:10px;" value="Move"></input>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+
+  <div class="modal fade" id="NewGroup" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+        <input type="text" id="new-group" class="form-control name_list" placeholder="Enter Name of Group" />
+        <input type="button" class="btn btn-primary" onclick="create()" style="margin-top:10px;" value="Create"></input>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+
+
+    <div class="modal fade" id="DeleteGroup" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+         <select class="form-control" id="groupdelete">          
+            {% for grp in groups %}
+           <option value="{{grp}}" >{{grp}}</option>
+            {%endfor%}
+        </select>
+
+        <input type="button" class="btn btn-primary" onclick="dele()" style="margin-top:10px;" value="Delete"></input>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+
+
+  <div class="card mx-auto shadow-lg p-3 mb-5 bg-white rounded" style="width: 100%;">    
+        <div class="card-body">
+          <h5 class="card-title">Profit Calculator</h5>
+          <form id='form' method="POST" enctype="multipart/form-data">
+              {% csrf_token %}
+                <div class="form-group">
+                        <label for="exampleFormControlSelect1">SELECT WEBSITE TO DOWN</label>
+                        <select class="form-control" id="exampleFormControlSelect1">
+                          <option value="TAOBAO" selected >TAOBAO.com</option>
+                          <option value="1688">1688.com</option>
+                          <option value="Alibaba">Alibaba.com</option>
+                        </select>
+                      </div>
+                              
+<!--                             <div class="form-group">
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered" id="dynamic_field">
+                                                <tr>
+                                                    <td><input type="text" name="names" placeholder="Enter Product" class="form-control name_list" /></td>
+                                                    <td><button type="button" name="add" id="add" class="btn btn-success"><i class="fas fa-plus"></i></button></td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                </div>
+ -->                                                                      <div class="form-group">
+                          <div class="row">
+                                <div class="col">
+                              
+                                    <input type="file" id='file_input' class="btn btn-warning" name='file' multiple >
+                                        <input type="button" style="margin-left: 10px"class="btn btn-primary" id="starting" value="Start"></input>
+                                        <img src="{% static 'mysite/images/giphy.gif' %}" style="display:none" id="loading" width="100px" height=40px></img>
+                                </div>
+                              </div>
+                            </div>
+
+          </form>
+    </div>
+</div>
+
+
+<div class="card mx-auto shadow-lg p-3 mb-5 bg-white rounded" style="width: 100%;">
+    <div class="card-body">
+   
+      <form action="." method="POST">
+          {% csrf_token %}
+    <div class="row border-light">
+            <div class="col-md-6">
+        <div class="form-group">
+            <label>Product Name</label>
+            <input class="form-control" type="text" id="product_name" name="product_name" placeholder="Product Name">
+        </div>
+        <div class="form-group">
+                <label>Korea Selling Price</label>
+                <div class="row">
+                    <div class="col-md-4">
+                <input class="form-control" type="text" id="sel_min" name="sel_min" placeholder="minimum">
+            </div>
+            <div class="col-md-4">
+                    <input class="form-control" type="text" id="sel_avg" name="sel_avg" placeholder="average">
+                </div>
+                <div class="col-md-4">
+                        <input class="form-control" type="text" id="sel_max" name="sel_max" placeholder="maximum">
+                    </div>
+
+        </div>
+        </div>
+        <div class="form-group">
+                <label>China Price KWON</label>
+                <div class="row">
+                    <div class="col-md-4">
+                <input class="form-control" type="text" id="china_min" name="china_min" placeholder="minimum">
+            </div>
+            <div class="col-md-4">
+                    <input class="form-control" type="text" id="china_avg" name="china_avg" placeholder="average">
+                </div>
+                <div class="col-md-4">
+                        <input class="form-control" type="text" id="china_max" name="china_max" placeholder="maximum">
+                    </div>
+
+        </div>
+       </div>
+       <div class="form-group">
+            <label>Currency Rate</label>
+            <input class="form-control" type="text" id="exchange" name="exchange" placeholder="168.5">
+    </div>
+    <br>
+<hr  style="border-width: 3px;border-color:black">
+<br>
+<div class="form-group">
+        <label>Oversea Shipping Cost</label>
+        <input class="form-control" type="text" id="shipping" name="shipping" placeholder="Oversea Shipping Cost">
+</div>
+<div class="form-group">
+        <label>Tax Rate</label>
+        <input class="form-control" type="text" name="tax_rate" id="tax_rate" placeholder="Tax Rate">
+</div>
+<div class="form-group">
+        <label>VAT</label>
+        <input class="form-control" type="text" name="vat" id='vat' placeholder="VAT">
+</div>
+<div class="form-group">
+        <label>Local Delivery Cost</label>
+        <input class="form-control" type="text" name="local" id='local' placeholder="Local Delivery Cost">
+</div>
+<div class="form-group">
+        <label>Extra Cost</label>
+        <input class="form-control" type="text" name="extra" id='extra' placeholder="Extra Cost">
+</div>
+    </div>
+
+
+
+     
+    
+
+        <div class="col-md-6">
+                <div class="form-group">
+                        <label>Total Cost</label>
+                        <div class="row">
+                            <div class="col-md-4">
+                        <input class="form-control" type="text" id='total_min' name='total_min' placeholder="minimum">
+                    </div>
+                    <div class="col-md-4">
+                            <input class="form-control" type="text" id='total_avg' name='total_avg' placeholder="average">
+                        </div>
+                        <div class="col-md-4">
+                                <input class="form-control" type="text" id='total_max' name='total_max' placeholder="maximum">
+                            </div>
+        
+                </div>
+                </div>
+                <div class="form-group">
+                        <label>Net Profit</label>
+                        <div class="row">
+                            <div class="col-md-4">
+                        <input class="form-control" type="text" id='net_min' name='net_min' placeholder="minimum">
+                    </div>
+                    <div class="col-md-4">
+                            <input class="form-control" type="text" id='net_avg' name='net_avg' placeholder="maximum">
+                        </div>
+                        <div class="col-md-4">
+                                <input class="form-control" type="text" id='net_max' name='net_max' placeholder="maximum">
+                            </div>
+        
+                </div>
+               </div>
+            <input type='button' value='Calculate' class="btn btn-danger" id='calculate' ></input>
+                                          <img src="{% static 'mysite/images/giphy.gif' %}" style="display:none" id="loading_calculate" width="100px" height=40px></img>
+
+        </div>
+    </div>
+
+
+</form>
+ <div style="float:right;margin-right: 50px">
+    <p onclick="deleteselected()" style="float:left;padding-right:5px;cursor:pointer;font-size: 12px;color:black;font-weight:bold;"><i class="fas fa-minus"></i>Delete Selected</p>
+ <p onclick="moveselected()" style="float:right;cursor:pointer;font-size: 12px;color:black;font-weight:bold;">Move Selected</p>
+  </div>
+    <div class="tab">
+  <button class="tablinks" onclick="openCity(event, 'Uncategorized')" id="defaultOpen">Overview</button>
+  {% for grp in groups %}
+  <button class="tablinks" onclick="openCity(event, '{{grp}}')" id="{{grp}}">{{grp}}</button>
+
+  {%endfor%}
+   <button type="button" class="tablinks" onclick="  $('#NewGroup').modal('show');" class="btn btn-success"><i class="fas fa-plus"></i>New Group</button>
+   <button type="button" class="tablinks" onclick="  $('#DeleteGroup').modal('show');" class="btn btn-success"><i class="fas fa-minus"></i>Delete Group</button>  
+</div>
+<div id="Uncategorized" class="tabcontent">
+  
+          <div class="table-responsive">
+        <table class="table table-bordered" id="response">
+          <tr id='head'>
+            <th style="cursor:pointer;" onclick="selectall();">Selected</th>
+            <th>Group</th>
+            <th>Product Name</th>
+            <th>China Price (min,avg,max)</th>
+            <th>Currency Rate</th>
+            <th>Shipping Cost</th>
+            <th>Extra Cost</th>
+            <th>Tax Rate</th>
+            <th>VAT</th>
+            <th>Total Cost (min,avg,max)</th>
+            <th>Selling Price (min,avg,max)</th>
+            <th>Local Delievery Cost</th>
+            <th>Consumer Price (min,avg,max)</th>
+            <th>Net Profit (min,avg,max)</th>
+            <th>Edit</th>
+            <th>Manage</th>
+
+          </tr>
+      
+                                                     </table>
+                                                    </div>
+
+</div>
+        </div>
+        
+    </div>
+               
+
+</div>
+
+</div>
+
+</div>
+
+</main>
+<script type="text/javascript">
+
+  var overview={{overview|safe}};
+  var table = document.getElementById("response");
+  var i=1;
+  var selected=false;
+  addentry(overview)
+function selectall(){
+
+$('#response input[type=checkbox]').each(function(){
+  $(this).prop('checked', !selected);
+});
+selected=!selected
+}
+
+  function download_table_as_csv(table_id) {
+    // Select rows from table_id
+    var rows = document.querySelectorAll('table#' + table_id + ' tr');
+    // Construct csv
+    var csv = [];
+    for (var l = 0; l < rows.length; l++) {
+        var row = [], cols = rows[l].querySelectorAll('td, th');
+        for (var j = 1; j < cols.length-2; j++) {
+            // Clean innertext to remove multiple spaces and jumpline (break csv)
+            var data = cols[j].innerText
+            // Escape double-quote with double-double-quote (see https://stackoverflow.com/questions/17808511/properly-escape-a-double-quote-in-csv)
+            data = data.replace(/"/g, '""');
+            // Push escaped string
+            row.push('"' + data + '"');
+        }
+
+        if(l!=0){
+          data=cols[j]
+            row.push('"' + $(cols[j])[0].childNodes[0].href + '"');
+        }
+        else{
+                      row.push('"Supplier Info"');
+
+        }
+        csv.push(row.join(';'));
+    }
+    var csv_string = csv.join('\n');
+    // Download it
+    var filename = 'export_' + table_id + '_' + new Date().toLocaleDateString() + '.csv';
+    var link = document.createElement('a');
+    link.style.display = 'none';
+    link.setAttribute('target', '_blank');
+    link.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv_string));
+    link.setAttribute('download', filename);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
+
+
+  function addentry(result){
+   for (var key in result) {
+      var row = table.insertRow(i++);
+            row.id=result[key]['id']
+
+      j=0;
+      var cell = row.insertCell(j++);              
+      cell.innerHTML="<input type='checkbox'>"    
+      for (var k in result[key]){
+      if (result[key].hasOwnProperty(k)) {           
+          if(k=='id'){
+            continue
+          }
+
+          var cell = row.insertCell(j++);
+          if(k=='image'){
+              for(var l=0;l<result[key][k].length;l++){
+               cell.innerHTML += "<img src='"+result[key][k][l]+"' widht=60px height=60px></img>"; 
+                       }
+              }
+          else{
+
+            if(k=='url'){
+            cell.innerHTML="<a style='color:blue;'href='"+result[key][k]+"'>Open Link</a>"    
+
+            }
+          else{
+              cell.innerHTML = result[key][k];
+              }
+            }
+                }
+                     }
+
+     var cell = row.insertCell(j++);              
+      cell.innerHTML="<a href='javascript:edit("+row.id+");' >Edit</a>"    
+     var cell = row.insertCell(j++);              
+      cell.innerHTML="<a href='javascript:del("+row.id+");' >Delete</a>   <a href=javascript:mov("+row.id+");>Move</a>"    
+                                   
+                      }
+  }
+function mov1(id){
+  if(id=='selected'){
+          active=document.getElementsByClassName('tablinks active')[0].textContent
+      $('input:checkbox:checked').each(function(){
+        if (active!="Overview"){
+          if(active==$(this).parent().parent()[0].childNodes[1].textContent){
+             mov1($(this).parent().parent().attr('id'))
+                }
+
+              }
+              else{
+                  mov1($(this).parent().parent().attr('id'))
+              }
+
+      
+});
+  }
+  else{
+       $.ajax({
+       url:"/profitcalculator/",
+       method:"GET",
+       dataType: 'json',
+       data:{move:id,group:document.getElementById('groupmove').value},
+       success:function(result)
+       {
+          $('#myModal').modal('hide'); 
+          document.getElementById(id).childNodes[1].textContent=document.getElementById('groupmove').value
+                       
+          document.getElementsByClassName("tablinks active")[0].click();
+
+                       }
+                });
+}
+  }
+function deleteselected(){
+active=document.getElementsByClassName('tablinks active')[0].textContent
+
+      $('input:checkbox:checked').each(function(){
+        if (active!="Overview"){
+          if(active==$(this).parent().parent()[0].childNodes[1].textContent){
+         del($(this).parent().parent().attr('id'))
+                }
+
+              }
+              else{
+                  del($(this).parent().parent().attr('id'))
+              }
+
+      
+});
+
+  }
+
+  function moveselected(){
+          document.getElementById('groupmove').value='Uncategorized'
+          $('#myModal').modal('show'); 
+          document.getElementById('move').setAttribute('data','selected')
+
+
+  }
+
+  function edit(id){
+document.getElementById('product_name').value=document.getElementById(id).childNodes[2].textContent
+selling_price=document.getElementById(id).childNodes[10].textContent.split(',')
+document.getElementById('sel_min').value=selling_price[0]
+document.getElementById('sel_avg').value=selling_price[1]
+document.getElementById('sel_max').value=selling_price[2]
+
+china_price=document.getElementById(id).childNodes[3].textContent.split(',')
+document.getElementById('china_min').value=china_price[0]
+document.getElementById('china_avg').value=china_price[1]
+document.getElementById('china_max').value=china_price[2]
+
+document.getElementById('exchange').value=document.getElementById(id).childNodes[4].textContent
+document.getElementById('shipping').value=document.getElementById(id).childNodes[5].textContent
+document.getElementById('tax_rate').value=document.getElementById(id).childNodes[7].textContent
+document.getElementById('vat').value=document.getElementById(id).childNodes[8].textContent
+document.getElementById('local').value=document.getElementById(id).childNodes[11].textContent
+document.getElementById('extra').value=document.getElementById(id).childNodes[6].textContent
+
+total_price=document.getElementById(id).childNodes[9].textContent.split(',')
+document.getElementById('total_min').value=total_price[0]
+document.getElementById('total_avg').value=total_price[1]
+document.getElementById('total_max').value=total_price[2]
+
+total_price=document.getElementById(id).childNodes[13].textContent.split(',')
+document.getElementById('net_min').value=total_price[0]
+document.getElementById('net_avg').value=total_price[1]
+document.getElementById('net_max').value=total_price[2]
+document.getElementById('calculate').setAttribute('data',id)
+
+  }
+
+
+  function dele(){
+      var deleted_group=document.getElementById('groupdelete').value
+
+      $.ajax({
+           url:"/profitcalculator/",
+           method:"GET",
+           dataType: 'json',
+           data:{groupdelete:deleted_group},
+           success:function(result)
+                    { 
+          location.reload();
+
+                    }});
+
+      
+                  }
+  function create(){
+                            var created_group=document.getElementById('new-group').value
+
+      $.ajax({
+           url:"/profitcalculator/",
+           method:"GET",
+           dataType: 'json',
+           data:{create:created_group},
+           success:function(result)
+                    { 
+          location.reload()
+
+                    }});
+
+      
+                  }
+
+  function mov(id){
+          document.getElementById('groupmove').value=document.getElementById(id).childNodes[1].textContent
+          $('#myModal').modal('show'); 
+          document.getElementById('move').setAttribute('data',id)
+  }
+  function del(id){
+
+     $.ajax({
+       url:"/profitcalculator/",
+       method:"GET",
+       dataType: 'json',
+       data:{delete:id},
+        success:function(result)
+                    {
+
+              var row = document.getElementById(id);
+              row.parentNode.removeChild(row)
+          i--;
+
+                       }
+                });
+
+
+  }
+  function openCity(evt, cityName) {
+    var k, tablinks;
+    a= $('#response tr').not(document.getElementById( "head" )).each(function(){
+      cell=$(this)
+      if(cityName!="Uncategorized"){
+         if(cell[0].childNodes[1].textContent!=cityName){
+          cell.hide()
+         }
+         else{
+          cell.show()
+         }
+        }
+        else{
+          cell.show()
+        }
+    })
+        tablinks = document.getElementsByClassName("tablinks");
+        for (k = 0; k < tablinks.length; k++) {
+          tablinks[k].className = tablinks[k].className.replace(" active", "");
+                                              }
+          document.getElementById(cityName).style.display = "block";
+          evt.currentTarget.className += " active";
+                                              }
+
+        $(document).ready(function(){
+
+          document.getElementById("defaultOpen").click();
+
+            
+    var z=0;
+    $('#add').click(function(){
+                z++;
+                $('#dynamic_field').append('<tr id="row'+z+'"><td><input type="url" name="name" placeholder="HTTP:// Paste Product URL" class="form-control name_list" /></td><td><button type="button" name="remove" id="'+z+'" class="btn btn-danger btn_remove">X</button></td></tr>');
+            });
+
+            
+            $(document).on('click', '.btn_remove', function(){
+                var button_id = $(this).attr("id"); 
+                $('#row'+button_id+'').remove();
+            });
+
+$('#calculate').click(function(){    
+            document.getElementById("calculate").style.display="none";
+            document.getElementById("loading_calculate").style.display=""
+
+    var fd = new FormData();
+
+fd.append("product_name",document.getElementById('product_name').value)
+fd.append("sel_min",document.getElementById('sel_min').value)
+fd.append("sel_avg",document.getElementById('sel_avg').value)
+fd.append("sel_max",document.getElementById('sel_max').value)
+fd.append("id",document.getElementById('calculate').getAttribute('data'))
+fd.append("china_min",document.getElementById('china_min').value)
+fd.append("china_avg",document.getElementById('china_avg').value)
+fd.append("china_max",document.getElementById('china_max').value)
+
+fd.append("calculate","true")
+
+fd.append("exchange",document.getElementById('exchange').value)
+fd.append("shipping",document.getElementById('shipping').value)
+fd.append("tax_rate",document.getElementById('tax_rate').value)
+fd.append("vat",document.getElementById('vat').value)
+fd.append("local",document.getElementById('local').value)
+fd.append("extra",document.getElementById('extra').value)
+$.ajaxSetup({
+        headers: { "X-CSRFToken": '{{ csrf_token }}' }
+               });
+                
+$.ajax({
+       url:"/profitcalculator/",
+       method:"POST",
+       contentType: false,
+       cache: false,
+       processData: false,
+       data:fd,
+       success:function(result)
+                    {
+            document.getElementById("calculate").style.display="";
+            document.getElementById("loading_calculate").style.display="none"
+            if(result[0]==true){
+             addentry(result[1])
+              }
+              else{
+               var row = document.getElementById(result[2]);
+               row.parentNode.removeChild(row)
+               i--;
+             addentry(result[1])
+
+              }
+            edit(result[2])    
+
+                       },
+       error:function (xhr, ajaxOptions, thrownError) {
+            document.getElementById("calculate").style.display="";
+            document.getElementById("loading_calculate").style.display="none"
+
+                             alert("Try Again");
+                                                  }
+                });
+
+
+             
+});
+
+$('#starting').click(function(){    
+    document.getElementById("starting").style.display="none";
+    document.getElementById("loading").style.display="block"
+
+    var fd = new FormData();
+    var filesLength=document.getElementById('file_input').files.length;
+    var enter=false
+    keys=document.getElementsByName('names')
+
+    for (var k=0;k<keys.length;k++){           
+        if(keys[k].value!=""){
+                fd.append("keys[]", keys[k].value);
+                enter=true
+        }
+    }
+
+    if (enter==false&&filesLength==0){
+        document.getElementById("starting").style.display="";
+        document.getElementById("loading").style.display="none"
+
+                      return  
+                }
+
+    for(var i=0;i<filesLength;i++){
+     fd.append("file[]", document.getElementById('file_input').files[i]);
+    }
+         fd.append("website", document.getElementById('exampleFormControlSelect1').value);
+
+    $.ajaxSetup({
+        headers: { "X-CSRFToken": '{{ csrf_token }}' }
+               });
+                
+    $.ajax({
+       url:"/profitcalculator/",
+       method:"POST",
+       contentType: false,
+       cache: false,
+       processData: false,
+       data:fd,
+       success:function(result)
+                    {
+            document.getElementById("starting").style.display="";
+            document.getElementById("loading").style.display="none"
+	    addentry(result)
+	    edit(result[0]['id'])        
+               },
+       error:function (xhr, ajaxOptions, thrownError) {
+            document.getElementById("starting").style.display="";
+            document.getElementById("loading").style.display="none"
+
+                             alert("Try Again");
+                                                  }
+                });
+
+
+                });
+           }); 
+
+
+
+
+</script>
+{% endblock %}

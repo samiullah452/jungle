@@ -1,0 +1,11 @@
+
+.navbar
+{
+    background-image: radial-gradient( circle at 6% 0,#f57706,#ffa228 47%,#ff9100 );
+}
+.btn-secondary:active, .btn-secondary:focus{
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+    text-decoration: none;
+}

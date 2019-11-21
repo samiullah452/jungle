@@ -1,0 +1,339 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,400,700">
+    <link rel='dns-prefetch' href='//use.fontawesome.com' />
+    <link rel='stylesheet' id='fontawesome-css' href='https://use.fontawesome.com/releases/v5.2.0/css/all.css?ver=5.2.0'
+        type='text/css' media='all' />
+    <link rel="stylesheet" href="{% static 'mysite/css/navBarLogin.css' %}">
+    <title>{% block title %}Viator Product Hunter{% endblock %}</title>
+</head>
+<body>
+    <!-- Nav Bar -->
+    <nav class="navbar fixed-top sticky-top navbar-expand-lg navbar-light bg-light shadow p-1 pl-5 pr-5 mb-3 text-dark">
+        <a class="navbar-brand" href="{% url 'home' %}">
+            <img src="{% static 'mysite/images/js-menu-logo.png' %}" width="150" height="30" alt="">
+        </a>
+
+        <button class="navbar-toggler text-dark border border-dark" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+            aria-label="Toggle navigation" style="float: right;">
+            Menu
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle text-dark" href="http://example.com" id="navbarDropdownMenuLink"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Products
+                    </a>
+                    <ul class="dropdown-menu shadow border-top border-primary border-left-0 border-right-0 border-bottom-0"
+                        aria-labelledby="navbarDropdownMenuLink" style="border-top: 5px solid rgba(0,0,0,.15);">
+                        <li><a class="dropdown-item text-dark" href="#">Action</a></li>
+                        <li><a class="dropdown-item text-dark" href="#">Another action</a></li>
+                        <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle text-dark"
+                                href="http://google.com">Google</a>
+                            <ul class="dropdown-menu shadow">
+                                <li><a class="dropdown-item text-dark" href="#">Submenu</a></li>
+                                <li><a class="dropdown-item text-dark" href="#">Submenu0</a></li>
+                                <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle text-dark"
+                                        href="#">Submenu
+                                        1</a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item text-dark" href="#">Subsubmenu1</a></li>
+                                        <li><a class="dropdown-item text-dark" href="#">Subsubmenu1</a></li>
+                                    </ul>
+                                </li>
+                                <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle text-dark"
+                                        href="#">Submenu
+                                        2</a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item text-dark" href="#">Subsubmenu2</a></li>
+                                        <li><a class="dropdown-item text-dark" href="#">Subsubmenu2</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link text-dark" href="#">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-dark" href="#">Link</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link disabled text-dark" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav ml-auto">
+                <form class="form-inline my-2 my-lg-0 mr-2">
+                    <div class="search__wrapper">
+                        <input type="text" name="" placeholder="Search for..." class="search__field">
+                        <button type="submit" class="fa fa-search search__icon"></button>
+                    </div>
+                </form>
+
+                <div class="shadow-none mt-1 bg-transparent" style="cursor: pointer;" onclick="loginFunction();">
+                    <!-- <img src="{% static 'mysite/images/Login.png' %}" alt="..." widht="10px" height="25px" class="rounded-circle mt-0"> -->
+
+                    <a type="button"
+                        class="btn btn-warning text-white font-weight-bold pl-0 pr-0 m-0 bg-transparent border-0 text-dark"
+                        id="logIN" href="{% url 'login' %}"> <i class="fas fa-user-circle"></i> Login</a>
+                </div>
+
+                <a type="button" class="btn btn-warning ml-2 text-white font-weight-bold pl-3 pr-3 m-1"
+                    id="signUpButton" href="{% url 'register' %}">Singup</a>
+            </ul>
+
+
+
+
+        </div>
+        </div>
+
+
+    </nav>
+    <!-- End of Nav Bar -->
+
+
+    <!-- Bolock Content -->
+
+
+    <link rel="stylesheet" href="{% static 'mysite/css/customize.css' %}">
+
+
+    <!-- Hero Section-->
+    <section class="bg-white">
+        <div class="container">
+            <div class="row">
+
+                <div class="col-lg-6 order-1 order-lg-1">
+                    <h1>Introducing
+                        <br>
+                        Sales Analytics</h1>
+                    <p class="lead">Now manage every step of your Amazon selling journey with Jungle Scout! </p>
+                    <p><a href="{% url 'register' %}"
+                            class="btn btn-primary mr-2 p-2 shadow-none font-weight-bold mb-1">Sign
+                            Up</a><a href="#" class="btn btn-outline-warning shadow-none font-weight-bold mb-1">Learn
+                            more</a></p>
+                </div>
+                <div class="col-lg-6 order-2 order-lg-2"><img src="{% static 'mysite/images/mac.png' %}" alt="..."
+                        class="img-fluid"></div>
+            </div>
+        </div>
+    </section>
+
+
+
+    <!-- !-- Services-->
+    <section>
+        <div class="container">
+            <h2>Services</h2>
+            <p class="text-muted mb-5">There are many variations of passages of Lorem Ipsum available, but the majority
+                have
+                suffered alteration in some form.</p>
+            <div class="row">
+                <div class="col-sm-6 col-lg-4 mb-3">
+                    <svg class="lnr text-primary services-icon">
+                        <use xlink:href="#lnr-magic-wand"></use>
+                    </svg>
+                    <h6>Ex cupidatat eu</h6>
+                    <p class="text-muted">Ex cupidatat eu officia consequat incididunt labore occaecat ut veniam labore
+                        et
+                        cillum id et.</p>
+                </div>
+                <div class="col-sm-6 col-lg-4 mb-3">
+                    <svg class="lnr text-primary services-icon">
+                        <use xlink:href="#lnr-heart"></use>
+                    </svg>
+                    <h6>Tempor aute occaecat</h6>
+                    <p class="text-muted">Tempor aute occaecat pariatur esse aute amet.</p>
+                </div>
+                <div class="col-sm-6 col-lg-4 mb-3">
+                    <svg class="lnr text-primary services-icon">
+                        <use xlink:href="#lnr-rocket"></use>
+                    </svg>
+                    <h6>Voluptate ex irure</h6>
+                    <p class="text-muted">Voluptate ex irure ipsum ipsum ullamco ipsum reprehenderit non ut mollit
+                        commodo.
+                    </p>
+                </div>
+                <div class="col-sm-6 col-lg-4 mb-3">
+                    <svg class="lnr text-primary services-icon">
+                        <use xlink:href="#lnr-paperclip"></use>
+                    </svg>
+                    <h6>Tempor commodo</h6>
+                    <p class="text-muted">Tempor commodo nostrud ex Lorem occaecat duis occaecat minim.</p>
+                </div>
+                <div class="col-sm-6 col-lg-4 mb-3">
+                    <svg class="lnr text-primary services-icon">
+                        <use xlink:href="#lnr-screen"></use>
+                    </svg>
+                    <h6>Et fugiat sint occaecat</h6>
+                    <p class="text-muted">Et fugiat sint occaecat voluptate incididunt anim nostrud ea cillum cillum
+                        consequat.</p>
+                </div>
+                <div class="col-sm-6 col-lg-4 mb-3">
+                    <svg class="lnr text-primary services-icon">
+                        <use xlink:href="#lnr-inbox"></use>
+                    </svg>
+                    <h6>Et labore tempor et</h6>
+                    <p class="text-muted">Et labore tempor et adipisicing dolor.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+
+    <!-- Portfolio-->
+    <section class="bg-light">
+        <div class="container">
+            <h2>Portfolio</h2>
+            <p class="lead text-muted mb-5">In enim non sit irure ut adipisicing laboris et laborum.</p>
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="card shadow border-0 h-100"><a href="#"><img
+                                src="{% static 'mysite/images/mockup0.jpg' %}" alt="" class="card-img-top"></a>
+                        <div class="card-body">
+                            <h5> <a href="#" class="text-dark">Ex cupidatat eu</a></h5>
+                            <p class="text-muted card-text">Ex cupidatat eu officia consequat incididunt labore occaecat
+                                ut
+                                veniam labore et cillum id et.</p>
+                            <p class="card-text"><a href="#">Read more</a></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card shadow border-0 h-100"><a href="#"><img
+                                src="{% static 'mysite/images/mockup1.jpg' %}" alt="" class="card-img-top"></a>
+                        <div class="card-body">
+                            <h5> <a href="#" class="text-dark">Tempor aute occaecat</a></h5>
+                            <p class="text-muted card-text">Tempor aute occaecat pariatur esse aute amet.</p>
+                            <p class="card-text"><a href="#">Read more</a></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card shadow border-0 h-100"><a href="#"><img
+                                src="{% static 'mysite/images/mockup2.jpg' %}" alt="" class="card-img-top"></a>
+                        <div class="card-body">
+                            <h5> <a href="#" class="text-dark">Voluptate ex irure</a></h5>
+                            <p class="text-muted card-text">Voluptate ex irure ipsum ipsum ullamco ipsum reprehenderit
+                                non
+                                ut mollit commodo.</p>
+                            <p class="card-text"><a href="#">Read more</a></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card shadow border-0 h-100"><a href="#"><img
+                                src="{% static 'mysite/images/mockup3.jpg' %}" alt="" class="card-img-top"></a>
+                        <div class="card-body">
+                            <h5> <a href="#" class="text-dark">Tempor commodo</a></h5>
+                            <p class="text-muted card-text">Tempor commodo nostrud ex Lorem occaecat duis occaecat
+                                minim.
+                            </p>
+                            <p class="card-text"><a href="#">Read more</a></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card shadow border-0 h-100"><a href="#"><img
+                                src="{% static 'mysite/images/mockup4.jpg' %}" alt="" class="card-img-top"></a>
+                        <div class="card-body">
+                            <h5> <a href="#" class="text-dark">Et fugiat sint occaecat</a></h5>
+                            <p class="text-muted card-text">Et fugiat sint occaecat voluptate incididunt anim nostrud ea
+                                cillum cillum consequat.</p>
+                            <p class="card-text"><a href="#">Read more</a></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card shadow border-0 h-100"><a href="#"><img
+                                src="{% static 'mysite/images/mockup5.jpg' %}" alt="" class="card-img-top"></a>
+                        <div class="card-body">
+                            <h5> <a href="#" class="text-dark">Et labore tempor et</a></h5>
+                            <p class="text-muted card-text">Et labore tempor et adipisicing dolor.</p>
+                            <p class="card-text"><a href="#">Read more</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Footer-->
+    <div class="py-5 bg-light">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4 mb-lg-0">
+                    <h5>Bootstrap 101</h5>
+                    <ul class="contact-info list-unstyled">
+                        <li><a href="mailto:sales@landy.com" class="text-dark">hello@bootstrap101.com</a></li>
+                        <li><a href="tel:123456789" class="text-dark">+00 123 456 789</a></li>
+                    </ul>
+                    <p class="text-muted">Laborum aute enim consectetur eu laboris commodo.</p>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <h5>Pages</h5>
+                    <ul class="links list-unstyled">
+                        <li> <a href="#" class="text-muted">Nisi in commodo</a></li>
+                        <li> <a href="#" class="text-muted">reprehenderit</a></li>
+                        <li> <a href="#" class="text-muted">Nostrud</a></li>
+                        <li> <a href="#" class="text-muted">Et eu eu</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <h5>Favourites</h5>
+                    <ul class="links list-unstyled">
+                        <li> <a href="#" class="text-muted">Minim labore nulla</a></li>
+                        <li> <a href="#" class="text-muted">Nulla qui nisi</a></li>
+                        <li> <a href="#" class="text-muted">Iris Vor Arnim</a></li>
+                        <li> <a href="#" class="text-muted">Consectetur cupidatat</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="py-3 bg-dark text-white">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-7 text-center text-md-left">
+                    <p class="mb-md-0">&copy; 2018 Your company. All rights reserved. </p>
+                </div>
+                <div class="col-md-5 text-center text-md-right">
+                    <p class="mb-0">Template By <a href="https://bootstrapious.com/"
+                            class="external text-white">Bootstrapious</a> </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.linearicons.com/free/1.0.0/svgembedder.min.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+    <script src="{% static 'mysite/js/login_script' %}"></script>
+
+</body>
+
+</html>

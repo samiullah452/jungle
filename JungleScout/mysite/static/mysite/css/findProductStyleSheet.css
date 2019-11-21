@@ -1,0 +1,39 @@
+div[id="productTrackerHeader"]
+{
+    background-color: white;
+    font-weight: bold;
+    font-size: 18px;
+    border-color: #cfd8dc;
+}
+
+button[id="HelpButton"]
+{
+    background-color: transparent;
+    padding: 0px;
+    border: none;
+}
+
+button[id="HelpButton"]:active, button[id="HelpButton"]:focus
+{
+    background-color: none !important;
+    padding: 0px !important;
+    border: none !important;
+}
+
+button[id="HelpButton"]:hover
+{
+    background-color: transparent;
+    padding: 0px;
+    border: none;
+}
+
+input[type="text"]:focus{
+    border-color: silver !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+input[type="text"]:active{
+    border-color: silver !important;
+    outline: none !important;
+    box-shadow: none !important;
+}

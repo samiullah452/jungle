@@ -1,0 +1,638 @@
+{% extends 'Base.html' %}
+
+{% load static %}
+
+
+{% block title %} Keyword | Viator Product Hunter{% endblock %}
+
+
+{% block content %}
+
+
+
+<style>
+.tab {
+  overflow: hidden;
+  border: 1px solid #ccc;
+  position: relative; 
+  float: left;
+  background-color: #f1f1f1;
+}
+
+/* Style the buttons inside the tab */
+.tab button {
+  background-color: inherit;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  transition: 0.3s;
+  font-size: 12px;
+}
+th{
+  border: 1px solid #ccc;
+  background-color: #f1f1f1;
+
+}
+td{
+font-size:11px;
+
+}
+/* Change background color of buttons on hover */
+.tab button:hover {
+  background-color: #ddd;
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+  background-color: #ccc;
+}
+
+/* Style the tab content */
+.tabcontent {
+  clear: both;
+  display: none;
+  padding: 6px 12px;
+}
+
+
+    p[id="check1"]:hover {
+        background-color: #ffeeba;
+    }
+
+    p[id="check1"] {
+        color: black;
+    }
+
+    .dropdown-menu {
+        width: 250px;
+        max-width: 250px;
+    }
+
+    .custom-checkbox:hover {
+        background-color: #ffeeba;
+    }
+
+    button[id="profileButton"] {
+    background: #f57706;
+    opacity: 1;
+    border: 1px solid #f57706;
+  }
+
+  button[id="profileButton"]:hover,
+  button[id="profileButton"]:focus,
+  button[id="profileButton"]:active {
+
+    background-color: #ffc107;
+    border-color: #ffc107;
+    outline: none !important;
+    box-shadow: none !important;
+  }
+
+
+
+  a[id="profileButton"] {
+    background: #f57706;
+    opacity: 1;
+    border: 1px solid #f57706;
+  }
+
+  a[id="profileButton"]:hover,
+  a[id="profileButton"]:focus,
+  a[id="profileButton"]:active {
+
+    background-color: #ffc107;
+    border-color: #ffc107;
+    outline: none !important;
+    box-shadow: none !important;
+  }
+</style>
+
+<main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+        <select class="form-control" id="groupmove">          
+           <option value="Uncategorized" >Uncategorized</option>
+            {% for grp in groups %}
+           <option value="{{grp}}" >{{grp}}</option>
+            {%endfor%}
+        </select>
+
+        <input type="button" class="btn btn-primary" id="move" onclick="mov1(document.getElementById('move').getAttribute('data'))" style="margin-top:10px;" value="Move"></input>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+
+  <div class="modal fade" id="NewGroup" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+        <input type="text" id="new-group" class="form-control name_list" placeholder="Enter Name of Group" />
+        <input type="button" class="btn btn-primary" onclick="create()" style="margin-top:10px;" value="Create"></input>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+
+  <div class="modal fade" id="EditKey" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+        <input type="text" id="edit-key" class="form-control name_list" placeholder="Enter Keywords" />
+        <input type="button" class="btn btn-primary" onclick="editkey(document.getElementById('edit').getAttribute('data'))" id='edit' style="margin-top:10px;" value="Edit"></input>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+
+    <div class="modal fade" id="DeleteGroup" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+         <select class="form-control" id="groupdelete">          
+            {% for grp in groups %}
+           <option value="{{grp}}" >{{grp}}</option>
+            {%endfor%}
+        </select>
+
+        <input type="button" class="btn btn-primary" onclick="dele()" style="margin-top:10px;" value="Delete"></input>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+
+  <div class="card mx-auto shadow-lg p-3 mb-5 bg-white rounded" style="width: 100%;">
+
+    <br>
+<br>
+    <div class="card-body p-0">
+
+      <h5 class="card-title font-weight-bold mt-1">Keyword Scout</h5>
+      <br>
+
+
+      <table class="table">
+          <tbody>
+            <tr>
+              <td>
+                  <form class="form-inline">
+                      <div class="form-group mx-sm-3 mb-2">
+                          <input type="text" class="form-control" id="inputText2" placeholder="Enter ASIN">
+                        </div>
+                        <div class="form-group mx-sm-3 mb-2">
+                          <input type="text" class="form-control" id="inputText3" placeholder="Enter Company Name">
+                        </div>
+                        <input type="button" value="Search"class="btn btn-warning mb-2 text-white" id="starting"></input>
+                       <img src="{% static 'mysite/images/giphy.gif' %}" style="display:none" id="loading" width="100px" height=40px></img>
+                  </form>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      
+
+      <div class="row border border-light">
+        <div class="col">
+          <h5 class="card-title text-center">Your keywords await!</h5>
+          <p class="card-text text-center">Start by looking up a keyword or Product ASIN to track down applicable search information and so much more!</p>
+        </div>
+        <div class="col">
+            <img src="{% static 'mysite/images/keyword.svg' %}">
+        </div>
+      </div>
+      <br />
+
+    <div class="row">
+    <div class="col">
+    <div class="form-group mb-2" style="float:left;" >
+                                                <a href="#" class="btn btn-primary" onclick="download_table_as_csv('response');" id="profileButton">Save As .CSV FILE <i class="fas fa-download"></i></a>
+    </div>
+</div>
+</div>
+      <div style="float:right;margin-right:50px">
+    <p onclick="deleteselected()" style="float:left;padding-right:5px;cursor:pointer;font-size: 12px;color:black;font-weight:bold;"><i class="fas fa-minus"></i>Delete Selected</p>
+ <p onclick="moveselected()" style="float:right;cursor:pointer;font-size: 12px;color:black;font-weight:bold;">Move Selected</p>
+  </div>
+    <div class="tab">
+  <button class="tablinks" onclick="openCity(event, 'Uncategorized')" id="defaultOpen">Overview</button>
+  {% for grp in groups %}
+  <button class="tablinks" onclick="openCity(event, '{{grp}}')" id="{{grp}}">{{grp}}</button>
+
+  {%endfor%}
+   <button type="button" class="tablinks" onclick="  $('#NewGroup').modal('show');" class="btn btn-success"><i class="fas fa-plus"></i>New Group</button>
+   <button type="button" class="tablinks" onclick="  $('#DeleteGroup').modal('show');" class="btn btn-success"><i class="fas fa-minus"></i>Delete Group</button>  
+</div>
+<div id="Uncategorized" class="tabcontent">
+  
+          <div class="table-responsive">
+        <table class="table table-bordered" id="response">
+          <tr id='head'>
+            <th style="cursor:pointer;" onclick="selectall();">Selected</th>
+            <th>Group</th>
+            <th>Category Name</th>
+            <th>Category Id</th>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Keywords</th>
+            <th>Product Url</th>
+            <th>Edit Keywords</th>
+            <th>Manage</th>
+          </tr>
+      
+                                                     </table>
+                                                    </div>
+
+</div>
+    </div>
+
+  </div>
+
+</main>
+
+
+
+<script>
+
+
+    jQuery('.dropdown-toggle').on('click', function (e) {
+        $(this).next().toggle();
+    });
+    jQuery('.dropdown-menu.keep-open').on('click', function (e) {
+        e.stopPropagation();
+    });
+
+    if (1) {
+        $('body').attr('tabindex', '0');
+    }
+    else {
+        alertify.confirm().set({ 'reverseButtons': true });
+        alertify.prompt().set({ 'reverseButtons': true });
+    }
+
+
+  var overview={{overview|safe}};
+  var table = document.getElementById("response");
+  var i=1;
+  var selected=false;
+  addentry(overview)
+function selectall(){
+
+$('#response input[type=checkbox]').each(function(){
+  $(this).prop('checked', !selected);
+});
+selected=!selected
+}
+
+  function download_table_as_csv(table_id) {
+    // Select rows from table_id
+    var rows = document.querySelectorAll('table#' + table_id + ' tr');
+    // Construct csv
+    var csv = [];
+    for (var l = 0; l < rows.length; l++) {
+        var row = [], cols = rows[l].querySelectorAll('td, th');
+        for (var j = 1; j < cols.length-3; j++) {
+            // Clean innertext to remove multiple spaces and jumpline (break csv)
+            var data = cols[j].innerText
+            // Escape double-quote with double-double-quote (see https://stackoverflow.com/questions/17808511/properly-escape-a-double-quote-in-csv)
+            data = data.replace(/"/g, '""');
+            // Push escaped string
+            row.push('"' + data + '"');
+        }
+
+        if(l!=0){
+          data=cols[j]
+            row.push('"' + $(cols[j])[0].childNodes[0].href + '"');
+        }
+        else{
+                      row.push('"Product Url"');
+
+        }
+        csv.push(row.join(';'));
+    }
+    var csv_string = csv.join('\n');
+    // Download it
+    var filename = 'export_' + table_id + '_' + new Date().toLocaleDateString() + '.csv';
+    var link = document.createElement('a');
+    link.style.display = 'none';
+    link.setAttribute('target', '_blank');
+    link.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv_string));
+    link.setAttribute('download', filename);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
+
+
+  function addentry(result){
+   for (var key in result) {
+      var row = table.insertRow(i++);
+            row.id=result[key]['id']
+
+      j=0;
+      var cell = row.insertCell(j++);              
+      cell.innerHTML="<input type='checkbox'>"    
+      for (var k in result[key]){
+      if (result[key].hasOwnProperty(k)) {           
+          if(k=='id'){
+            continue
+          }
+
+          var cell = row.insertCell(j++);
+          if(k=='image'){
+              for(var l=0;l<result[key][k].length;l++){
+               cell.innerHTML += "<img src='"+result[key][k][l]+"' widht=60px height=60px></img>"; 
+                       }
+              }
+          else{
+
+            if(k=='url'){
+            cell.innerHTML="<a style='color:blue;'href='"+result[key][k]+"'>Open Link</a>"    
+
+            }
+          else{
+              cell.innerHTML = result[key][k];
+              }
+            }
+                }
+                     }
+     var cell = row.insertCell(j++);              
+      cell.innerHTML="<a href='javascript:editkeywords("+row.id+");' >Edit</a>   <a href=javascript:copytoclip("+row.id+");>Copy</a>"    
+
+     var cell = row.insertCell(j++);              
+      cell.innerHTML="<a href='javascript:del("+row.id+");' >Delete</a>   <a href=javascript:mov("+row.id+");>Move</a>"    
+                                   
+                      }
+  }
+  function copytoclip(id){
+
+  /* Get the text field */
+  var copyText = document.getElementById(id).childNodes[6].innerHTML;
+  var textArea = document.createElement("textarea");
+    textArea.value = copyText;
+    document.body.appendChild(textArea);
+    textArea.select();
+    document.execCommand("Copy");
+    textArea.remove();
+  /* Copy the text inside the text field */
+  document.execCommand("copy");
+
+  /* Alert the copied text */
+  alert("Copied to clipboard: " + copyText);
+
+
+  }
+
+function editkeywords(id){
+    document.getElementById('edit-key').value=document.getElementById(id).childNodes[6].innerHTML
+    $('#EditKey').modal('show'); 
+    document.getElementById('edit').setAttribute('data',id)
+  }
+
+function editkey(id){
+      var edit_keywords=document.getElementById('edit-key').value
+      $.ajax({
+           url:"/keyword-find/",
+           method:"GET",
+           dataType: 'json',
+           data:{edit:id,new_keywords:edit_keywords},
+           success:function(result)
+                    { 
+          document.getElementById(id).childNodes[6].innerHTML=edit_keywords
+    $('#EditKey').modal('hide'); 
+
+
+                    }});
+
+      
+                  }
+function mov1(id){
+  if(id=='selected'){
+          active=document.getElementsByClassName('tablinks active')[0].textContent
+      $('input:checkbox:checked').each(function(){
+        if (active!="Overview"){
+          if(active==$(this).parent().parent()[0].childNodes[1].textContent){
+             mov1($(this).parent().parent().attr('id'))
+                }
+
+              }
+              else{
+                  mov1($(this).parent().parent().attr('id'))
+              }
+
+      
+});
+  }
+  else{
+       $.ajax({
+       url:"/keyword-find/",
+       method:"GET",
+       dataType: 'json',
+       data:{move:id,group:document.getElementById('groupmove').value},
+       success:function(result)
+       {
+          $('#myModal').modal('hide'); 
+          document.getElementById(id).childNodes[1].textContent=document.getElementById('groupmove').value
+                       
+          document.getElementsByClassName("tablinks active")[0].click();
+
+                       }
+                });
+}
+  }
+function deleteselected(){
+active=document.getElementsByClassName('tablinks active')[0].textContent
+
+      $('input:checkbox:checked').each(function(){
+        if (active!="Overview"){
+          if(active==$(this).parent().parent()[0].childNodes[1].textContent){
+         del($(this).parent().parent().attr('id'))
+                }
+
+              }
+              else{
+                  del($(this).parent().parent().attr('id'))
+              }
+
+      
+});
+
+  }
+
+  function moveselected(){
+          document.getElementById('groupmove').value='Uncategorized'
+          $('#myModal').modal('show'); 
+          document.getElementById('move').setAttribute('data','selected')
+
+
+  }
+  function dele(){
+      var deleted_group=document.getElementById('groupdelete').value
+
+      $.ajax({
+           url:"/keyword-find/",
+           method:"GET",
+           dataType: 'json',
+           data:{groupdelete:deleted_group},
+           success:function(result)
+                    { 
+          location.reload();
+
+                    }});
+
+      
+                  }
+  function create(){
+                            var created_group=document.getElementById('new-group').value
+
+      $.ajax({
+           url:"/keyword-find/",
+           method:"GET",
+           dataType: 'json',
+           data:{create:created_group},
+           success:function(result)
+                    { 
+          location.reload()
+
+                    }});
+
+      
+                  }
+
+  function mov(id){
+          document.getElementById('groupmove').value=document.getElementById(id).childNodes[1].textContent
+          $('#myModal').modal('show'); 
+          document.getElementById('move').setAttribute('data',id)
+  }
+  function del(id){
+
+     $.ajax({
+       url:"/keyword-find/",
+       method:"GET",
+       dataType: 'json',
+       data:{delete:id},
+        success:function(result)
+                    {
+
+              var row = document.getElementById(id);
+              row.parentNode.removeChild(row)
+          i--;
+
+                       }
+                });
+
+
+  }
+  function openCity(evt, cityName) {
+    var k, tablinks;
+    a= $('#response tr').not(document.getElementById( "head" )).each(function(){
+      cell=$(this)
+      if(cityName!="Uncategorized"){
+         if(cell[0].childNodes[1].textContent!=cityName){
+          cell.hide()
+         }
+         else{
+          cell.show()
+         }
+        }
+        else{
+          cell.show()
+        }
+    })
+        tablinks = document.getElementsByClassName("tablinks");
+        for (k = 0; k < tablinks.length; k++) {
+          tablinks[k].className = tablinks[k].className.replace(" active", "");
+                                              }
+          document.getElementById(cityName).style.display = "block";
+          evt.currentTarget.className += " active";
+                                              }
+
+        $(document).ready(function(){
+
+          document.getElementById("defaultOpen").click();
+
+            $('#starting').click(function(){    
+                document.getElementById("starting").style.display="none";
+                document.getElementById("loading").style.display="block"
+                key=document.getElementById('inputText2').value
+               company=document.getElementById('inputText3').value
+                if (key.length==0||company.length==0){
+                document.getElementById("starting").style.display="";
+                document.getElementById("loading").style.display="none"
+
+                      return  
+                }
+                 $.ajaxSetup({
+                   headers: { "X-CSRFToken": '{{ csrf_token }}' }
+                                 });
+                
+                $.ajax({
+                    url:"/keyword-find/",
+                    method:"POST",
+                    dataType: 'json',
+                    data:{key:key,company:company},
+                    success:function(result)
+                    {
+                    document.getElementById("starting").style.display="";
+                    document.getElementById("loading").style.display="none"
+                     addentry(result)
+                    },
+                    error:function (xhr, ajaxOptions, thrownError) {
+                                          document.getElementById("starting").style.display="";
+                    document.getElementById("loading").style.display="none"
+
+                             alert("Try Again");
+                                                  }
+                });
+        
+            });
+
+           }); 
+</script>
+
+
+{% endblock %}

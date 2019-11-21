@@ -1,0 +1,40 @@
+button[type="submit"]
+{
+    background:#f57706;
+    opacity: 1;
+    border: 1px solid
+    #f57706;
+}
+
+button[type="submit"]:hover, button[type="submit"]:focus, button[type="submit"]:active
+{
+  
+    background-color:#ffc107;
+    border-color:#ffc107;
+    outline: none !important;
+box-shadow: none !important;
+}
+
+ /* unvisited link */
+ a:link {
+    color: #838fa1;
+  }
+  
+  /* visited link */
+  a:visited {
+    color: #838fa1;
+  }
+  
+  /* mouse over link */
+  a:hover {
+    color: #ffc107;
+  }
+  
+  /* selected link */
+  a:active {
+    color: #ffc107;
+  } 
+
+  input::-webkit-inner-spin-button, input::-webkit-outer-spin-button
+    { -webkit-appearance:none; } input[type="number"]{ -moz-appearance:textfield; 
+  }

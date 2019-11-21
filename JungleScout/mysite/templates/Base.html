@@ -1,0 +1,202 @@
+{% load static %}
+{% load FindProfileImage %}
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,400,700">
+    <link rel='dns-prefetch' href='//use.fontawesome.com' />
+    <link rel="stylesheet" href="{% static 'mysite/css/style4.css' %}">
+    
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    
+    
+    <link rel="stylesheet" href="{% static 'mysite/css/navBarStyleSheet.css' %}">
+    <link rel="stylesheet" href="{% static 'mysite/css/notificationPanelStyle.css' %}">
+    <style>
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+    </style>
+    <link href="{% static 'mysite/css/dashboard.css' %}" rel="stylesheet">
+    <style>
+        a[id="notificationLink"]:hover {
+            text-decoration: underline;
+        }
+    </style>
+    <title>{% block title %}Viator Product Hunter{% endblock %}</title>
+</head>
+
+<body>
+    <nav class="navbar sticky-top navbar-expand-sm navbar-light bg-light pt-0 pb-0">
+        <a class="navbar-brand bg-transparent shadow-none" href="{% url 'home' %}">
+            <img src="{% static 'mysite/images/js-logo-full.svg' %}" width="260" height="30">
+        </a>
+
+
+        <div class="navbar-nav ml-auto" id="navbarSupportedContent">
+            <ul class="navbar-nav">
+                <div class="dropdown bg-transparent mr-2">
+
+
+
+                    <button class="btn btn-secondary dropdown-toggle bg-transparent border-0 font-weight-bold"
+                        type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                        aria-expanded="false">
+                        Get Started
+                    </button>
+
+                    <div class="dropdown-menu shadow-lg bg-white rounded p-0 border-0"
+                        aria-labelledby="dropdownMenuButton" style="z-index: 555; right:20%;">
+
+                        <div class="card mx-auto border-0 p-0" style="width: 22rem; right:20%;">
+                            <div class="card-header m-0 font-weight-bold text-white pr-0 pb-0">
+                                <h4 class="p-0 mr-2">Quick Start Checklist <span aria-hidden="true" class="ml-5 p-0"
+                                        style="cursor: pointer;">&times;</span></h4>
+
+                            </div>
+
+                            <div class="card-body p-0">
+
+                                <ul class="list-group">
+                                    <li class="list-group-item border-0">
+                                        <a href="#" id="notificationLink"
+                                            class="list-group-item list-group-item-action p-0 bg-transparent border-0"
+                                            style="color:
+                                                    #00c681;
+                                                    font-weight: 400;"><i class="far fa-check-circle mr-2"></i>Dapibus
+                                            ac facilisis in</a>
+                                    </li>
+
+
+
+
+
+                                </ul>
+                            </div>
+                            <div class="card-footer text-muted bg-transparent">
+                                <div class="progress mt-1" style="height: 8px;border-radius: 6px; ">
+                                    <div class="progress-bar w-75" role="progressbar" aria-valuenow="75"
+                                        aria-valuemin="0" aria-valuemax="100" style="background-color: #f57706; "></div>
+                                </div>
+                                <br>
+                                <p class="card-text text-muted font-weight-normal" style="font-size: 12px;">100%
+                                    Complete</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                
+                {% if request.user|FindProfileImage %}
+                <img src="/media/{{ request.user|FindProfileImage  }}" class="rounded-circle" alt="..." height="50px" style="width:50px;">
+                {% else %}
+                <i class="fas fa-user-circle fa-3x"></i>
+                {% endif %}
+                <div class="dropdown bg-transparent">
+
+
+                    
+                    <button class="btn btn-secondary dropdown-toggle bg-transparent border-0 font-weight-bold"
+                        type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                        aria-expanded="false">
+                        {{ request.user.username }}
+                    </button>
+                    
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <div class="arrow"></div>
+                        <a class="dropdown-item font-weight-bold" href="{% url 'settings_page' %}"><i
+                                class="fas fa-cog mr-2"></i>Settings</a>
+                        <a class="dropdown-item font-weight-bold" href="{% url 'logout' %}"><i
+                                class="fas fa-sign-out-alt mr-2"></i>Logout</a>
+
+                    </div>
+                </div>
+
+            </ul>
+
+        </div>
+    </nav>
+    <div class="container-fluid">
+        <div class="row">
+            <nav class="col-md-2 d-none d-md-block bg-light sidebar bg-transparent shadow-none" style="top:55px;">
+                <div class="sidebar-sticky">
+                    <ul class="nav flex-column border-bottom border-dark">
+                        <li class="nav-item text-left">
+                            <a class="nav-link list-group-item border-0 font-weight-bold text-left {% if section == 'findProduct' %} list-group-item-warning{% endif %}" href="{% url 'home' %}"><i
+                                    class="fas fa-search fa-1x mr-3 mt-1"></i>Content Downloader</a>
+                        </li>
+                        <li class="nav-item text-left">
+                            <a class="nav-link list-group-item border-0 font-weight-bold text-left {% if section == 'keyword_page' %} list-group-item-warning{% endif %}" href="{% url 'keyword' %}"><i
+                                    class="fas fa-tags fa-1x mt-1 mr-2"></i>Keyword Scraper</a>
+                        </li>
+                        <li class="nav-item text-left">
+                            <a class="nav-link list-group-item border-0 font-weight-bold text-left" href="#"><i
+                                    class="fas fa-key fa-1x mt-1 mr-3"></i>Competitor Analyzor</a>
+                        </li>
+                        <li class="nav-item text-left">
+                            <a class="nav-link list-group-item border-0 font-weight-bold text-left" href="{% url 'supplier-finder' %}"><i
+                                    class="fas fa-rocket fa-1x mt-1 mr-3"></i>Suplier Finder</a>
+                        </li>
+                        <li class="nav-item text-left">
+                            <a class="nav-link list-group-item border-0 border-0 font-weight-bold text-left" href="{% url 'profitcalculator' %}"><i
+                                    class="fas fa-calculator fa-1x mt-1 mr-3"></i>Profit Calculator</a>
+                        </li>
+
+                    </ul>
+
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link list-group-item border-0 font-weight-bold text-left" href="#"><i
+                                    class="fas fa-home fa-1x mt-1 mr-3"></i>Go to Home Page</a>
+                        </li>
+                    </ul>
+                    <ul class="nav flex-column mb-2">
+                            <li class="nav-item text-left">
+                                    <a class="nav-link list-group-item border-0 font-weight-bold text-left" href="#"><i
+                                            class="fas fa-question-circle fa-1x mr-3"></i>Help</a>
+                                </li>
+                        <li class="nav-item text-left">
+                            <a class="nav-link list-group-item border-0 font-weight-bold text-left {% if section == 'settings' %} list-group-item-warning{% endif %}" href="{% url 'settings_page' %}"><i
+                                    class="fas fa-cog fa-1x mr-3"></i>Settings</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+            {% block content %}
+            {% endblock %}
+        </div>
+    </div>
+        <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js"
+        integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ"
+        crossorigin="anonymous"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js"
+        integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY"
+        crossorigin="anonymous"></script>
+
+    
+<script src="https://cdn.linearicons.com/free/1.0.0/svgembedder.min.js"></script>
+<script src="{% static 'mysite/js/login_Script.js' %}"></script>
+<script src="{% static 'mysite/js/dashboard.js' %}"></script>
+</body>
+
+</html>

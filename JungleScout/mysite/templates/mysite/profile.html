@@ -1,0 +1,235 @@
+{% extends 'Base.html' %}
+{% load static %}
+{% load FindProfileImage %}
+{% load FindProfileImageWidth %}
+{% load FindProfileImageHeight %}
+
+{% block title %} {{ user.username }} |Profile | Viator Product Hunter{% endblock %}
+
+
+
+{% block content %}
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+<style>
+  button[id="profileButton"] {
+    background: #f57706;
+    opacity: 1;
+    border: 1px solid #f57706;
+  }
+
+  button[id="profileButton"]:hover,
+  button[id="profileButton"]:focus,
+  button[id="profileButton"]:active {
+
+    background-color: #ffc107;
+    border-color: #ffc107;
+    outline: none !important;
+    box-shadow: none !important;
+  }
+
+  a[id="profileButton"] {
+    background: #f57706;
+    opacity: 1;
+    border: 1px solid #f57706;
+  }
+
+  a[id="profileButton"]:hover,
+  a[id="profileButton"]:focus,
+  a[id="profileButton"]:active {
+
+    background-color: #ffc107;
+    border-color: #ffc107;
+    outline: none !important;
+    box-shadow: none !important;
+  }
+</style>
+
+<div class="mx-auto" style="width: 420px;">
+
+  <div class="shadow-lg p-3 mb-5 bg-white rounded">
+
+
+    <div class="card bg-transparent border-0" style="width: 18rem;">
+
+      <div class="mx-auto" style="width: 390px;">
+        <div class="card rounded mx-auto d-block border-0" style="width: 100%;">
+          {% if request.user|FindProfileImage %}
+            <a href="/media/{{ request.user|FindProfileImage  }}"><img src="/media/{{ request.user|FindProfileImage  }}" class="card-img-top rounded mx-auto d-block" alt="..." height="200px" style="width:auto;"></a>
+            <a href="{% url 'delete-profile' %}" id="profileButton" class="btn btn-primary mt-1" style="position: relative;  left:32%;"><i
+                class="fas fa-trash-alt"></i> Delete Photo</a>
+          {% else %}
+          <img src="/media/Image/Profiles/default.jpg" class="card-img-top rounded mx-auto d-block" alt="..." height="200px" style="width:auto;">
+          <form action="{% url 'upload-profile-image' %}" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+          <div class="custom-file">
+              <input type="file" class="custom-file-input" id="customFile" name="profileImage">
+              <label class="custom-file-label" for="customFile">Upload Profile Image</label>
+              <button type="submit" value="Upload Profile Image" class="btn btn-primary mt-1 mx-auto" id="profileButton" style="position: relative;  left:25%;"><i class="fas fa-upload"></i> Upload Profile Image</button>
+            </div>
+          </form>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="card-body">
+        <form action="{% url 'profile' %}" method="POST">
+          {% csrf_token %}
+          <h3 class="card-title border-bottom border-dark">{{ request.user }}</h3>
+          <table class="table">
+
+            <tbody style="width:200px;">
+              <tr>
+
+                <td class="border-right">First name</td>
+
+                <td><input type="text" name="first_name" value="{{ request.user.first_name }}" class="form-control"
+                    autocomplete="off"></td>
+
+              </tr>
+              <tr>
+
+                <td class="border-right">Last name</td>
+                <td><input type="text" value="{{ request.user.last_name }}" name="last_name" class="form-control"
+                    autocomplete="off"></td>
+
+              </tr>
+              <tr>
+
+                <td class="border-right">Email</td>
+                <td>{{ request.user.email }}</td>
+              </tr>
+              <tr>
+
+                <td class="border-right">Last Login</td>
+                <td>{{ request.user.last_login|timesince }} ago.</td>
+              </tr>
+              <tr>
+
+                <td class="border-right">Date Joined</td>
+                <td>{{ request.user.date_joined|timesince }} ago.</td>
+              </tr>
+
+            </tbody>
+
+            <input type="hidden" name="password" value="{{ request.user.password }}" id="id_password"
+              style="visibility: hidden;">
+
+            <tr>
+              <td colspan="2">
+                <button type="submit" id="profileButton" class="btn btn-block p-1 text-white mb-0 mx-auto"
+                  value="Log-in">Edit Profile</button>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2" class="border-0">
+                <a type="button" id="profileButton" class="btn btn-block p-1 text-white mb-2 mx-auto" value="Log-in"
+                  href="{% url 'change_password' %}">Change Password</a>
+              </td>
+            </tr>
+          </table>
+
+
+
+        </form>
+      </div>
+    </div>
+
+
+
+    {% if messages %}
+    {% for i in messages %}
+    {% if i.tags == "success" %}
+      <div class="notifications-wrapper" id="notification" onclick="functionClose();" onload="functionClose()">
+        <div class="notifications-tr"
+          style="font-family: inherit; position: fixed; width: 320px; padding: 0px 10px 10px; z-index: 9998; box-sizing: border-box; height: auto; inset: 0px 0px auto auto;">
+          <div class="notification notification-success notification-visible"
+            style="position: relative; width: 100%; cursor: pointer; border-radius: 2px; font-size: 12px; margin: 10px 5px 2px 1px; padding: 15px 10px; display: block; box-sizing: border-box; opacity: 1; transition: all 0.3s ease-in-out 0s; transform: translate3d(0px, 0px, 0px); will-change: transform, opacity; border-color: rgb(80, 227, 194); border-style: solid; border-width: 1px 1px 1px 20px; background-color: rgb(255, 255, 255); color: rgb(34, 34, 34); box-shadow: rgba(0, 0, 0, 0.15) -2px 2px 10px 0px; border-image: none 100% / 1 / 0 stretch; right: 0px; height: 89px;">
+            <h4 class="notification-title"
+              style="font-size: 14px; margin: 0px 0px 5px; padding: 0px; font-weight: normal; color: rgb(80, 227, 194); line-height: 17.5px; letter-spacing: -0.3px;">
+              Profile Updated</h4>
+            <div class="notification-message" style="margin: 0px; padding: 0px;">{{ i }}</div><span
+              class="notification-dismiss"
+              style="cursor: pointer; font-family: Arial; font-size: 17px; position: absolute; top: 4px; right: 5px; line-height: 15px; background-color: rgb(255, 255, 255); color: rgb(255, 255, 255); border-radius: 50%; width: 14px; height: 14px; font-weight: bold; text-align: center; content: url(&quot;https://dh2wkbcb9yv3l.cloudfront.net/images/close-cool-grey.svg&quot;);">×</span>
+          </div>
+        </div>
+      </div>
+    {% elif i.tags == "error" %}
+      <div class="notifications-wrapper" id="notification" onclick="functionClose();" onload="functionClose()">
+        <div class="notifications-tr"
+          style="font-family: inherit; position: fixed; width: 320px; padding: 0px 10px 10px; z-index: 9998; box-sizing: border-box; height: auto; inset: 0px 0px auto auto;">
+
+          <div class="notification notification-error notification-visible"
+            style="position: relative; width: 100%; cursor: pointer; border-radius: 2px; font-size: 12px; margin: 10px 5px 2px 1px; padding: 15px 10px; display: block; box-sizing: border-box; opacity: 1; transition: all 0.3s ease-in-out 0s; transform: translate3d(0px, 0px, 0px); will-change: transform, opacity; border-color: rgb(237, 69, 90); border-style: solid; border-width: 1px 1px 1px 20px; background-color: rgb(255, 255, 255); color: rgb(34, 34, 34); box-shadow: rgba(0, 0, 0, 0.15) -2px 2px 10px 0px; border-image: none 100% / 1 / 0 stretch; right: 0px; height: 72px;">
+
+            <h4 class="notification-title"
+              style="font-size: 14px; margin: 0px 0px 5px; padding: 0px; font-weight: normal; color: rgb(237, 69, 90); line-height: 17.5px; letter-spacing: -0.3px;">
+              Invalid Form Input</h4>
+            <div class="notification-message" style="margin: 0px; padding: 0px; margin-top:-6px;">{{ i }}</div><span
+              class="notification-dismiss" onclick="functionClose();"
+              style="cursor: pointer; font-family: Arial; font-size: 17px; position: absolute; top: 4px; right: 5px; line-height: 15px; background-color: rgb(255, 255, 255); color: rgb(255, 255, 255); border-radius: 50%; width: 14px; height: 14px; font-weight: bold; text-align: center; content: url(&quot;https://dh2wkbcb9yv3l.cloudfront.net/images/close-cool-grey.svg&quot;);">×</span>
+          </div>
+        </div>
+      </div>
+    {% elif i.tags == "info" %}
+      <div class="notifications-wrapper" id="notification" onclick="functionClose();" onload="functionClose()">
+          <div class="notifications-tr"
+            style="font-family: inherit; position: fixed; width: 320px; padding: 0px 10px 10px; z-index: 9998; box-sizing: border-box; height: auto; inset: 0px 0px auto auto;">
+            <div class="notification notification-success notification-visible"
+              style="position: relative; width: 100%; cursor: pointer; border-radius: 2px; font-size: 12px; margin: 10px 5px 2px 1px; padding: 15px 10px; display: block; box-sizing: border-box; opacity: 1; transition: all 0.3s ease-in-out 0s; transform: translate3d(0px, 0px, 0px); will-change: transform, opacity; border-color: rgb(80, 227, 194); border-style: solid; border-width: 1px 1px 1px 20px; background-color: rgb(255, 255, 255); color: rgb(34, 34, 34); box-shadow: rgba(0, 0, 0, 0.15) -2px 2px 10px 0px; border-image: none 100% / 1 / 0 stretch; right: 0px; height: 89px;">
+              <h4 class="notification-title"
+                style="font-size: 14px; margin: 0px 0px 5px; padding: 0px; font-weight: normal; color: rgb(80, 227, 194); line-height: 17.5px; letter-spacing: -0.3px;">
+                Profile Updated</h4>
+              <div class="notification-message" style="margin: 0px; padding: 0px;">{{ i }}</div><span
+                class="notification-dismiss"
+                style="cursor: pointer; font-family: Arial; font-size: 17px; position: absolute; top: 4px; right: 5px; line-height: 15px; background-color: rgb(255, 255, 255); color: rgb(255, 255, 255); border-radius: 50%; width: 14px; height: 14px; font-weight: bold; text-align: center; content: url(&quot;https://dh2wkbcb9yv3l.cloudfront.net/images/close-cool-grey.svg&quot;);">×</span>
+            </div>
+          </div>
+      </div>
+    {% elif i.tags == "warning" %}
+      <div class="notifications-wrapper" id="notification" onclick="functionClose();" onload="functionClose()">
+          <div class="notifications-tr"
+            style="font-family: inherit; position: fixed; width: 320px; padding: 0px 10px 10px; z-index: 9998; box-sizing: border-box; height: auto; inset: 0px 0px auto auto;">
+
+            <div class="notification notification-error notification-visible"
+              style="position: relative; width: 100%; cursor: pointer; border-radius: 2px; font-size: 12px; margin: 10px 5px 2px 1px; padding: 15px 10px; display: block; box-sizing: border-box; opacity: 1; transition: all 0.3s ease-in-out 0s; transform: translate3d(0px, 0px, 0px); will-change: transform, opacity; border-color: rgb(237, 69, 90); border-style: solid; border-width: 1px 1px 1px 20px; background-color: rgb(255, 255, 255); color: rgb(34, 34, 34); box-shadow: rgba(0, 0, 0, 0.15) -2px 2px 10px 0px; border-image: none 100% / 1 / 0 stretch; right: 0px; height: 72px;">
+
+              <h4 class="notification-title"
+                style="font-size: 14px; margin: 0px 0px 5px; padding: 0px; font-weight: normal; color: rgb(237, 69, 90); line-height: 17.5px; letter-spacing: -0.3px;">
+                Profile Picture</h4>
+              <div class="notification-message" style="margin: 0px; padding: 0px; margin-top:-6px;">{{ i }}</div><span
+                class="notification-dismiss" onclick="functionClose();"
+                style="cursor: pointer; font-family: Arial; font-size: 17px; position: absolute; top: 4px; right: 5px; line-height: 15px; background-color: rgb(255, 255, 255); color: rgb(255, 255, 255); border-radius: 50%; width: 14px; height: 14px; font-weight: bold; text-align: center; content: url(&quot;https://dh2wkbcb9yv3l.cloudfront.net/images/close-cool-grey.svg&quot;);">×</span>
+            </div>
+          </div>
+      </div>
+    {% endif %}
+    {% endfor %}
+    {% endif %}
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+</div>
+
+
+<script>
+  function functionClose() {
+    document.getElementById("notification").style.display = "none";
+  }
+
+  setTimeout(function () { document.getElementById('notification').style.display = "none"; }, 6000); 
+</script>
+
+{% endblock content %}

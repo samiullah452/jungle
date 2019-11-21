@@ -1,0 +1,207 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+
+<head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+                integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+                crossorigin="anonymous">
+
+
+        <link rel='dns-prefetch' href='//use.fontawesome.com' />
+
+
+        <link rel='stylesheet' id='fontawesome-css'
+                href='https://use.fontawesome.com/releases/v5.2.0/css/all.css?ver=5.2.0' type='text/css' media='all' />
+
+        <link rel="stylesheet" href="{% static 'mysite/css/loginSheet.css' %}">
+        <link rel="stylesheet" href="{% static 'mysite/css/formProgressBar.css' %}">
+
+
+
+        <title>Sign Up | Viator Product Hunter</title>
+</head>
+
+<body style="background-color: #f5f7f8;">
+
+       
+        <div class="mx-auto" style="width: 450px; margin-top:125px ; ">
+
+              
+
+                <div class="card border-0 bg-transparent" style="width: 30rem;">
+                        <img src="{% static 'mysite/images/js-logo-full.svg' %}" class="card-img-top" alt="...">
+                        <div class="card-header bg-transparent border-0 text-center mt-5">
+                                <h2 style="color: #ff9c00; font-family: 'Work Sans',sans-serif;font-size: 36px;
+                                                font-weight: 300;
+                                                font-style: normal;
+                                                font-stretch: normal;">Please Sign Up </h2>
+                        </div>
+                        <div class="card-body">
+
+                                <ul id="progressbar">
+                                        <li class="active">Personal Details</li>
+                                        <li>Activate Account</li>
+                                        
+                                    </ul>
+                                    
+                                    
+                        
+
+
+                                <form action="{% url 'register' %}" method="POST">
+                                        {% csrf_token %}
+                                        <div class="form-group">
+
+                                                <input type="text" name="username" maxlength="150" required
+                                                        id="id_username" class="form-control" placeholder="Username"
+                                                        autocomplete="off">
+                                                <small id="usernameHelpInline" class="text-muted">
+                                                        Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+                                                        only.
+                                                </small>
+                                        </div>
+
+                                        <div class="form-group">
+
+                                                <input type="text" name="first_name" maxlength="30" id="id_first_name"
+                                                        class="form-control" placeholder="First Name"
+                                                        autocomplete="off">
+                                        </div>
+
+                                        <div class="form-group">
+
+                                                <input type="text" name="last_name" maxlength="150" id="id_last_name"
+                                                        class="form-control" placeholder="Last Name" autocomplete="off">
+                                        </div>
+
+                                        <div class="form-group">
+
+                                                <input type="password" name="password" required id="id_password"
+                                                        class="form-control" placeholder="Password" autocomplete="off">
+                                                <small id="passwordHelpInline" class="text-muted">
+                                                        <ul>
+                                                                <li>Your password can&#39;t be too similar to your other
+                                                                        personal information.</li>
+                                                                <li>Your password must contain at least 8 characters.
+                                                                </li>
+                                                                <li>Your password can&#39;t be a commonly used password.
+                                                                </li>
+                                                                <li>Your password can&#39;t be entirely numeric.</li>
+                                                        </ul>
+                                                </small>
+                                        </div>
+
+                                        <div class="form-group">
+
+                                                <input type="password" name="password2" required id="id_password2"
+                                                        class="form-control" placeholder="Confirm Password"
+                                                        autocomplete="off">
+                                                <small id="passwordHelpInline" class="text-muted">
+                                                        Both Passwords should be same.
+                                                </small>
+                                        </div>
+
+                                        <div class="form-group">
+
+                                                <input type="text" name="email" required id="id_email"
+                                                        class="form-control" placeholder="Email" autocomplete="off">
+
+                                        </div>
+
+
+
+                                        <button type="submit" class="btn btn-block p-1 text-white mb-2"
+                                                value="Sign-Up">Sign Up</button>
+
+                                </form>
+
+                        </div>
+
+                        {% if messages %}
+                        {% for i in messages %}
+                        {% if i.tags == "error" %}
+                        <div class="notifications-wrapper" id="notification" onclick="functionClose();"
+                        onload="functionClose()">
+                        <div class="notifications-tr"
+                                style="font-family: inherit; position: fixed; width: 320px; padding: 0px 10px 10px; z-index: 9998; box-sizing: border-box; height: auto; inset: 0px 0px auto auto;">
+
+                                <div class="notification notification-error notification-visible"
+                                        style="position: relative; width: 100%; cursor: pointer; border-radius: 2px; font-size: 12px; margin: 10px 5px 2px 1px; padding: 15px 10px; display: block; box-sizing: border-box; opacity: 1; transition: all 0.3s ease-in-out 0s; transform: translate3d(0px, 0px, 0px); will-change: transform, opacity; border-color: rgb(237, 69, 90); border-style: solid; border-width: 1px 1px 1px 20px; background-color: rgb(255, 255, 255); color: rgb(34, 34, 34); box-shadow: rgba(0, 0, 0, 0.15) -2px 2px 10px 0px; border-image: none 100% / 1 / 0 stretch; right: 0px; height: 72px;">
+
+                                        <h4 class="notification-title"
+                                                style="font-size: 14px; margin: 0px 0px 5px; padding: 0px; font-weight: normal; color: rgb(237, 69, 90); line-height: 17.5px; letter-spacing: -0.3px;">
+                                                Invalid activation link</h4>
+                                        <div class="notification-message"
+                                                style="margin: 0px; padding: 0px; margin-top:-6px;">{{ i }}
+                                        </div><span class="notification-dismiss" onclick="functionClose();"
+                                                style="cursor: pointer; font-family: Arial; font-size: 17px; position: absolute; top: 4px; right: 5px; line-height: 15px; background-color: rgb(255, 255, 255); color: rgb(255, 255, 255); border-radius: 50%; width: 14px; height: 14px; font-weight: bold; text-align: center; content: url(&quot;https://dh2wkbcb9yv3l.cloudfront.net/images/close-cool-grey.svg&quot;);">×</span>
+                                </div>
+                        </div>
+                </div>
+                        {% else %}
+                                <div class="notifications-wrapper" id="notification" onclick="functionClose();"
+                                        onload="functionClose()">
+                                        <div class="notifications-tr"
+                                                style="font-family: inherit; position: fixed; width: 320px; padding: 0px 10px 10px; z-index: 9998; box-sizing: border-box; height: auto; inset: 0px 0px auto auto;">
+
+                                                <div class="notification notification-error notification-visible"
+                                                        style="position: relative; width: 100%; cursor: pointer; border-radius: 2px; font-size: 12px; margin: 10px 5px 2px 1px; padding: 15px 10px; display: block; box-sizing: border-box; opacity: 1; transition: all 0.3s ease-in-out 0s; transform: translate3d(0px, 0px, 0px); will-change: transform, opacity; border-color: rgb(237, 69, 90); border-style: solid; border-width: 1px 1px 1px 20px; background-color: rgb(255, 255, 255); color: rgb(34, 34, 34); box-shadow: rgba(0, 0, 0, 0.15) -2px 2px 10px 0px; border-image: none 100% / 1 / 0 stretch; right: 0px; height: 72px;">
+
+                                                        <h4 class="notification-title"
+                                                                style="font-size: 14px; margin: 0px 0px 5px; padding: 0px; font-weight: normal; color: rgb(237, 69, 90); line-height: 17.5px; letter-spacing: -0.3px;">
+                                                                Sign up error:</h4>
+                                                        <div class="notification-message"
+                                                                style="margin: 0px; padding: 0px; margin-top:-6px;">{{ i }}
+                                                        </div><span class="notification-dismiss" onclick="functionClose();"
+                                                                style="cursor: pointer; font-family: Arial; font-size: 17px; position: absolute; top: 4px; right: 5px; line-height: 15px; background-color: rgb(255, 255, 255); color: rgb(255, 255, 255); border-radius: 50%; width: 14px; height: 14px; font-weight: bold; text-align: center; content: url(&quot;https://dh2wkbcb9yv3l.cloudfront.net/images/close-cool-grey.svg&quot;);">×</span>
+                                                </div>
+                                        </div>
+                                </div>
+                        {% endif %}
+                        {% endfor %}
+                        {% endif %}
+
+
+                </div>
+
+
+        </div>
+
+
+
+
+
+
+
+
+
+
+        <!-- Optional JavaScript -->
+        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+                integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+                crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+                integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+                crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+                integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+                crossorigin="anonymous"></script>
+
+
+        <script>
+                function functionClose() {
+                        document.getElementById("notification").style.display = "none";
+                }
+
+                setTimeout(function () { document.getElementById('notification').style.display = "none"; }, 6000); 
+        </script>
+</body>
+
+</html>
