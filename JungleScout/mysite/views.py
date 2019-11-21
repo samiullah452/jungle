@@ -387,28 +387,7 @@ def supplier_finder(request):
     return render(request, 'mysite/homebeforeLogin.html' , context)
 # Home View (Product Tracker) ...
 def home(request):
-    dir_list = next(os.walk(settings.MEDIA_ROOT))[1]
-    try:
-        if 'users' not in dir_list:
-            os.mkdir(os.path.join(settings.MEDIA_ROOT,settings.MEDIA_ROOT +  '\\users'))
-    except:
-        pass
-    if request.user.is_authenticated:
-        try:
-            dirname = settings.MEDIA_ROOT + '\\users'
-            os.mkdir(os.path.join(dirname, request.user.username))
 
-            if request.user.username not in next(os.walk(dirname))[1]:
-                os.mkdir(os.path.join(dirname, request.user.username))
-        except Exception as e:
-            print(str(e))
-            pass
-        try:
-            dir_list= (next(os.walk(settings.MEDIA_ROOT + "\\users"))[1])
-        except Exception as e:
-            print(str(e))
-        user_dir_list = dir_list[dir_list.index(request.user.username)]
-        user_dir_list= next(os.walk(settings.MEDIA_ROOT + "\\users" + "\\" + user_dir_list))[1]
         overview={}
         groups_show=[]
         Groups=content_downloader_groups.objects.filter(user=request.user)
@@ -433,7 +412,6 @@ def home(request):
         'overview':json.dumps(overview),
         'groups':groups_show,
             'section' : 'findProduct',
-            'user_directories' : user_dir_list
         }
         return render(request, 'mysite/home.html', context)
     context={
