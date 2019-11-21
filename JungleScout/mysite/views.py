@@ -214,6 +214,7 @@ def profitcalculator(request):
                 os.mkdir(os.path.join(dirname, request.user.username))
         except:
             pass
+
         dir_list= (next(os.walk(settings.MEDIA_ROOT + "\\users"))[1])
         user_dir_list = dir_list[dir_list.index(request.user.username)]
         user_dir_list= next(os.walk(settings.MEDIA_ROOT + "\\users" + "\\" + user_dir_list))[1]
@@ -399,7 +400,10 @@ def home(request):
                 os.mkdir(os.path.join(dirname, request.user.username))
         except:
             pass
-        dir_list= (next(os.walk(settings.MEDIA_ROOT + "\\users"))[1])
+        try:
+            dir_list= (next(os.walk(settings.MEDIA_ROOT + "\\users"))[1])
+        except Exception as e:
+            print(str(e))
         user_dir_list = dir_list[dir_list.index(request.user.username)]
         user_dir_list= next(os.walk(settings.MEDIA_ROOT + "\\users" + "\\" + user_dir_list))[1]
         overview={}
