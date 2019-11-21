@@ -21,7 +21,7 @@ def profitcal(files,website,keys):
 		firefox_capabilities['marionette'] = True
 
 
-		browser = webdriver.Firefox(executable_path='profitcalculator/geckodriver.exe',firefox_options=firefox_options,firefox_profile = profile,capabilities=firefox_capabilities)
+		browser = webdriver.Firefox(executable_path='profitcalculator/geckodriver',firefox_options=firefox_options,firefox_profile = profile,capabilities=firefox_capabilities)
 		browser.implicitly_wait(10) # seconds
 
 		for files in file:
@@ -86,7 +86,7 @@ def profitcal(files,website,keys):
 		options = Options()
 		options.add_experimental_option('excludeSwitches', ['enable-automation']) 
 		options.add_argument('--headless')
-		driver = webdriver.Chrome('contentdownloader/chromedriver.exe',options=options)
+		driver = webdriver.Chrome('contentdownloader/chromedriver',options=options)
 		driver.implicitly_wait(10)
 
 		for files in file:
@@ -145,7 +145,7 @@ def profitcal(files,website,keys):
 		profile.set_preference("dom.file.createInChild",True)
 		firefox_capabilities = webdriver.DesiredCapabilities.FIREFOX
 		firefox_capabilities['marionette'] = True
-		browser = webdriver.Firefox(executable_path='profitcalculator/geckodriver.exe',firefox_options=firefox_options,firefox_profile = profile,capabilities=firefox_capabilities)
+		browser = webdriver.Firefox(executable_path='profitcalculator/geckodriver',firefox_options=firefox_options,firefox_profile = profile,capabilities=firefox_capabilities)
 		browser.implicitly_wait(20)
 		for file in files:
 			content[i]={}

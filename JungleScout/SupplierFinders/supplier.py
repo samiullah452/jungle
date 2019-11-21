@@ -6,7 +6,7 @@ def supplier(keys,website):
 		from selenium.webdriver.chrome.options import Options
 		options = Options()
 		options.add_argument('--headless')
-		driver= webdriver.Chrome('contentdownloader/chromedriver.exe',options=options)
+		driver= webdriver.Chrome('contentdownloader/chromedriver',options=options)
 
 		from selenium.webdriver.common.keys import Keys
 		i=0	
@@ -50,7 +50,7 @@ def supplier(keys,website):
 		options.add_argument("--disable-dev-shm-usage")		
 		from selenium.webdriver.common.keys import Keys
 
-		driver= webdriver.Chrome('contentdownloader/chromedriver.exe',options=options)
+		driver= webdriver.Chrome('contentdownloader/chromedriver',options=options)
 
 		i=0
 		for key in keys:

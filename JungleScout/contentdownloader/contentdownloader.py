@@ -6,7 +6,7 @@ def content(urls,website):
 		from selenium.webdriver.chrome.options import Options
 		options = Options()
 		options.add_argument('--headless')
-		driver= webdriver.Chrome('contentdownloader/chromedriver.exe',options=options)
+		driver= webdriver.Chrome('contentdownloader/chromedriver',options=options)
 		i=0
 		for url in urls:
 			content[i]={}
@@ -40,7 +40,7 @@ def content(urls,website):
 		options = Options()
 		options.add_argument('--headless')
 		i=0
-		driver = webdriver.Chrome('contentdownloader/chromedriver.exe',options=options)
+		driver = webdriver.Chrome('contentdownloader/chromedriver',options=options)
 		for url in urls:
 			content[i]={}
 			content[i]['group']='Uncategorized'			    
@@ -95,7 +95,7 @@ def content(urls,website):
 		from selenium.webdriver.chrome.options import Options
 		options = Options()
 		options.add_argument('--headless')
-		driver= webdriver.Chrome('contentdownloader/chromedriver.exe',options=options)
+		driver= webdriver.Chrome('contentdownloader/chromedriver',options=options)
 		i=0
 		for url in urls:
 			content[i]={}
