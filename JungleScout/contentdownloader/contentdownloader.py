@@ -107,14 +107,14 @@ def content(urls,website):
    			    content[i]['shop-name']=title.text			     
 
 			if 'shop-name' not in content[i]:
-				title = driver.find_elements_by_class_name("shop-name-title")
+				title = driver.find_elements_by_class_name('shop-name-link')
 				for title in title:
-   				    content[i]['shop-name']=title.text			     
+				    print(title)
+				    content[i]['shop-name']=title.text			     
+
 
 			if 'shop-name' not in content[i]:
-				title = driver.find_elements_by_class_name("shop-name-title")
-				for title in title:
-   				    content[i]['shop-name']=''	
+				    content[i]['shop-name']=''	
 		     
 			images = driver.find_elements_by_id('J_ImgBooth')
 			for images in images:
