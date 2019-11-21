@@ -155,10 +155,9 @@ def profitcalculator(request):
         if 'file[]' in request.FILES:
             file = request.FILES.getlist('file[]')
             for myfile in file:
-                if not os.path.exists(settings.MEDIA_ROOT + "\\users" + "\\" + request.user.username+"\\"+myfile.name):
-                    fs = FileSystemStorage(settings.MEDIA_ROOT + "\\users" + "\\" + request.user.username)
-                    filename = fs.save(myfile.name, myfile)
-                file_names.append(settings.MEDIA_ROOT + "\\users" + "\\" + request.user.username+"\\"+myfile.name)
+                fs = FileSystemStorage(settings.MEDIA_ROOT)
+                filename = fs.save(myfile.name, myfile)
+                file_names.append(settings.MEDIA_ROOT)
         
         keys=request.POST.getlist('keys[]')
         prof=profitcal(file_names,website,keys)
