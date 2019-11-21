@@ -31,7 +31,7 @@ def content(urls,website):
 			for details in details:
 			    content[i]['details']=details.text
 			content[i]['url']=url
-			print(content[i])
+			i+=1
 	elif website=='Alibaba':
 		from selenium import webdriver
 		import time
@@ -88,7 +88,7 @@ def content(urls,website):
 			for table in table:
 			    content[i]['details']+=table.text
 			content[i]['url']=url
-
+			i+=1
 	elif website=="TAOBAO":
 		from selenium import webdriver
 		import time
@@ -111,6 +111,11 @@ def content(urls,website):
 				for title in title:
    				    content[i]['shop-name']=title.text			     
 
+			if 'shop-name' not in content[i]:
+				title = driver.find_elements_by_class_name("shop-name-title")
+				for title in title:
+   				    content[i]['shop-name']=''	
+		     
 			images = driver.find_elements_by_id('J_ImgBooth')
 			for images in images:
 			    content[i]['image']=images.get_attribute('src')
@@ -128,4 +133,5 @@ def content(urls,website):
 			for details in details:
 				content[i]['details']+=details.text			     
 			content[i]['url']=url			     
+			i+=1
 	return content 
