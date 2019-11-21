@@ -398,7 +398,8 @@ def home(request):
             dirname = settings.MEDIA_ROOT + '\\users'
             if request.user.username not in next(os.walk(dirname))[1]:
                 os.mkdir(os.path.join(dirname, request.user.username))
-        except:
+        except Exception as e:
+            print(str(e))
             pass
         try:
             dir_list= (next(os.walk(settings.MEDIA_ROOT + "\\users"))[1])
