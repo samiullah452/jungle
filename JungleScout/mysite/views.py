@@ -214,7 +214,7 @@ def profitcalculator(request):
                 os.mkdir(os.path.join(dirname, request.user.username))
         except:
             pass
-        dir_list= (next(os.walk(settings.MEDIA_ROOT + "\\users"))[1])
+
         user_dir_list = dir_list[dir_list.index(request.user.username)]
         user_dir_list= next(os.walk(settings.MEDIA_ROOT + "\\users" + "\\" + user_dir_list))[1]
 
@@ -347,7 +347,6 @@ def supplier_finder(request):
                 os.mkdir(os.path.join(dirname, request.user.username))
         except:
             pass
-        dir_list= (next(os.walk(settings.MEDIA_ROOT + "\\users"))[1])
         user_dir_list = dir_list[dir_list.index(request.user.username)]
         user_dir_list= next(os.walk(settings.MEDIA_ROOT + "\\users" + "\\" + user_dir_list))[1]
         overview={}
@@ -399,7 +398,6 @@ def home(request):
                 os.mkdir(os.path.join(dirname, request.user.username))
         except:
             pass
-        dir_list= (next(os.walk(settings.MEDIA_ROOT + "\\users"))[1])
         user_dir_list = dir_list[dir_list.index(request.user.username)]
         user_dir_list= next(os.walk(settings.MEDIA_ROOT + "\\users" + "\\" + user_dir_list))[1]
         overview={}
@@ -452,7 +450,6 @@ def keyword_view(request):
                 os.mkdir(os.path.join(dirname, request.user.username))
         except:
             pass
-        dir_list= (next(os.walk(settings.MEDIA_ROOT + "\\users"))[1])
         user_dir_list = dir_list[dir_list.index(request.user.username)]
         user_dir_list= next(os.walk(settings.MEDIA_ROOT + "\\users" + "\\" + user_dir_list))[1]
         overview={}
