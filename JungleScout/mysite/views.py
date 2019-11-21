@@ -394,13 +394,10 @@ def home(request):
     except:
         pass
     if request.user.is_authenticated:
-        try:
-            dirname = settings.MEDIA_ROOT + '\\users'
-            if request.user.username not in next(os.walk(dirname))[1]:
-                os.mkdir(os.path.join(dirname, request.user.username))
-        except Exception as e:
-            print(str(e))
-            pass
+        dirname = settings.MEDIA_ROOT + '\\users'
+        if request.user.username not in next(os.walk(dirname))[1]:
+            os.mkdir(os.path.join(dirname, request.user.username))
+
         try:
             dir_list= (next(os.walk(settings.MEDIA_ROOT + "\\users"))[1])
         except Exception as e:
