@@ -39,6 +39,8 @@ def content(urls,website):
 		from selenium.webdriver.chrome.options import Options
 		options = Options()
 		options.add_argument('--headless')
+		options.add_argument('--no-sandbox')
+		options.add_argument('--disable-dev-shm-usage')
 		i=0
 		driver = webdriver.Chrome('contentdownloader/chromedriver',options=options)
 		for url in urls:
@@ -95,6 +97,8 @@ def content(urls,website):
 		from selenium.webdriver.chrome.options import Options
 		options = Options()
 		options.add_argument('--headless')
+		options.add_argument('--no-sandbox')
+		options.add_argument('--disable-dev-shm-usage')
 		driver= webdriver.Chrome('contentdownloader/chromedriver',options=options)
 		i=0
 		for url in urls:
