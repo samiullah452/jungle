@@ -262,7 +262,7 @@ td{
             <th>Product Url</th>
             <th>Manage</th>
           </tr>
-      
+     
                                                      </table>
                                                     </div>
 
@@ -362,8 +362,11 @@ td{
 
      var cell = row.insertCell(j++);              
       cell.innerHTML="<a href='javascript:del("+row.id+");' >Delete</a>   <a href=javascript:mov("+row.id+");>Move</a>"    
+
+
                                    
                       }
+$(function(){ $("#response").each(function(elem,index){ var arr = $.makeArray($("tr:not(#head)",this).detach()); arr.reverse(); $(this).append(arr); }); });
   }
 function mov1(id){
   if(id=='selected'){

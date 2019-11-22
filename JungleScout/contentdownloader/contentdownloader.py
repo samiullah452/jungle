@@ -6,6 +6,8 @@ def content(urls,website):
 		from selenium.webdriver.chrome.options import Options
 		options = Options()
 		options.add_argument('--headless')
+		options.add_argument('--no-sandbox')
+		options.add_argument('--disable-dev-shm-usage')
 		driver= webdriver.Chrome('contentdownloader/chromedriver',options=options)
 		i=0
 		for url in urls:
@@ -13,7 +15,9 @@ def content(urls,website):
 			content[i]['group']='Uncategorized'			    
 			driver.get(url)
 			time.sleep(5)
-
+			shop_name=driver.find_elements_by_xpath('//div[@class="mod-detail-hd"]')
+			for shop in shop_name:
+				content[i]['shop-name']=shop.text
 			images = driver.find_elements_by_xpath('//*[@id="mod-detail-bd"]/div[1]/div/div/div/div/div[1]/div/a/img')
 
 			for images in images:

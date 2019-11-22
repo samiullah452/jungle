@@ -137,6 +137,7 @@ def profitcalculator(request):
             profs[key]['Title']=t.product_name
             profs[key]['china-price']=str(t.china_price_min)+','+str(t.china_price_avg)+','+str(t.china_price_max)
             profs[key]['exchange_rate']=t.exchange_rate
+	    profs[key]['Currency']=str(t.china_price_min*t.exchange_rate)+','+str(t.china_price_avg*t.exchange_rate)+','+str(t.china_price_max&t.exchange_rate)
             profs[key]['shipping']=str(t.oversea_shipping)
             profs[key]['extra_cost']=t.extra_cost
             profs[key]['tax_rate']=t.tax_rate
@@ -157,7 +158,7 @@ def profitcalculator(request):
             for myfile in file:
                 fs = FileSystemStorage(settings.MEDIA_ROOT)
                 filename = fs.save(myfile.name, myfile)
-                file_names.append(settings.MEDIA_ROOT)
+                file_names.append(settings.MEDIA_ROOT+"/"+filename)
         
         keys=request.POST.getlist('keys[]')
         prof=profitcal(file_names,website,keys)
@@ -168,17 +169,15 @@ def profitcalculator(request):
             grp=profit_groups(user=request.user,name="Uncategorized")
             grp.save()
         for key in prof.keys(): 
-            t=user_profit(china_price_min=prof[key]['min'],china_price_max=prof[key]['max'],product_name=prof[key]['title'],key=prof[key]['key'],name=profit_groups.objects.get(name='Uncategorized',user=request.user)) 
+            t=user_profit(china_price_avg=prof[key]['avg'],china_price_min=prof[key]['min'],china_price_max=prof[key]['max'],product_name=prof[key]['title'],key=prof[key]['key'],name=profit_groups.objects.get(name='Uncategorized',user=request.user)) 
             total_cost_min=(t.china_price_min*t.exchange_rate+t.extra_cost+t.oversea_shipping)*t.tax_rate+(t.china_price_min*t.exchange_rate+t.extra_cost+t.oversea_shipping)*t.vat+(t.china_price_min*t.exchange_rate+t.extra_cost+t.oversea_shipping)
             total_cost_max=(t.china_price_max*t.exchange_rate+t.extra_cost+t.oversea_shipping)*t.tax_rate+(t.china_price_max*t.exchange_rate+t.extra_cost+t.oversea_shipping)*t.vat+(t.china_price_max*t.exchange_rate+t.extra_cost+t.oversea_shipping)
             total_cost_avg=(t.china_price_avg*t.exchange_rate+t.extra_cost+t.oversea_shipping)*t.tax_rate+(t.china_price_avg*t.exchange_rate+t.extra_cost+t.oversea_shipping)*t.vat+(t.china_price_avg*t.exchange_rate+t.extra_cost+t.oversea_shipping)
             
-
             t.selling_price_min=total_cost_min
             t.selling_price_avg=total_cost_avg
             t.selling_price_max=total_cost_max
             t.save()
-
             net_profit_min=(t.selling_price_min-t.local_delievery_cost)-total_cost_min-((t.selling_price_min-t.local_delievery_cost)-total_cost_min)*t.vat
             net_profit_max=(t.selling_price_max-t.local_delievery_cost)-total_cost_max-((t.selling_price_max-t.local_delievery_cost)-total_cost_max)*t.vat
             net_profit_avg=(t.selling_price_avg-t.local_delievery_cost)-total_cost_avg-((t.selling_price_avg-t.local_delievery_cost)-total_cost_avg)*t.vat
