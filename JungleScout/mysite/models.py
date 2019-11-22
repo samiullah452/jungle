@@ -79,7 +79,7 @@ class user_profit(models.Model):
 	china_price_min=models.FloatField(default=0)
 	china_price_max=models.FloatField(default=0)
 	china_price_avg=models.FloatField(default=0)
-	exchange_rate=models.FloatField(default=1)
+	exchange_rate=models.FloatField(default=167.43)
 	oversea_shipping=models.FloatField(default=0)
 	tax_rate=models.FloatField(default=0)
 	vat=models.FloatField(default=0)
