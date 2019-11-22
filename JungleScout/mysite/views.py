@@ -153,6 +153,7 @@ def profitcalculator(request):
             profs[key]['selling_price']=str(t.selling_price_min)+','+str(t.selling_price_avg)+','+str(t.selling_price_max)
             profs[key]['local']=t.local_delievery_cost
             profs[key]['consumer_price']=str(t.selling_price_min-t.local_delievery_cost)+','+str(t.selling_price_avg-t.local_delievery_cost)+','+str(t.selling_price_max--t.local_delievery_cost)
+	    profs[key]['final_vat']=str(((t.selling_price_min-t.local_delievery_cost)-total_cost_min)*t.vat)+','+str(((t.selling_price_avg-t.local_delievery_cost)-total_cost_avg)*t.vat)+','str(((t.selling_price_max-t.local_delievery_cost)-total_cost_max)*t.vat)
             profs[key]['net profit']=str(net_profit_min)+','+str(net_profit_avg)+','+str(net_profit_max)
             profs[key]['id']=t.id
     
@@ -210,6 +211,7 @@ def profitcalculator(request):
             profs[key]['selling_price']=str(t.selling_price_min)+','+str(t.selling_price_avg)+','+str(t.selling_price_max)
             profs[key]['local']=t.local_delievery_cost
             profs[key]['consumer_price']=str(t.selling_price_min-t.local_delievery_cost)+','+str(t.selling_price_avg-t.local_delievery_cost)+','+str(t.selling_price_max--t.local_delievery_cost)
+	    profs[key]['final_vat']=str(((t.selling_price_min-t.local_delievery_cost)-total_cost_min)*t.vat)+','+str(((t.selling_price_avg-t.local_delievery_cost)-total_cost_avg)*t.vat)+','str(((t.selling_price_max-t.local_delievery_cost)-total_cost_max)*t.vat)
             profs[key]['net profit']=str(net_profit_min)+','+str(net_profit_avg)+','+str(net_profit_max)
             profs[key]['id']=t.id
     
@@ -253,6 +255,7 @@ def profitcalculator(request):
                 overview[i]['selling_price']=str(over.selling_price_min)+','+str(over.selling_price_avg)+','+str(over.selling_price_max)
                 overview[i]['local']=over.local_delievery_cost
                 overview[i]['consumer_price']=str(over.selling_price_min-over.local_delievery_cost)+','+str(over.selling_price_avg-over.local_delievery_cost)+','+str(over.selling_price_max--over.local_delievery_cost)
+		overview[i]['final_vat']=str(((over.selling_price_min-over.local_delievery_cost)-total_cost_min)*over.vat)+','+str(((over.selling_price_avg-over.local_delievery_cost)-total_cost_avg)*over.vat)+','str(((over.selling_price_max-over.local_delievery_cost)-total_cost_max)*over.vat)
                 overview[i]['net profit']=str(net_profit_min)+','+str(net_profit_avg)+','+str(net_profit_max)
                 overview[i]['id']=over.id
                 i+=1
