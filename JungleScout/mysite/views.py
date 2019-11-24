@@ -128,9 +128,9 @@ def profitcalculator(request):
             total_cost_max=(t.china_price_max*t.exchange_rate+t.extra_cost+t.oversea_shipping)*t.tax_rate+(t.china_price_max*t.exchange_rate+t.extra_cost+t.oversea_shipping)*t.vat+(t.china_price_max*t.exchange_rate+t.extra_cost+t.oversea_shipping)
             total_cost_avg=(t.china_price_avg*t.exchange_rate+t.extra_cost+t.oversea_shipping)*t.tax_rate+(t.china_price_avg*t.exchange_rate+t.extra_cost+t.oversea_shipping)*t.vat+(t.china_price_avg*t.exchange_rate+t.extra_cost+t.oversea_shipping)
             
-	    total_cost1_min=(t.china_price_min*t.exchange_rate+t.extra_cost+t.oversea_shipping)
-	    total_cost1_max=(t.china_price_max*t.exchange_rate+t.extra_cost+t.oversea_shipping)
-	    total_cost1_avg=(t.china_price_avg*t.exchange_rate+t.extra_cost+t.oversea_shipping)	
+            total_cost1_min=(t.china_price_min*t.exchange_rate+t.extra_cost+t.oversea_shipping)
+            total_cost1_max=(t.china_price_max*t.exchange_rate+t.extra_cost+t.oversea_shipping)
+            total_cost1_avg=(t.china_price_avg*t.exchange_rate+t.extra_cost+t.oversea_shipping)	
 
             net_profit_min=(t.selling_price_min-t.local_delievery_cost)-total_cost_min-((t.selling_price_min-t.local_delievery_cost)-total_cost_min)*t.vat
             net_profit_max=(t.selling_price_max-t.local_delievery_cost)-total_cost_max-((t.selling_price_max-t.local_delievery_cost)-total_cost_max)*t.vat
@@ -141,19 +141,19 @@ def profitcalculator(request):
             profs[key]['Title']=t.product_name
             profs[key]['china-price']=str(t.china_price_min)+','+str(t.china_price_avg)+','+str(t.china_price_max)
             profs[key]['exchange_rate']=t.exchange_rate
-	    profs[key]['Currency']=str(t.china_price_min*t.exchange_rate)+','+str(t.china_price_avg*t.exchange_rate)+','+str(t.china_price_max*t.exchange_rate)
+            profs[key]['Currency']=str(t.china_price_min*t.exchange_rate)+','+str(t.china_price_avg*t.exchange_rate)+','+str(t.china_price_max*t.exchange_rate)
             profs[key]['shipping']=str(t.oversea_shipping)
             profs[key]['extra_cost']=t.extra_cost
-	    profs[key]['total-cost']=str(total_cost1_min)+','+str(total_cost1_avg)+','+str(total_cost1_max)
+            profs[key]['total-cost']=str(total_cost1_min)+','+str(total_cost1_avg)+','+str(total_cost1_max)
             profs[key]['tax_rate']=t.tax_rate
-	    profs[key]['tax_rate1']=str((t.china_price_min*t.exchange_rate+t.extra_cost+t.oversea_shipping)*t.tax_rate)+','+str((t.china_price_avg*t.exchange_rate+t.extra_cost+t.oversea_shipping)*t.tax_rate)+','+str((t.china_price_max*t.exchange_rate+t.extra_cost+t.oversea_shipping)*t.tax_rate)
+            profs[key]['tax_rate1']=str((t.china_price_min*t.exchange_rate+t.extra_cost+t.oversea_shipping)*t.tax_rate)+','+str((t.china_price_avg*t.exchange_rate+t.extra_cost+t.oversea_shipping)*t.tax_rate)+','+str((t.china_price_max*t.exchange_rate+t.extra_cost+t.oversea_shipping)*t.tax_rate)
             profs[key]['vat']=t.vat
-	    profs[key]['vat1']=str((t.china_price_min*t.exchange_rate+t.extra_cost+t.oversea_shipping)*t.vat)+','+str((t.china_price_avg*t.exchange_rate+t.extra_cost+t.oversea_shipping)*t.vat)+','+str((t.china_price_max*t.exchange_rate+t.extra_cost+t.oversea_shipping)*t.vat)
+            profs[key]['vat1']=str((t.china_price_min*t.exchange_rate+t.extra_cost+t.oversea_shipping)*t.vat)+','+str((t.china_price_avg*t.exchange_rate+t.extra_cost+t.oversea_shipping)*t.vat)+','+str((t.china_price_max*t.exchange_rate+t.extra_cost+t.oversea_shipping)*t.vat)
             profs[key]['final-cost']=str(total_cost_min)+','+str(total_cost_avg)+','+str(total_cost_max)
             profs[key]['selling_price']=str(t.selling_price_min)+','+str(t.selling_price_avg)+','+str(t.selling_price_max)
             profs[key]['local']=t.local_delievery_cost
-            profs[key]['consumer_price']=str(t.selling_price_min-t.local_delievery_cost)+','+str(t.selling_price_avg-t.local_delievery_cost)+','+str(t.selling_price_max--t.local_delievery_cost)
-	    profs[key]['final_vat']=str(((t.selling_price_min-t.local_delievery_cost)-total_cost_min)*t.vat)+','+str(((t.selling_price_avg-t.local_delievery_cost)-total_cost_avg)*t.vat)+','str(((t.selling_price_max-t.local_delievery_cost)-total_cost_max)*t.vat)
+            profs[key]['consumer_price']=str(t.selling_price_min-t.local_delievery_cost)+','+str(t.selling_price_avg-t.local_delievery_cost)+','+str(t.selling_price_max-t.local_delievery_cost)
+            profs[key]['final_vat']=str(((t.selling_price_min-t.local_delievery_cost)-total_cost_min)*t.vat)+','+str(((t.selling_price_avg-t.local_delievery_cost)-total_cost_avg)*t.vat)+','+str(((t.selling_price_max-t.local_delievery_cost)-total_cost_max)*t.vat)
             profs[key]['net profit']=str(net_profit_min)+','+str(net_profit_avg)+','+str(net_profit_max)
             profs[key]['id']=t.id
     
@@ -182,9 +182,9 @@ def profitcalculator(request):
             total_cost_max=(t.china_price_max*t.exchange_rate+t.extra_cost+t.oversea_shipping)*t.tax_rate+(t.china_price_max*t.exchange_rate+t.extra_cost+t.oversea_shipping)*t.vat+(t.china_price_max*t.exchange_rate+t.extra_cost+t.oversea_shipping)
             total_cost_avg=(t.china_price_avg*t.exchange_rate+t.extra_cost+t.oversea_shipping)*t.tax_rate+(t.china_price_avg*t.exchange_rate+t.extra_cost+t.oversea_shipping)*t.vat+(t.china_price_avg*t.exchange_rate+t.extra_cost+t.oversea_shipping)
 
-	    total_cost1_min=(t.china_price_min*t.exchange_rate+t.extra_cost+t.oversea_shipping)
-	    total_cost1_max=(t.china_price_max*t.exchange_rate+t.extra_cost+t.oversea_shipping)
-	    total_cost1_avg=(t.china_price_avg*t.exchange_rate+t.extra_cost+t.oversea_shipping)	
+            total_cost1_min=(t.china_price_min*t.exchange_rate+t.extra_cost+t.oversea_shipping)
+            total_cost1_max=(t.china_price_max*t.exchange_rate+t.extra_cost+t.oversea_shipping)
+            total_cost1_avg=(t.china_price_avg*t.exchange_rate+t.extra_cost+t.oversea_shipping)	
 		
             t.selling_price_min=total_cost_min
             t.selling_price_avg=total_cost_avg
@@ -199,19 +199,19 @@ def profitcalculator(request):
             profs[key]['Title']=t.product_name
             profs[key]['china-price']=str(prof[key]['min'])+','+str(prof[key]['avg'])+','+str(prof[key]['max'])
             profs[key]['exchange_rate']=t.exchange_rate
-	    profs[key]['Currency']=str(t.china_price_min*t.exchange_rate)+','+str(t.china_price_avg*t.exchange_rate)+','+str(t.china_price_max*t.exchange_rate)
+            profs[key]['Currency']=str(t.china_price_min*t.exchange_rate)+','+str(t.china_price_avg*t.exchange_rate)+','+str(t.china_price_max*t.exchange_rate)
             profs[key]['shipping']=str(t.oversea_shipping)
             profs[key]['extra_cost']=t.extra_cost
-	    profs[key]['total-cost']=str(total_cost1_min)+','+str(total_cost1_avg)+','+str(total_cost1_max)
+            profs[key]['total-cost']=str(total_cost1_min)+','+str(total_cost1_avg)+','+str(total_cost1_max)
             profs[key]['tax_rate']=t.tax_rate
-	    profs[key]['tax_rate1']=str((t.china_price_min*t.exchange_rate+t.extra_cost+t.oversea_shipping)*t.tax_rate)+','+str((t.china_price_avg*t.exchange_rate+t.extra_cost+t.oversea_shipping)*t.tax_rate)+','+str((t.china_price_max*t.exchange_rate+t.extra_cost+t.oversea_shipping)*t.tax_rate)
+            profs[key]['tax_rate1']=str((t.china_price_min*t.exchange_rate+t.extra_cost+t.oversea_shipping)*t.tax_rate)+','+str((t.china_price_avg*t.exchange_rate+t.extra_cost+t.oversea_shipping)*t.tax_rate)+','+str((t.china_price_max*t.exchange_rate+t.extra_cost+t.oversea_shipping)*t.tax_rate)
             profs[key]['vat']=t.vat
-	    profs[key]['vat1']=str((t.china_price_min*t.exchange_rate+t.extra_cost+t.oversea_shipping)*t.vat)+','+str((t.china_price_avg*t.exchange_rate+t.extra_cost+t.oversea_shipping)*t.vat)+','+str((t.china_price_max*t.exchange_rate+t.extra_cost+t.oversea_shipping)*t.vat)
+            profs[key]['vat1']=str((t.china_price_min*t.exchange_rate+t.extra_cost+t.oversea_shipping)*t.vat)+','+str((t.china_price_avg*t.exchange_rate+t.extra_cost+t.oversea_shipping)*t.vat)+','+str((t.china_price_max*t.exchange_rate+t.extra_cost+t.oversea_shipping)*t.vat)
             profs[key]['final-cost']=str(total_cost_min)+','+str(total_cost_avg)+','+str(total_cost_max)
             profs[key]['selling_price']=str(t.selling_price_min)+','+str(t.selling_price_avg)+','+str(t.selling_price_max)
             profs[key]['local']=t.local_delievery_cost
-            profs[key]['consumer_price']=str(t.selling_price_min-t.local_delievery_cost)+','+str(t.selling_price_avg-t.local_delievery_cost)+','+str(t.selling_price_max--t.local_delievery_cost)
-	    profs[key]['final_vat']=str(((t.selling_price_min-t.local_delievery_cost)-total_cost_min)*t.vat)+','+str(((t.selling_price_avg-t.local_delievery_cost)-total_cost_avg)*t.vat)+','str(((t.selling_price_max-t.local_delievery_cost)-total_cost_max)*t.vat)
+            profs[key]['consumer_price']=str(t.selling_price_min-t.local_delievery_cost)+','+str(t.selling_price_avg-t.local_delievery_cost)+','+str(t.selling_price_max-t.local_delievery_cost)
+            profs[key]['final_vat']=str(((t.selling_price_min-t.local_delievery_cost)-total_cost_min)*t.vat)+','+str(((t.selling_price_avg-t.local_delievery_cost)-total_cost_avg)*t.vat)+','+str(((t.selling_price_max-t.local_delievery_cost)-total_cost_max)*t.vat)
             profs[key]['net profit']=str(net_profit_min)+','+str(net_profit_avg)+','+str(net_profit_max)
             profs[key]['id']=t.id
     
@@ -231,9 +231,9 @@ def profitcalculator(request):
                 total_cost_max=(over.china_price_max*over.exchange_rate+over.extra_cost+over.oversea_shipping)*over.tax_rate+(over.china_price_max*over.exchange_rate+over.extra_cost+over.oversea_shipping)*over.vat+(over.china_price_max*over.exchange_rate+over.extra_cost+over.oversea_shipping)
                 total_cost_avg=(over.china_price_avg*over.exchange_rate+over.extra_cost+over.oversea_shipping)*over.tax_rate+(over.china_price_avg*over.exchange_rate+over.extra_cost+over.oversea_shipping)*over.vat+(over.china_price_avg*over.exchange_rate+over.extra_cost+over.oversea_shipping)
 
-		total_cost1_min=(t.china_price_min*t.exchange_rate+t.extra_cost+t.oversea_shipping)
-		total_cost1_max=(t.china_price_max*t.exchange_rate+t.extra_cost+t.oversea_shipping)
-		total_cost1_avg=(t.china_price_avg*t.exchange_rate+t.extra_cost+t.oversea_shipping)	
+                total_cost1_min=(over.china_price_min*over.exchange_rate+over.extra_cost+over.oversea_shipping)
+                total_cost1_max=(over.china_price_max*over.exchange_rate+over.extra_cost+over.oversea_shipping)
+                total_cost1_avg=(over.china_price_avg*over.exchange_rate+over.extra_cost+over.oversea_shipping)	
 
                 net_profit_min=(over.selling_price_min-over.local_delievery_cost)-total_cost_min-((over.selling_price_min-over.local_delievery_cost)-total_cost_min)*over.vat
                 net_profit_max=(over.selling_price_max-over.local_delievery_cost)-total_cost_max-((over.selling_price_max-over.local_delievery_cost)-total_cost_max)*over.vat
@@ -243,19 +243,19 @@ def profitcalculator(request):
                 overview[i]['Title']=over.product_name
                 overview[i]['china-price']=str(over.china_price_min)+','+str(over.china_price_avg)+','+str(over.china_price_max)
                 overview[i]['exchange_rate']=over.exchange_rate
-		overview[i]['Currency']=str(over.china_price_min*over.exchange_rate)+','+str(over.china_price_avg*over.exchange_rate)+','+str(over.china_price_max*over.exchange_rate)
+                overview[i]['Currency']=str(over.china_price_min*over.exchange_rate)+','+str(over.china_price_avg*over.exchange_rate)+','+str(over.china_price_max*over.exchange_rate)
                 overview[i]['shipping']=str(over.oversea_shipping)
                 overview[i]['extra_cost']=over.extra_cost
-		overview[i]['total-cost']=str(total_cost1_min)+','+str(total_cost1_avg)+','+str(total_cost1_max)
+                overview[i]['total-cost']=str(total_cost1_min)+','+str(total_cost1_avg)+','+str(total_cost1_max)
                 overview[i]['tax_rate']=over.tax_rate
-		overview[i]['tax_rate1']=str((over.china_price_min*over.exchange_rate+over.extra_cost+over.oversea_shipping)*over.tax_rate)+','+str((over.china_price_avg*over.exchange_rate+over.extra_cost+over.oversea_shipping)*t.tax_rate)+','+str((over.china_price_max*over.exchange_rate+over.extra_cost+over.oversea_shipping)*over.tax_rate)
+                overview[i]['tax_rate1']=str((over.china_price_min*over.exchange_rate+over.extra_cost+over.oversea_shipping)*over.tax_rate)+','+str((over.china_price_avg*over.exchange_rate+over.extra_cost+over.oversea_shipping)*over.tax_rate)+','+str((over.china_price_max*over.exchange_rate+over.extra_cost+over.oversea_shipping)*over.tax_rate)
                 overview[i]['vat']=over.vat
-		overview[i]['vat1']=str((over.china_price_min*over.exchange_rate+over.extra_cost+over.oversea_shipping)*over.vat)+','+str((over.china_price_avg*over.exchange_rate+over.extra_cost+over.oversea_shipping)*t.vat)+','+str((over.china_price_max*over.exchange_rate+over.extra_cost+over.oversea_shipping)*over.vat)
+                overview[i]['vat1']=str((over.china_price_min*over.exchange_rate+over.extra_cost+over.oversea_shipping)*over.vat)+','+str((over.china_price_avg*over.exchange_rate+over.extra_cost+over.oversea_shipping)*over.vat)+','+str((over.china_price_max*over.exchange_rate+over.extra_cost+over.oversea_shipping)*over.vat)
                 overview[i]['final-cost']=str(total_cost_min)+','+str(total_cost_avg)+','+str(total_cost_max)
                 overview[i]['selling_price']=str(over.selling_price_min)+','+str(over.selling_price_avg)+','+str(over.selling_price_max)
                 overview[i]['local']=over.local_delievery_cost
-                overview[i]['consumer_price']=str(over.selling_price_min-over.local_delievery_cost)+','+str(over.selling_price_avg-over.local_delievery_cost)+','+str(over.selling_price_max--over.local_delievery_cost)
-		overview[i]['final_vat']=str(((over.selling_price_min-over.local_delievery_cost)-total_cost_min)*over.vat)+','+str(((over.selling_price_avg-over.local_delievery_cost)-total_cost_avg)*over.vat)+','str(((over.selling_price_max-over.local_delievery_cost)-total_cost_max)*over.vat)
+                overview[i]['consumer_price']=str(over.selling_price_min-over.local_delievery_cost)+','+str(over.selling_price_avg-over.local_delievery_cost)+','+str(over.selling_price_max-over.local_delievery_cost)
+                overview[i]['final_vat']=str(((over.selling_price_min-over.local_delievery_cost)-total_cost_min)*over.vat)+','+str(((over.selling_price_avg-over.local_delievery_cost)-total_cost_avg)*over.vat)+','+str(((over.selling_price_max-over.local_delievery_cost)-total_cost_max)*over.vat)
                 overview[i]['net profit']=str(net_profit_min)+','+str(net_profit_avg)+','+str(net_profit_max)
                 overview[i]['id']=over.id
                 i+=1

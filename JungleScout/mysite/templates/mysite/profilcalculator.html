@@ -31,7 +31,7 @@ th{
 
 }
 td{
-font-size:11px;
+font-size:14px;
 
 }
 /* Change background color of buttons on hover */
@@ -357,7 +357,7 @@ font-size:11px;
             <th>Product Name</th>
             <th>China Price (min,avg,max)</th>
             <th>Currency Rate</th>
-	    <th>Currency(min,avg,max)</th>
+	    <th>Currency (min,avg,max)</th>
             <th>Shipping Cost</th>
             <th>Extra Cost</th>
 	    <th>Total Cost (min,avg,max)</th>
@@ -551,7 +551,7 @@ active=document.getElementsByClassName('tablinks active')[0].textContent
 
   function edit(id){
 document.getElementById('product_name').value=document.getElementById(id).childNodes[2].textContent
-selling_price=document.getElementById(id).childNodes[10].textContent.split(',')
+selling_price=document.getElementById(id).childNodes[14].textContent.split(',')
 document.getElementById('sel_min').value=selling_price[0]
 document.getElementById('sel_avg').value=selling_price[1]
 document.getElementById('sel_max').value=selling_price[2]
@@ -562,18 +562,18 @@ document.getElementById('china_avg').value=china_price[1]
 document.getElementById('china_max').value=china_price[2]
 
 document.getElementById('exchange').value=document.getElementById(id).childNodes[4].textContent
-document.getElementById('shipping').value=document.getElementById(id).childNodes[5].textContent
-document.getElementById('tax_rate').value=document.getElementById(id).childNodes[7].textContent
-document.getElementById('vat').value=document.getElementById(id).childNodes[8].textContent
-document.getElementById('local').value=document.getElementById(id).childNodes[11].textContent
-document.getElementById('extra').value=document.getElementById(id).childNodes[6].textContent
+document.getElementById('shipping').value=document.getElementById(id).childNodes[6].textContent
+document.getElementById('tax_rate').value=document.getElementById(id).childNodes[9].textContent
+document.getElementById('vat').value=document.getElementById(id).childNodes[11].textContent
+document.getElementById('local').value=document.getElementById(id).childNodes[15].textContent
+document.getElementById('extra').value=document.getElementById(id).childNodes[7].textContent
 
-total_price=document.getElementById(id).childNodes[9].textContent.split(',')
+total_price=document.getElementById(id).childNodes[13].textContent.split(',')
 document.getElementById('total_min').value=total_price[0]
 document.getElementById('total_avg').value=total_price[1]
 document.getElementById('total_max').value=total_price[2]
 
-total_price=document.getElementById(id).childNodes[13].textContent.split(',')
+total_price=document.getElementById(id).childNodes[18].textContent.split(',')
 document.getElementById('net_min').value=total_price[0]
 document.getElementById('net_avg').value=total_price[1]
 document.getElementById('net_max').value=total_price[2]
