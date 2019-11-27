@@ -366,6 +366,15 @@ def supplier_find(request):
         return HttpResponse(json.dumps('Success'), content_type='application/json')       
 
     if request.method == 'POST':
+    
+        if request.GET.get('deleteselected'):
+            user_supplier_finder.objects.filter(id__in=request.POST.getlist('deleteselected[]')).delete()
+            return HttpResponse(json.dumps('Success'), content_type='application/json')       
+
+        if request.GET.get('moveselected'):
+            user_supplier_finder.objects.filter(id__in=request.POST.getlist('moveselected[]')).update(name=supplier_finder_groups.objects.get(user=request.user,name=request.GET.get('group')))
+            return HttpResponse(json.dumps('Success'), content_type='application/json')       
+
         keys=request.POST.getlist('urls[]')
         website=request.POST.get('website')
         sup=supplier(keys,website)

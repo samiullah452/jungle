@@ -397,9 +397,22 @@ $(document).on('click', '.btn_remove', function(){
 }
 
 function deleteselected(){
-table.rows().every( function () {
-   del(table.row(this).node().id)
-});
+  var array=[]
+  table.rows().every( function () {
+  array.push(table.row(this).node().id)
+                                    });
+     $.ajax({
+       url:"/supplier-find/",
+       method:"GET",
+       dataType: 'json',
+       data:{deleteselected:array},
+        success:function(result)
+                    {
+       table.rows().remove().draw()
+                       }
+                });
+
+
 }
 
 function show(id){
@@ -511,9 +524,25 @@ function mov1(id){
       document.getElementById('moveloading').style.display=''
 
   if(id=='selected'){
-        table.rows().every( function () {
-            mov1(table.row(this).node().id)
-            });
+  var array=[]
+  table.rows().every( function () {
+  array.push(table.row(this).node().id)
+                                    });
+     $.ajax({
+       url:"/supplier-find/",
+       method:"GET",
+       dataType: 'json',
+       data:{moveselected:array},
+        success:function(result)
+                    {
+          table.column( 0 ).data(document.getElementById('groupmove').value).draw()
+          document.getElementsByClassName("tablinks active")[0].click();
+          document.getElementById('move').style.display=''
+          document.getElementById('moveloading').style.display='none'
+
+                       }
+                });
+
 
           return
         }
