@@ -1,3 +1,4 @@
+def alibaba(urls):
 	import requests
 	url = 'https://api.exchangerate-api.com/v4/latest/CNY'
 	response = requests.get(url)	
@@ -5,9 +6,6 @@
 	rate=data["rates"]["USD"]
 	ratekrw=data["rates"]["KRW"]
 
-	import time
-	import string
-	import os
 	from bs4 import BeautifulSoup
 	content={}
 	i=0
