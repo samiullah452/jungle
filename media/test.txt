@@ -1,0 +1,22 @@
+<!-- <table>
+  <tr><td><div contenteditable>I'm editable</div></td><td><div contenteditable>I'm also editable</div></td></tr>
+  <tr><td>I'm not editable</td></tr>
+  </table> -->
+  <!-- <link rel="stylesheet" href="{% static 'mysite/css/closable.css' %}">
+ 
+  <ul>
+      <li>Adele</li>
+      <li>Agnes<span class="close">&times;</span></li>
+    
+      <li>Billy<span class="close">&times;</span></li>
+      <li>Bob<span class="close">&times;</span></li>
+    
+      <li>Calvin<span class="close">&times;</span></li>
+      <li>Christina<span class="close">&times;</span></li>
+      <li>Cindy</li>
+    </ul>
+    <script src="{% static 'mysite/js/closable.js' %}"></script> -->
+
+    <!-- <input type="text" value="Hello World" id="myInput">
+    <button onclick="myFunction()">Copy text</button>
+    <script src="{% static 'mysite/js/copy.js' %}"></script> -->

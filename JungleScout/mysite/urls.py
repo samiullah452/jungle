@@ -43,6 +43,7 @@ urlpatterns = [
     url(r'^remove-profile-image/$', views.delete_profileImage, name="delete-profile" ),
 
     # Update Profile Image URL
-    url(r'update-profile-image/$', views.upload_profileImage, name="upload-profile-image")
+    url(r'update-profile-image/$', views.upload_profileImage, name="upload-profile-image"),
+    url(r'^del_user/$', views.del_user,name="del_user"), 
 
 ]

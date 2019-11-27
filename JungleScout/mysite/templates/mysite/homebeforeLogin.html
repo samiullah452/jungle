@@ -17,10 +17,8 @@
 <body>
     <!-- Nav Bar -->
     <nav class="navbar fixed-top sticky-top navbar-expand-lg navbar-light bg-light shadow p-1 pl-5 pr-5 mb-3 text-dark">
-        <a class="navbar-brand" href="{% url 'home' %}">
-            <img src="{% static 'mysite/images/js-menu-logo.png' %}" width="150" height="30" alt="">
-        </a>
-
+        <a class="navbar-brand" href="{% url 'home' %}" style="color: red">
+ <strong> PRODUCT HUNTER 1.0     </strong>       </a>
         <button class="navbar-toggler text-dark border border-dark" type="button" data-toggle="collapse"
             data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
             aria-label="Toggle navigation" style="float: right;">
@@ -86,8 +84,8 @@
                     <!-- <img src="{% static 'mysite/images/Login.png' %}" alt="..." widht="10px" height="25px" class="rounded-circle mt-0"> -->
 
                     <a type="button"
-                        class="btn btn-warning text-white font-weight-bold pl-0 pr-0 m-0 bg-transparent border-0 text-dark"
-                        id="logIN" href="{% url 'login' %}"> <i class="fas fa-user-circle"></i> Login</a>
+                        class="btn btn-warning text-white font-weight-bold"
+                        id="logIN" href="{% url 'login' %}"> <i class="fas fa-user-circle"></i> Login<br> </a>
                 </div>
 
                 <a type="button" class="btn btn-warning ml-2 text-white font-weight-bold pl-3 pr-3 m-1"

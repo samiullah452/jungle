@@ -19,3 +19,4 @@ admin.site.register(user_profit)
 
 admin.site.register(keyword_groups)
 admin.site.register(user_keywords)
+admin.site.register(profileModel)

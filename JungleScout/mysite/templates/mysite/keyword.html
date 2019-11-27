@@ -30,15 +30,7 @@
   transition: 0.3s;
   font-size: 12px;
 }
-th{
-  border: 1px solid #ccc;
-  background-color: #f1f1f1;
 
-}
-td{
-font-size:11px;
-
-}
 /* Change background color of buttons on hover */
 .tab button:hover {
   background-color: #ddd;
@@ -49,13 +41,42 @@ font-size:11px;
   background-color: #ccc;
 }
 
+th{
+  text-align:center;
+  border: 1px solid #ccc;
+  background-color: #f1f1f1;
+
+}
+td{
+  font-size:11px;
+}
+.text-wrap{
+    white-space:normal;
+}
+.width-200{
+    width:400px;
+}
+
+.width-20{
+    width:100px;
+word-break:break-word;
+  text-align: center;
+
+}
+.label-info{
+  margin-right: 2px;
+    margin-bottom: 2px;
+    padding-left: 5px;
+    padding-right: 5px;
+  background-color: #5bc0de;
+  border-radius: 20px;
+}
 /* Style the tab content */
 .tabcontent {
   clear: both;
-  display: none;
+  display: block;
   padding: 6px 12px;
 }
-
 
     p[id="check1"]:hover {
         background-color: #ffeeba;
@@ -79,7 +100,6 @@ font-size:11px;
     opacity: 1;
     border: 1px solid #f57706;
   }
-
   button[id="profileButton"]:hover,
   button[id="profileButton"]:focus,
   button[id="profileButton"]:active {
@@ -98,6 +118,7 @@ font-size:11px;
     border: 1px solid #f57706;
   }
 
+
   a[id="profileButton"]:hover,
   a[id="profileButton"]:focus,
   a[id="profileButton"]:active {
@@ -108,7 +129,21 @@ font-size:11px;
     box-shadow: none !important;
   }
 </style>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" />
+<link rel="stylesheet" href="{%static 'mysite/css/bootstrap-tagsinput.css' %}">
+<style>
+.outer-div{
+border:1px solid #ccc;
+box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+border-radius: 4px;
+  }
 
+.bootstrap-tagsinput{
+  width:90%;
+border:none;
+box-shadow: none
+  }
+</style>
 <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
 
   <div class="modal fade" id="myModal" role="dialog">
@@ -121,14 +156,13 @@ font-size:11px;
         </div>
         <div class="modal-body">
         <select class="form-control" id="groupmove">          
-           <option value="Uncategorized" >Uncategorized</option>
             {% for grp in groups %}
            <option value="{{grp}}" >{{grp}}</option>
             {%endfor%}
         </select>
 
         <input type="button" class="btn btn-primary" id="move" onclick="mov1(document.getElementById('move').getAttribute('data'))" style="margin-top:10px;" value="Move"></input>
-
+        <img src="{% static 'mysite/images/giphy.gif' %}" style="display:none" id="moveloading" width="100px" height=40px></img>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -148,8 +182,9 @@ font-size:11px;
         </div>
         <div class="modal-body">
         <input type="text" id="new-group" class="form-control name_list" placeholder="Enter Name of Group" />
-        <input type="button" class="btn btn-primary" onclick="create()" style="margin-top:10px;" value="Create"></input>
-
+        <input type="button" class="btn btn-primary" id='createbutton' onclick="create()" style="margin-top:10px;" value="Create"></input>
+        <img src="{% static 'mysite/images/giphy.gif' %}" style="display:none" id="createloading" width="100px" height=40px></img>
+        
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -159,7 +194,7 @@ font-size:11px;
     </div>
   </div>
 
-  <div class="modal fade" id="EditKey" role="dialog">
+  <div class="modal fade" id="EditGroup" role="dialog">
     <div class="modal-dialog">
     
       <!-- Modal content-->
@@ -168,9 +203,37 @@ font-size:11px;
           <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
         <div class="modal-body">
-        <input type="text" id="edit-key" class="form-control name_list" placeholder="Enter Keywords" />
-        <input type="button" class="btn btn-primary" onclick="editkey(document.getElementById('edit').getAttribute('data'))" id='edit' style="margin-top:10px;" value="Edit"></input>
+        <select class="form-control" id="groupedit">          
+            {% for grp in groups %}
+           <option value="{{grp}}" >{{grp}}</option>
+            {%endfor%}
+        </select>
+        <br />
+        <input type="text" id="edit-group" class="form-control name_list" placeholder="Enter Name of Group" />
+        <input type="button" class="btn btn-primary" id='editbutton' onclick="editgroup()" style="margin-top:10px;" value="Edit"></input>
+        <img src="{% static 'mysite/images/giphy.gif' %}" style="display:none" id="editloading" width="100px" height=40px></img>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
 
+  <div class="modal fade" id="EditData" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+        <label for="edit-data" style='font-weight:bold;font-size:18px;'id='edit-label'></label>
+        <textarea rows="4" cols="50" type="textarea" id="edit-data" class="form-control" placeholder="Enter Value" ></textarea>
+        <input type="button" class="btn btn-primary" id='editdataid' onclick="editdata(document.getElementById('editdataid').getAttribute('data'),document.getElementById('editdataid').getAttribute('tableindex'))" style="margin-top:10px;" value="Edit"></input>
+        <img src="{% static 'mysite/images/giphy.gif' %}" style="display:none" id="editdataloading" width="100px" height=40px></img>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -195,8 +258,8 @@ font-size:11px;
             {%endfor%}
         </select>
 
-        <input type="button" class="btn btn-primary" onclick="dele()" style="margin-top:10px;" value="Delete"></input>
-
+        <input type="button" class="btn btn-primary" onclick="dele()" id='deletebutton' style="margin-top:10px;" value="Delete"></input>
+        <img src="{% static 'mysite/images/giphy.gif' %}" style="display:none" id="deleteloading" width="100px" height=40px></img>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -220,13 +283,16 @@ font-size:11px;
           <tbody>
             <tr>
               <td>
-                  <form class="form-inline">
-                      <div class="form-group mx-sm-3 mb-2">
-                          <input type="text" class="form-control" id="inputText2" placeholder="Enter ASIN">
-                        </div>
-                        <div class="form-group mx-sm-3 mb-2">
-                          <input type="text" class="form-control" id="inputText3" placeholder="Enter Company Name">
-                        </div>
+                  <form class="form-group">
+                    <div class="table-responsive">
+                      <table class="table table-bordered" id="dynamic_field">
+                        <tr>
+                          <td><input type="text" name="name" placeholder="HTTP:// Paste Product URL" class="form-control name_list" /></td>
+                          <td><button type="button" name="add" id="add" class="btn btn-success"><i class="fas fa-plus"></i></button></td>
+                        </tr>
+                      </table>
+                    </div>
+                                            
                         <input type="button" value="Search"class="btn btn-warning mb-2 text-white" id="starting"></input>
                        <img src="{% static 'mysite/images/giphy.gif' %}" style="display:none" id="loading" width="100px" height=40px></img>
                   </form>
@@ -250,29 +316,30 @@ font-size:11px;
     <div class="row">
     <div class="col">
     <div class="form-group mb-2" style="float:left;" >
-                                                <a href="#" class="btn btn-primary" onclick="download_table_as_csv('response');" id="profileButton">Save As .CSV FILE <i class="fas fa-download"></i></a>
+                                                <a href="#" class="btn btn-primary" onclick="download_table_as_csv();" id="profileButton">Save As .CSV FILE <i class="fas fa-download"></i></a>
     </div>
 </div>
 </div>
       <div style="float:right;margin-right:50px">
-    <p onclick="deleteselected()" style="float:left;padding-right:5px;cursor:pointer;font-size: 12px;color:black;font-weight:bold;"><i class="fas fa-minus"></i>Delete Selected</p>
- <p onclick="moveselected()" style="float:right;cursor:pointer;font-size: 12px;color:black;font-weight:bold;">Move Selected</p>
+    <p onclick="deleteselected()" style="float:left;padding-right:5px;cursor:pointer;font-size: 12px;color:black;font-weight:bold;"><i class="fas fa-minus"></i>Delete All</p>
+ <p onclick="moveselected()" style="float:right;cursor:pointer;font-size: 12px;color:black;font-weight:bold;">Move All</p>
   </div>
     <div class="tab">
-  <button class="tablinks" onclick="openCity(event, 'Uncategorized')" id="defaultOpen">Overview</button>
+  <button class="tablinks" onclick="openCity(event, 'overview')" id="overview">Overview</button>
   {% for grp in groups %}
   <button class="tablinks" onclick="openCity(event, '{{grp}}')" id="{{grp}}">{{grp}}</button>
 
   {%endfor%}
-   <button type="button" class="tablinks" onclick="  $('#NewGroup').modal('show');" class="btn btn-success"><i class="fas fa-plus"></i>New Group</button>
-   <button type="button" class="tablinks" onclick="  $('#DeleteGroup').modal('show');" class="btn btn-success"><i class="fas fa-minus"></i>Delete Group</button>  
+   <button type="button" class="tablinks" onclick="  $('#NewGroup').modal('show');" class="btn btn-success"><i class="fas fa-plus"></i>New</button>
+   <button type="button" class="tablinks" onclick="  $('#DeleteGroup').modal('show');" class="btn btn-success"><i class="fas fa-minus"></i>Delete</button>  
+   <button type="button" class="tablinks" onclick="  $('#EditGroup').modal('show');" class="btn btn-success">Edit</button>  
+
 </div>
 <div id="Uncategorized" class="tabcontent">
   
           <div class="table-responsive">
         <table class="table table-bordered" id="response">
-          <tr id='head'>
-            <th style="cursor:pointer;" onclick="selectall();">Selected</th>
+          <thead>
             <th>Group</th>
             <th>Category Name</th>
             <th>Category Id</th>
@@ -280,11 +347,10 @@ font-size:11px;
             <th>Description</th>
             <th>Keywords</th>
             <th>Product Url</th>
-            <th>Edit Keywords</th>
             <th>Manage</th>
-          </tr>
-      
-                                                     </table>
+          </thead>
+          <tbody></tbody>
+          </table>
                                                     </div>
 
 </div>
@@ -294,226 +360,77 @@ font-size:11px;
 
 </main>
 
-
-
+<script  src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+<script src="{%static 'mysite/js/bootstrap-tagsinput.min.js' %}"></script>
 <script>
+var z=0;
+$('#add').click(function(){
+                z++;
+                $('#dynamic_field').append('<tr id="row'+z+'"><td><input type="url" name="name" placeholder="HTTP:// Paste Product URL" class="form-control name_list" /></td><td><button type="button" name="remove" id="'+z+'" class="btn btn-danger btn_remove"><i class="fas fa-minus"></i></button></td></tr>');
+            });
+
+            
+$(document).on('click', '.btn_remove', function(){
+                var button_id = $(this).attr("id"); 
+                $('#row'+button_id+'').remove();
+            });
 
 
-    jQuery('.dropdown-toggle').on('click', function (e) {
-        $(this).next().toggle();
-    });
-    jQuery('.dropdown-menu.keep-open').on('click', function (e) {
-        e.stopPropagation();
-    });
-
-    if (1) {
-        $('body').attr('tabindex', '0');
-    }
-    else {
-        alertify.confirm().set({ 'reverseButtons': true });
-        alertify.prompt().set({ 'reverseButtons': true });
-    }
-
-
-  var overview={{overview|safe}};
-  var table = document.getElementById("response");
-  var i=1;
-  var selected=false;
-  addentry(overview)
-function selectall(){
-
-$('#response input[type=checkbox]').each(function(){
-  $(this).prop('checked', !selected);
-});
-selected=!selected
-}
-
-  function download_table_as_csv(table_id) {
-    // Select rows from table_id
-    var rows = document.querySelectorAll('table#' + table_id + ' tr');
-    // Construct csv
-    var csv = [];
-    for (var l = 0; l < rows.length; l++) {
-        var row = [], cols = rows[l].querySelectorAll('td, th');
-        for (var j = 1; j < cols.length-3; j++) {
-            // Clean innertext to remove multiple spaces and jumpline (break csv)
-            var data = cols[j].innerText
-            // Escape double-quote with double-double-quote (see https://stackoverflow.com/questions/17808511/properly-escape-a-double-quote-in-csv)
-            data = data.replace(/"/g, '""');
-            // Push escaped string
-            row.push('"' + data + '"');
-        }
-
-        if(l!=0){
-          data=cols[j]
-            row.push('"' + $(cols[j])[0].childNodes[0].href + '"');
-        }
-        else{
-                      row.push('"Product Url"');
-
-        }
-        csv.push(row.join(';'));
-    }
-    var csv_string = csv.join('\n');
-    // Download it
-    var filename = 'export_' + table_id + '_' + new Date().toLocaleDateString() + '.csv';
-    var link = document.createElement('a');
-    link.style.display = 'none';
-    link.setAttribute('target', '_blank');
-    link.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv_string));
-    link.setAttribute('download', filename);
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-}
-
-
-  function addentry(result){
-   for (var key in result) {
-      var row = table.insertRow(i++);
-            row.id=result[key]['id']
-
-      j=0;
-      var cell = row.insertCell(j++);              
-      cell.innerHTML="<input type='checkbox'>"    
-      for (var k in result[key]){
-      if (result[key].hasOwnProperty(k)) {           
-          if(k=='id'){
-            continue
-          }
-
-          var cell = row.insertCell(j++);
-          if(k=='image'){
-              for(var l=0;l<result[key][k].length;l++){
-               cell.innerHTML += "<img src='"+result[key][k][l]+"' widht=60px height=60px></img>"; 
-                       }
-              }
-          else{
-
-            if(k=='url'){
-            cell.innerHTML="<a style='color:blue;'href='"+result[key][k]+"'>Open Link</a>"    
-
-            }
-          else{
-              cell.innerHTML = result[key][k];
-              }
-            }
-                }
-                     }
-     var cell = row.insertCell(j++);              
-      cell.innerHTML="<a href='javascript:editkeywords("+row.id+");' >Edit</a>   <a href=javascript:copytoclip("+row.id+");>Copy</a>"    
-
-     var cell = row.insertCell(j++);              
-      cell.innerHTML="<a href='javascript:del("+row.id+");' >Delete</a>   <a href=javascript:mov("+row.id+");>Move</a>"    
-                                   
-                      }
-$(function(){ $("#response").each(function(elem,index){ var arr = $.makeArray($("tr:not(#head)",this).detach()); arr.reverse(); $(this).append(arr); }); });
-  }
-  function copytoclip(id){
-
-  /* Get the text field */
-  var copyText = document.getElementById(id).childNodes[6].innerHTML;
-  var textArea = document.createElement("textarea");
-    textArea.value = copyText;
-    document.body.appendChild(textArea);
-    textArea.select();
-    document.execCommand("Copy");
-    textArea.remove();
-  /* Copy the text inside the text field */
-  document.execCommand("copy");
-
-  /* Alert the copied text */
-  alert("Copied to clipboard: " + copyText);
-
-
-  }
-
-function editkeywords(id){
-    document.getElementById('edit-key').value=document.getElementById(id).childNodes[6].innerHTML
-    $('#EditKey').modal('show'); 
-    document.getElementById('edit').setAttribute('data',id)
-  }
-
-function editkey(id){
-      var edit_keywords=document.getElementById('edit-key').value
-      $.ajax({
-           url:"/keyword-find/",
-           method:"GET",
-           dataType: 'json',
-           data:{edit:id,new_keywords:edit_keywords},
-           success:function(result)
-                    { 
-          document.getElementById(id).childNodes[6].innerHTML=edit_keywords
-    $('#EditKey').modal('hide'); 
-
-
-                    }});
-
-      
-                  }
-function mov1(id){
-  if(id=='selected'){
-          active=document.getElementsByClassName('tablinks active')[0].textContent
-      $('input:checkbox:checked').each(function(){
-        if (active!="Overview"){
-          if(active==$(this).parent().parent()[0].childNodes[1].textContent){
-             mov1($(this).parent().parent().attr('id'))
-                }
-
-              }
-              else{
-                  mov1($(this).parent().parent().attr('id'))
-              }
-
-      
-});
-  }
-  else{
-       $.ajax({
-       url:"/keyword-find/",
-       method:"GET",
-       dataType: 'json',
-       data:{move:id,group:document.getElementById('groupmove').value},
-       success:function(result)
-       {
-          $('#myModal').modal('hide'); 
-          document.getElementById(id).childNodes[1].textContent=document.getElementById('groupmove').value
-                       
-          document.getElementsByClassName("tablinks active")[0].click();
-
-                       }
-                });
-}
-  }
 function deleteselected(){
-active=document.getElementsByClassName('tablinks active')[0].textContent
+$('tbody tr').each(function(){
+del($(this).attr('id'))
+})
 
-      $('input:checkbox:checked').each(function(){
-        if (active!="Overview"){
-          if(active==$(this).parent().parent()[0].childNodes[1].textContent){
-         del($(this).parent().parent().attr('id'))
-                }
 
-              }
-              else{
-                  del($(this).parent().parent().attr('id'))
-              }
+}
 
-      
-});
+function show(id){
+      $(id).parent().css('display','none')
+      $(id).parent().next().css('display','')
+      $(id).parent().next().next().css('display','')
+    }
 
+function hide(id){
+      $(id).css('display','none')
+      $(id).prev().css('display','none')
+      $(id).prev().prev().css('display','')
+
+    }
+
+function mov(id){
+    document.getElementById('groupmove').value=table.cell($('#'+id),0).data()
+    $('#myModal').modal('show'); 
+    document.getElementById('move').setAttribute('data',id)
   }
 
-  function moveselected(){
+function moveselected(){
           document.getElementById('groupmove').value='Uncategorized'
           $('#myModal').modal('show'); 
           document.getElementById('move').setAttribute('data','selected')
 
+  }
+
+function del(id){
+
+     $.ajax({
+       url:"/keyword-find/",
+       method:"GET",
+       dataType: 'json',
+       data:{delete:id},
+        success:function(result)
+                    {
+              table.row($('#'+id)).remove().draw()
+                       }
+                });
+
 
   }
-  function dele(){
-      var deleted_group=document.getElementById('groupdelete').value
 
+function dele(){
+      document.getElementById('deletebutton').style.display='none'
+      document.getElementById('deleteloading').style.display=''
+
+      var deleted_group=document.getElementById('groupdelete').value
       $.ajax({
            url:"/keyword-find/",
            method:"GET",
@@ -527,9 +444,12 @@ active=document.getElementsByClassName('tablinks active')[0].textContent
 
       
                   }
-  function create(){
-                            var created_group=document.getElementById('new-group').value
+ 
+function create(){
+      document.getElementById('createbutton').style.display='none'
+      document.getElementById('createloading').style.display=''
 
+      var created_group=document.getElementById('new-group').value
       $.ajax({
            url:"/keyword-find/",
            method:"GET",
@@ -541,86 +461,324 @@ active=document.getElementsByClassName('tablinks active')[0].textContent
 
                     }});
 
+
       
                   }
 
-  function mov(id){
-          document.getElementById('groupmove').value=document.getElementById(id).childNodes[1].textContent
-          $('#myModal').modal('show'); 
-          document.getElementById('move').setAttribute('data',id)
-  }
-  function del(id){
+function editgroup(){
+        document.getElementById('editbutton').style.display='none'
+      document.getElementById('editloading').style.display=''
 
-     $.ajax({
+        var data=document.getElementById('edit-group').value
+        if (data==''){
+          return
+        }
+      var editgroup=document.getElementById('groupedit').value
+      $.ajax({
+           url:"/keyword-find/",
+           method:"GET",
+           dataType: 'json',
+           data:{editgroup:editgroup,data:data},
+           success:function(result)
+                    { 
+          location.reload()
+
+                    }});
+
+
+      
+                  }
+function mov1(id){
+      document.getElementById('move').style.display='none'
+      document.getElementById('moveloading').style.display=''
+
+  if(id=='selected'){
+        $('tbody tr').each(function(){
+          mov1($(this).attr('id'))
+            })
+          return
+        }
+
+  $.ajax({
        url:"/keyword-find/",
        method:"GET",
        dataType: 'json',
-       data:{delete:id},
-        success:function(result)
-                    {
-
-              var row = document.getElementById(id);
-              row.parentNode.removeChild(row)
-          i--;
+       data:{move:id,group:document.getElementById('groupmove').value},
+       success:function(result)
+       {
+          $('#myModal').modal('hide'); 
+          table.cell($('#'+id),0).data(document.getElementById('groupmove').value)
+                       
+          document.getElementsByClassName("tablinks active")[0].click();
+          document.getElementById('move').style.display=''
+          document.getElementById('moveloading').style.display='none  '
 
                        }
                 });
+}
 
+var overview={{overview|safe}};
 
-  }
-  function openCity(evt, cityName) {
+$('#response').on( 'dblclick', 'tbody td:not(:first-child, :nth-child(7), :nth-child(6), :nth-child(8))', function (e) {
+
+document.getElementById('edit-label').innerHTML=table.settings().init().columns[table.cell(this).index().column].name
+document.getElementById('editdataid').setAttribute('data',$(this).parents('tr').attr('id'))
+document.getElementById('editdataid').setAttribute('tableindex',$(this).index())
+
+$('#EditData').modal('show'); 
+
+if($(this).index()==4){
+document.getElementById('edit-data').setAttribute('rows',10)
+document.getElementById('edit-data').value=table.cell($(this).parents('tr'),4).data()
+}
+else{
+  document.getElementById('edit-data').value=$(this).children(":first").text()
+  document.getElementById('edit-data').setAttribute('rows',4)
+
+}
+    } );
+
+var table = $('#response').DataTable( {     
+          "scrollY":        "70vh",
+          "scrollCollapse": true,
+                    "scrollX":"50vh",
+          columns: [
+            { "name": "group" },
+            { "name": "Category Name" },
+            { "name": "Category Id" },
+            { "name": "Title" },
+            { "name": "Description" },
+            { "name": "Keywords" },
+            { "name": "url" },
+            { "name": "manage" }
+            ],
+              columnDefs: [{
+                    render: function (data, type, full, meta) {
+                      if (data.length<100){
+                        return "<div class='text-wrap width-20'>" + data +"</div>";        
+                                          }
+                        return "<div  class='text-wrap width-20'><div>" + data.slice(0,100) + "<a style='cursor:pointer;font-weight:bold;' onclick='show(this)'>...Show More</a></div><div style='display:none;'>"+data+"</div> <a style='cursor:pointer;font-weight:bold;display:none' onclick='hide(this)'>Show Less</a></div>";
+                    },
+                    targets: [4]
+
+                },
+                     {
+                    render: function (data, type, full, meta) {
+                        return "<div align='center' class='text-wrap width-20'>" + data+"</div>"
+                    },
+                    targets: [0,1,2,3]
+                },
+                  
+
+                  {
+                    render: function (data, type, full, meta) {
+                      var source='{%static "mysite/images/clipboard-copy-512.png" %}'
+                        return "<div align='center' class='outer-div text-wrap width-200' ><div style='float:right;'><img class='image' width='20px' style='margin-top:5px;cursor:pointer;margin-bottom:5px'height='20px' src='"+source+"'></img><i onclick='removeAll(this)' class='fas fa-times' style='margin-top:5px;margin-left:5px;margin-right:5px;cursor:pointer;'></i></div><input type='text' value='" + data+"' data-role='tagsinput' /></div>"
+                    },
+                    targets: [5]
+                },
+
+               {
+
+                    render: function (data, type, full, meta) {
+                        return "<div align='center'><a  target='_blank' style='cursor:pointer;color:blue;' href='"+data+"'>Open</a></div>"
+                    },
+                    targets: [6]
+                },
+
+             ],
+                   } );
+      document.getElementById("overview").click();
+
+      addentry(overview)
+function openCity(evt, cityName) {
     var k, tablinks;
-    a= $('#response tr').not(document.getElementById( "head" )).each(function(){
-      cell=$(this)
-      if(cityName!="Uncategorized"){
-         if(cell[0].childNodes[1].textContent!=cityName){
-          cell.hide()
-         }
-         else{
-          cell.show()
-         }
-        }
-        else{
-          cell.show()
-        }
-    })
-        tablinks = document.getElementsByClassName("tablinks");
-        for (k = 0; k < tablinks.length; k++) {
+    if(cityName=='overview'){
+    table.column(0)
+         .search('')
+         .draw();
+
+    }
+    else{
+      table.column(0)
+         .search(cityName)
+         .draw();
+       }
+    tablinks = document.getElementsByClassName("tablinks");
+    for (k = 0; k < tablinks.length; k++) {
           tablinks[k].className = tablinks[k].className.replace(" active", "");
                                               }
-          document.getElementById(cityName).style.display = "block";
+
           evt.currentTarget.className += " active";
-                                              }
+                                              }            
+function addentry(result){
+  for (var key in result) {
+    button="<a href='javascript:del("+result[key]['id']+");' >Delete</a>   <a href='javascript:mov("+result[key]['id']+")';>Move</a>"
 
-        $(document).ready(function(){
+      table.row.add([result[key]['group'],result[key]['category_name'],result[key]['category_id'],result[key]['title'],result[key]['description'],result[key]['keywords'],result[key]['url'],button]).node().id=result[key]['id']
+      table.draw(false)
+ 
+  }
+setTimeout(function () {$($.fn.dataTable.tables( true ) ).DataTable().columns.adjust().draw();},200)
 
-          document.getElementById("defaultOpen").click();
+}
+function removeAll(id){
+  $(id).parents('td').children(":first-child").children(":nth-child(3)").tagsinput('removeAll');
+  $.ajaxSetup({
+              headers: { "X-CSRFToken": '{{ csrf_token }}' }
+             });
+          
+  $.ajax({
+              url:"/keyword-find/",
+              method:"GET",
+              dataType: 'json',
+              data:{edit_key:$(id).parents('tr').attr('id'),data:''},
+              success:function(result)
+               {
+ },
+                      error:function (xhr, ajaxOptions, thrownError) {
+                           alert("Add Keyword Again");
+                                                  }
+        });
 
-            $('#starting').click(function(){    
-                document.getElementById("starting").style.display="none";
-                document.getElementById("loading").style.display="block"
-                key=document.getElementById('inputText2').value
-               company=document.getElementById('inputText3').value
-                if (key.length==0||company.length==0){
+
+}
+$(document).ready(function() {
+
+ $('.image').on('click', function(e) {
+  var copyText = $(this).parents('td').children(":first-child").children(":nth-child(3)").val();
+  var textArea = document.createElement("textarea");
+    textArea.value = copyText;
+    document.body.appendChild(textArea);
+    textArea.select();
+    document.execCommand("Copy");
+    textArea.remove();
+  /* Copy the text inside the text field */
+  document.execCommand("copy");
+
+  /* Alert the copied text */
+  alert("Copied to clipboard");
+ });
+
+
+ $('input').on('itemRemoved itemAdded', function(e) {
+
+       $.ajaxSetup({
+              headers: { "X-CSRFToken": '{{ csrf_token }}' }
+                 });
+          
+       $.ajax({
+              url:"/keyword-find/",
+              method:"GET",
+              dataType: 'json',
+              data:{edit_key:$(this).parents('tr').attr('id'),data:$(this).val()},
+              success:function(result)
+               {
+
+                    },
+                      error:function (xhr, ajaxOptions, thrownError) {
+                          arr=$(this).val().split(',')
+                          $(this).tagsinput('remove', arr[arr.length]);
+                             alert("Add Keyword Again");
+                                                  }
+                });
+
+});
+})
+ function download_table_as_csv(table_id) {
+    // Select rows from table_id
+    var csv=[];
+    var names=table.settings().init().columns
+    var row=[]
+    for(var i=0;i<names.length-1;i++){
+
+      row.push(names[i]['name'])
+                                      }
+      csv.push(row.join(','));
+
+    table.rows().data().each(function(val){
+    row=[]
+    for(var i=0;i<7;i++){
+
+          val[i]=val[i].replace(/(\r\n|\n|\r|\n\r)/gm," ")
+        row.push(val[i])
+           }
+        csv.push(row.join(','));
+                                  
+
+    });
+    // Construct csv
+    var csv_string = csv.join('\n');
+    // Download it
+    var filename = 'content_downloader' + '_' + new Date().toLocaleDateString() + '.csv';
+    var link = document.createElement('a');
+    link.style.display = 'none';
+    link.setAttribute('target', '_blank');
+    link.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv_string));
+    link.setAttribute('download', filename);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
+function editdata(id,index){
+document.getElementById('editdataid').style.display='none'
+document.getElementById('editdataloading').style.display=''
+
+  $.ajaxSetup({
+     headers: { "X-CSRFToken": '{{ csrf_token }}' }
+             });
+                
+  $.ajax({
+           url:"/keyword-find/",
+           method:"GET",
+           dataType: 'json',
+           data:{edit:id,data:document.getElementById('edit-data').value,field:document.getElementById('edit-label').innerHTML},
+                    success:function(result)
+                    {
+                      table.cell($('#'+id),index).data(document.getElementById('edit-data').value)
+                      $('#EditData').modal('hide'); 
+                      document.getElementById('editdataid').style.display=''
+                      document.getElementById('editdataloading').style.display='none'
+                    },
+                    error:function (xhr, ajaxOptions, thrownError) {
+
+                             alert("Try Again");
+                                                  }
+                });
+
+
+}
+      $('#starting').click(function(){    
+          document.getElementById("starting").style.display="none";
+          document.getElementById("loading").style.display="block"
+          var array=[];
+          urls=document.getElementsByName('name')
+          for (var k=0;k<urls.length;k++){        
+            if(urls[k].value!=""){
+                  array.push(urls[k].value)
+                                  }
+                                         }
+            if (array.length==0){
                 document.getElementById("starting").style.display="";
                 document.getElementById("loading").style.display="none"
-
-                      return  
+                return  
                 }
-                 $.ajaxSetup({
+            $.ajaxSetup({
                    headers: { "X-CSRFToken": '{{ csrf_token }}' }
-                                 });
+                       });
                 
-                $.ajax({
+            $.ajax({
                     url:"/keyword-find/",
                     method:"POST",
                     dataType: 'json',
-                    data:{key:key,company:company},
+                    data:{urls:array},
                     success:function(result)
                     {
                     document.getElementById("starting").style.display="";
                     document.getElementById("loading").style.display="none"
                      addentry(result)
+                     $('input').not("input[name='name']").not("input[value='Search']").tagsinput('refresh');
+
                     },
                     error:function (xhr, ajaxOptions, thrownError) {
                                           document.getElementById("starting").style.display="";
@@ -631,8 +789,6 @@ active=document.getElementsByClassName('tablinks active')[0].textContent
                 });
         
             });
-
-           }); 
 </script>
 
 

@@ -2,27 +2,9 @@
 {% load static %}
 
 {% block content %}
-<style>
-    .bs-example {
-        margin: 150px 50px;
-    }
-</style>
-<script>
-    $(document).ready(function () {
-        $('[data-toggle="popover"]').popover(
-            {
-                title: "Suleamn",
-                template: '<div class="popover" role="tooltip"><div class="arrow"></div><div class="card" style="width: 18rem;"><div class="card-body"><a href="https://www.youtube.com/embed/gQz-4YgxpUU" class="btn btn-primary"><i class="fab fa-youtube mr-2"></i>Tutorial - Product Tracker</a></div</div><div class="popover-body"></div></div>'
-            }
-        );
-    });
-</script>
 
 <link rel="stylesheet" href="{% static 'mysite/css/findProductStyleSheet.css' %}">
 <style>
-  /* Style the tab */
-
-/* Create an active/current tablink class */
 .tab {
   overflow: hidden;
   border: 1px solid #ccc;
@@ -52,7 +34,9 @@
 .tab button.active {
   background-color: #ccc;
 }
+
 th{
+  text-align:center;
   border: 1px solid #ccc;
   background-color: #f1f1f1;
 
@@ -60,10 +44,21 @@ th{
 td{
   font-size:11px;
 }
+.text-wrap{
+    white-space:normal;
+}
+.width-200{
+    width:200px;
+ word-break:break-word;
+}
+.width-20{
+    width:100px;
+word-break:break-word;
+}
 /* Style the tab content */
 .tabcontent {
   clear: both;
-  display: none;
+  display: block;
   padding: 6px 12px;
 }
 
@@ -90,6 +85,15 @@ td{
     border: 1px solid #f57706;
   }
 
+.shop{
+  display:none;
+
+}
+.shopim:hover .shop{
+display:block;
+background: white;
+border: 1px solid black;
+}
   button[id="profileButton"]:hover,
   button[id="profileButton"]:focus,
   button[id="profileButton"]:active {
@@ -120,6 +124,8 @@ td{
 </style>
 
 
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" />
+
 <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
   <div class="modal fade" id="myModal" role="dialog">
     <div class="modal-dialog">
@@ -131,14 +137,13 @@ td{
         </div>
         <div class="modal-body">
         <select class="form-control" id="groupmove">          
-           <option value="Uncategorized" >Uncategorized</option>
             {% for grp in groups %}
            <option value="{{grp}}" >{{grp}}</option>
             {%endfor%}
         </select>
 
         <input type="button" class="btn btn-primary" id="move" onclick="mov1(document.getElementById('move').getAttribute('data'))" style="margin-top:10px;" value="Move"></input>
-
+        <img src="{% static 'mysite/images/giphy.gif' %}" style="display:none" id="moveloading" width="100px" height=40px></img>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -158,8 +163,9 @@ td{
         </div>
         <div class="modal-body">
         <input type="text" id="new-group" class="form-control name_list" placeholder="Enter Name of Group" />
-        <input type="button" class="btn btn-primary" onclick="create()" style="margin-top:10px;" value="Create"></input>
-
+        <input type="button" class="btn btn-primary" id='createbutton' onclick="create()" style="margin-top:10px;" value="Create"></input>
+        <img src="{% static 'mysite/images/giphy.gif' %}" style="display:none" id="createloading" width="100px" height=40px></img>
+        
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -169,6 +175,54 @@ td{
     </div>
   </div>
 
+  <div class="modal fade" id="EditGroup" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+        <select class="form-control" id="groupedit">          
+            {% for grp in groups %}
+           <option value="{{grp}}" >{{grp}}</option>
+            {%endfor%}
+        </select>
+        <br />
+        <input type="text" id="edit-group" class="form-control name_list" placeholder="Enter Name of Group" />
+        <input type="button" class="btn btn-primary" id='editbutton' onclick="editgroup()" style="margin-top:10px;" value="Edit"></input>
+        <img src="{% static 'mysite/images/giphy.gif' %}" style="display:none" id="editloading" width="100px" height=40px></img>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+
+  <div class="modal fade" id="EditData" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+        <label for="edit-data" style='font-weight:bold;font-size:18px;'id='edit-label'></label>
+        <textarea rows="4" cols="50" type="textarea" id="edit-data" class="form-control" placeholder="Enter Value" ></textarea>
+        <input type="button" class="btn btn-primary" id='editdataid' onclick="editdata(document.getElementById('editdataid').getAttribute('data'),document.getElementById('editdataid').getAttribute('tableindex'))" style="margin-top:10px;" value="Edit"></input>
+        <img src="{% static 'mysite/images/giphy.gif' %}" style="display:none" id="editdataloading" width="100px" height=40px></img>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
 
     <div class="modal fade" id="DeleteGroup" role="dialog">
     <div class="modal-dialog">
@@ -185,8 +239,8 @@ td{
             {%endfor%}
         </select>
 
-        <input type="button" class="btn btn-primary" onclick="dele()" style="margin-top:10px;" value="Delete"></input>
-
+        <input type="button" class="btn btn-primary" onclick="dele()" id='deletebutton' style="margin-top:10px;" value="Delete"></input>
+        <img src="{% static 'mysite/images/giphy.gif' %}" style="display:none" id="deleteloading" width="100px" height=40px></img>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -195,7 +249,6 @@ td{
       
     </div>
   </div>
-
               <div class="card mx-auto shadow-lg p-3 mb-5 bg-white rounded" style="width: 100%;">
                     <div class="card-body">
                       <h5 class="card-title">Welcome to the Product Tracker!</h5>
@@ -224,7 +277,7 @@ td{
                                       <div class="row">
                                             <div class="col">
                                              <div class="form-group mb-2" style="float:left;" >
-                                                <a href="#" class="btn btn-primary" onclick="download_table_as_csv('response');" id="profileButton">Save As .CSV FILE <i class="fas fa-download"></i></a>
+                                                <a href="#" class="btn btn-primary" onclick="download_table_as_csv();" id="profileButton">Save As .CSV FILE <i class="fas fa-download"></i></a>
                                           </div>
 
                                                     <input type="button" style="margin-left: 10px"class="btn btn-primary" id="starting" value="Start"></input>
@@ -235,35 +288,36 @@ td{
 
                       </form>
   <div style="float:right;margin-right: 50px">
-    <p onclick="deleteselected()" style="float:left;padding-right:5px;cursor:pointer;font-size: 12px;color:black;font-weight:bold;"><i class="fas fa-minus"></i>Delete Selected</p>
- <p onclick="moveselected()" style="float:right;cursor:pointer;font-size: 12px;color:black;font-weight:bold;">Move Selected</p>
+    <p onclick="deleteselected()" style="float:left;padding-right:5px;cursor:pointer;font-size: 12px;color:black;font-weight:bold;"><i class="fas fa-minus"></i>Delete All</p>
+ <p onclick="moveselected()" style="float:right;cursor:pointer;font-size: 12px;color:black;font-weight:bold;">Move All</p>
   </div>
     <div class="tab">
-  <button class="tablinks" onclick="openCity(event, 'Uncategorized')" id="defaultOpen">Overview</button>
+  <button class="tablinks" onclick="openCity(event, 'overview')" id="defaultOpen">Overview</button>
   {% for grp in groups %}
   <button class="tablinks" onclick="openCity(event, '{{grp}}')" id="{{grp}}">{{grp}}</button>
 
   {%endfor%}
-   <button type="button" class="tablinks" onclick="  $('#NewGroup').modal('show');" class="btn btn-success"><i class="fas fa-plus"></i>New Group</button>
-   <button type="button" class="tablinks" onclick="  $('#DeleteGroup').modal('show');" class="btn btn-success"><i class="fas fa-minus"></i>Delete Group</button>  
+   <button type="button" class="tablinks" onclick="  $('#NewGroup').modal('show');" class="btn btn-success"><i class="fas fa-plus"></i>New</button>
+   <button type="button" class="tablinks" onclick="  $('#DeleteGroup').modal('show');" class="btn btn-success"><i class="fas fa-minus"></i>Delete</button> 
+    <button type="button" class="tablinks" onclick="  $('#EditGroup').modal('show');" class="btn btn-success">Edit</button>  
 </div>
 <div id="Uncategorized" class="tabcontent">
   
           <div class="table-responsive">
-        <table class="table table-bordered" id="response">
-          <tr id='head'>
-            <th style="cursor:pointer;" onclick="selectall()">Selected</th>
+          <table id="response" class="display table table-bordered">
+          <thead>
             <th>Group</th>
             <th>Store Name</th>
             <th>Thumbnail</th>
             <th>Product Name</th>
-            <th>Price RMB</th>
+            <th>Price CNY</th>
+            <th>Price KWON</th>
             <th>Details</th>
-            <th>Product Url</th>
-            <th>Manage</th>
-          </tr>
-     
-                                                     </table>
+            <th>Product Url</th>         
+            <th>Manage</th>           
+          </thead>
+          <tbody></tbody>
+              </table>
                                                     </div>
 
 </div>
@@ -273,48 +327,52 @@ td{
 </main>
 
 
-
+<script  src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
 <script>
-  var overview={{overview|safe}};
-  var table = document.getElementById("response");
-  var i=1;
-  addentry(overview)
-  var selected=false
-  function selectall(){
-  $('#response input[type=checkbox]').each(function(){
-    $(this).prop('checked', !selected);
-        });
-  selected=!selected
-                                              }
-  function download_table_as_csv(table_id) {
+var z=0;
+$('#add').click(function(){
+                z++;
+                $('#dynamic_field').append('<tr id="row'+z+'"><td><input type="url" name="name" placeholder="HTTP:// Paste Product URL" class="form-control name_list" /></td><td><button type="button" name="remove" id="'+z+'" class="btn btn-danger btn_remove"><i class="fas fa-minus"></i></button></td></tr>');
+            });
+
+            
+$(document).on('click', '.btn_remove', function(){
+                var button_id = $(this).attr("id"); 
+                $('#row'+button_id+'').remove();
+            });
+
+ function download_table_as_csv(table_id) {
     // Select rows from table_id
-    var rows = document.querySelectorAll('table#' + table_id + ' tr');
+    var csv=[];
+    var names=table.settings().init().columns
+    var row=[]
+    for(var i=0;i<names.length-1;i++){
+
+      row.push(names[i]['name'])
+                                      }
+      csv.push(row.join(','));
+
+    table.rows().data().each(function(val){
+    row=[]
+    for(var i=0;i<8;i++){
+      if(i==1){
+        row.push(val[i][0])
+      }
+      else{
+        if (i==3||i==6){
+          val[i]=val[i].replace(/(\r\n|\n|\r|\n\r)/gm," ")
+        }
+        row.push(val[i])
+           }
+           }
+        csv.push(row.join(','));
+                                  
+
+    });
     // Construct csv
-    var csv = [];
-    for (var i = 0; i < rows.length; i++) {
-        var row = [], cols = rows[i].querySelectorAll('td, th');
-        for (var j = 1; j < cols.length-2; j++) {
-            // Clean innertext to remove multiple spaces and jumpline (break csv)
-            var data = cols[j].innerText
-            // Escape double-quote with double-double-quote (see https://stackoverflow.com/questions/17808511/properly-escape-a-double-quote-in-csv)
-            data = data.replace(/"/g, '""');
-            // Push escaped string
-            row.push('"' + data + '"');
-        }
-
-        if(i!=0){
-          data=cols[j]
-            row.push('"' + $(cols[j])[0].childNodes[0].href + '"');
-        }
-        else{
-                      row.push('"Product Url"');
-
-        }
-        csv.push(row.join(';'));
-    }
     var csv_string = csv.join('\n');
     // Download it
-    var filename = 'export_' + table_id + '_' + new Date().toLocaleDateString() + '.csv';
+    var filename = 'content_downloader' + '_' + new Date().toLocaleDateString() + '.csv';
     var link = document.createElement('a');
     link.style.display = 'none';
     link.setAttribute('target', '_blank');
@@ -325,112 +383,61 @@ td{
     document.body.removeChild(link);
 }
 
-  function addentry(result){
-   for (var key in result) {
-      var row = table.insertRow(i++);
-            row.id=result[key]['id']
-
-      j=0;
-      var cell = row.insertCell(j++);              
-      cell.innerHTML="<input type='checkbox'>"    
-      for (var k in result[key]){
-      if (result[key].hasOwnProperty(k)) {           
-          if(k=='id'){
-            continue
-          }
-
-          var cell = row.insertCell(j++);
-          if(k=="details"){
-              cell.innerHTML = result[key][k];
-              cell.style.width="300px";
-          }
-          if(k=='image'){
-               cell.innerHTML = "<img src='"+result[key][k]+"' widht=96px height=96px></img>"; 
-                       }
-          else{
-
-            if(k=='url'){
-            cell.innerHTML="<a style='color:blue;'href='"+result[key][k]+"'>Open Link</a>"    
-
-            }
-          else{
-              cell.innerHTML = result[key][k];
-              }
-            }
-                }
-                     }
-
-     var cell = row.insertCell(j++);              
-      cell.innerHTML="<a href='javascript:del("+row.id+");' >Delete</a>   <a href=javascript:mov("+row.id+");>Move</a>"    
-
-
-                                   
-                      }
-$(function(){ $("#response").each(function(elem,index){ var arr = $.makeArray($("tr:not(#head)",this).detach()); arr.reverse(); $(this).append(arr); }); });
-  }
-function mov1(id){
-  if(id=='selected'){
-          active=document.getElementsByClassName('tablinks active')[0].textContent
-      $('input:checkbox:checked').each(function(){
-        if (active!="Overview"){
-          if(active==$(this).parent().parent()[0].childNodes[1].textContent){
-             mov1($(this).parent().parent().attr('id'))
-                }
-
-              }
-              else{
-                  mov1($(this).parent().parent().attr('id'))
-              }
-
-      
-});
-  }
-  else{
-       $.ajax({
-       url:"/content-downloader/",
-       method:"GET",
-       dataType: 'json',
-       data:{move:id,group:document.getElementById('groupmove').value},
-       success:function(result)
-       {
-          $('#myModal').modal('hide'); 
-          document.getElementById(id).childNodes[1].textContent=document.getElementById('groupmove').value
-                       
-          document.getElementsByClassName("tablinks active")[0].click();
-
-                       }
-                });
-}
-  }
 function deleteselected(){
-active=document.getElementsByClassName('tablinks active')[0].textContent
+$('tbody tr').each(function(){
+del($(this).attr('id'))
+})
 
-      $('input:checkbox:checked').each(function(){
-        if (active!="Overview"){
-          if(active==$(this).parent().parent()[0].childNodes[1].textContent){
-         del($(this).parent().parent().attr('id'))
-                }
 
-              }
-              else{
-                  del($(this).parent().parent().attr('id'))
-              }
+}
 
-      
-});
+function show(id){
+      $(id).parent().css('display','none')
+      $(id).parent().next().css('display','')
+      $(id).parent().next().next().css('display','')
+    }
 
+function hide(id){
+      $(id).css('display','none')
+      $(id).prev().css('display','none')
+      $(id).prev().prev().css('display','')
+
+    }
+
+function mov(id){
+    document.getElementById('groupmove').value=table.cell($('#'+id),0).data()
+    $('#myModal').modal('show'); 
+    document.getElementById('move').setAttribute('data',id)
   }
 
-  function moveselected(){
+function moveselected(){
           document.getElementById('groupmove').value='Uncategorized'
           $('#myModal').modal('show'); 
           document.getElementById('move').setAttribute('data','selected')
 
+  }
+
+function del(id){
+
+     $.ajax({
+       url:"/content-downloader/",
+       method:"GET",
+       dataType: 'json',
+       data:{delete:id},
+        success:function(result)
+                    {
+              table.row($('#'+id)).remove().draw()
+                       }
+                });
+
 
   }
-  function dele(){
-      var deleted_group=document.getElementById('groupdelete').value
 
+function dele(){
+      document.getElementById('deletebutton').style.display='none'
+      document.getElementById('deleteloading').style.display=''
+
+      var deleted_group=document.getElementById('groupdelete').value
       $.ajax({
            url:"/content-downloader/",
            method:"GET",
@@ -444,9 +451,12 @@ active=document.getElementsByClassName('tablinks active')[0].textContent
 
       
                   }
-  function create(){
-                            var created_group=document.getElementById('new-group').value
+ 
+function create(){
+        document.getElementById('createbutton').style.display='none'
+      document.getElementById('createloading').style.display=''
 
+      var created_group=document.getElementById('new-group').value
       $.ajax({
            url:"/content-downloader/",
            method:"GET",
@@ -458,96 +468,264 @@ active=document.getElementsByClassName('tablinks active')[0].textContent
 
                     }});
 
+
       
                   }
 
-  function mov(id){
-          document.getElementById('groupmove').value=document.getElementById(id).childNodes[1].textContent
-          $('#myModal').modal('show'); 
-          document.getElementById('move').setAttribute('data',id)
-  }
-  function del(id){
+function editgroup(){
+          document.getElementById('editbutton').style.display='none'
+      document.getElementById('editloading').style.display=''
 
-     $.ajax({
+        var data=document.getElementById('edit-group').value
+        if (data==''){
+          return
+        }
+      var editgroup=document.getElementById('groupedit').value
+      $.ajax({
+           url:"/content-downloader/",
+           method:"GET",
+           dataType: 'json',
+           data:{editgroup:editgroup,data:data},
+           success:function(result)
+                    { 
+          location.reload()
+
+                    }});
+
+
+      
+                  }
+function mov1(id){
+        document.getElementById('move').style.display='none'
+      document.getElementById('moveloading').style.display=''
+
+  if(id=='selected'){
+        $('tbody tr').each(function(){
+          mov1($(this).attr('id'))
+            })
+          return
+        }
+
+  $.ajax({
        url:"/content-downloader/",
        method:"GET",
        dataType: 'json',
-       data:{delete:id},
-        success:function(result)
-                    {
+       data:{move:id,group:document.getElementById('groupmove').value},
+       success:function(result)
+       {
+          $('#myModal').modal('hide'); 
+          table.cell($('#'+id),0).data(document.getElementById('groupmove').value)
+                       
+          document.getElementsByClassName("tablinks active")[0].click();
+        document.getElementById('move').style.display=''
+      document.getElementById('moveloading').style.display='none'
 
-              var row = document.getElementById(id);
-              row.parentNode.removeChild(row)
-	      i--;
                        }
+                });
+}
+
+var overview={{overview|safe}};
+
+$('#response').on( 'dblclick', 'tbody td:not(:first-child, :nth-child(3), :nth-child(8), :nth-child(9))', function (e) {
+
+document.getElementById('edit-label').innerHTML=table.settings().init().columns[table.cell(this).index().column].name
+document.getElementById('editdataid').setAttribute('data',$(this).parents('tr').attr('id'))
+document.getElementById('editdataid').setAttribute('tableindex',$(this).index())
+
+$('#EditData').modal('show'); 
+
+if($(this).index()==6){
+document.getElementById('edit-data').setAttribute('rows',10)
+document.getElementById('edit-data').value= table.cell($(this).parents('tr'),6).data()
+}
+else{
+if($(this).index()==1){
+document.getElementById('edit-data').value=$(this).children(":first").children(":first").text()
+
+}
+else{
+  if($(this).index()==4){
+  document.getElementById('edit-data').value=$(this).children(":first").text().replace("¥", "")
+    document.getElementById('edit-data').value=document.getElementById('edit-data').value.replace(/\s+/g, '')
+
+  }
+  else{
+    if($(this).index()==5){
+              document.getElementById('edit-data').value=$(this).children(":first").text().replace("₩", "")
+              document.getElementById('edit-data').value=document.getElementById('edit-data').value.replace(/\s+/g, '')
+
+  }
+  else{
+  document.getElementById('edit-data').value=$(this).children(":first").text()
+
+  }
+
+  }
+  
+
+}
+document.getElementById('edit-data').setAttribute('rows',4)
+
+}
+    } );
+
+var table = $('#response').DataTable( {     
+          "scrollY":        "70vh",
+          "scrollCollapse": true,
+          "scrollX":"50vh",
+          columns: [
+            { "name": "group" },
+            { "name": "Store Name" },
+            { "name": "Thumbnail" },
+            { "name": "Product Name" },
+            { "name": "Price CNY" },
+            { "name": "Price KWON" },
+            { "name": "Details" },
+            { "name": "url" },
+            { "name": "manage" }
+            ],
+              columnDefs: [{
+                    render: function (data, type, full, meta) {
+                      if (data.length<100){
+                        return "<div class='text-wrap width-200'>" + data +"</div>";        
+                                          }
+                        return "<div  class='text-wrap width-200'><div>" + data.slice(0,100) + "<a style='cursor:pointer;font-weight:bold;' onclick='show(this)'>...Show More</a></div><div style='display:none;'>"+data+"</div> <a style='cursor:pointer;font-weight:bold;display:none' onclick='hide(this)'>Show Less</a></div>";
+                    },
+                    targets: [6]
+
+                },
+                     {
+                    render: function (data, type, full, meta) {
+                        return "<div align='center' class='text-wrap width-20'>" + data+"</div>"
+                    },
+                    targets: [0,3]
+                },
+                     {
+                    render: function (data, type, full, meta) {
+                        return "<div align='center' class='text-wrap width-20'> ¥" + data+"</div>"
+                    },
+                    targets: [4]
+                },
+                     {
+                    render: function (data, type, full, meta) {
+                        return "<div align='center' class='text-wrap width-20'> ₩" + data+"</div>"
+                    },
+                    targets: [5]
+                },
+
+                     {
+                    render: function (data, type, full, meta) {
+                        return "<div align='center' class='shopim text-wrap width-20'><div>" + data[0]+"</div><div class='shop'><a target='_blank' href='"+data[1]+"'>Open</a></div></div>"
+                    },
+                    targets: [1]
+                },
+
+               {
+
+                    render: function (data, type, full, meta) {
+                        return "<div align='center'><a  target='_blank' style='cursor:pointer;color:blue;' href='"+data+"'>Open</a></div>"
+                    },
+                    targets: [7]
+                },
+
+               {
+                    render: function (data, type, full, meta) {
+                        return "<div align='center'><a  target='_blank' href='"+data+"'><img src='" + data+"' width='60px' height='60px'></img></a></div>"
+                    },
+                    targets: [2]
+                },
+             ],
+                   } );
+
+      document.getElementById("defaultOpen").click();
+
+      addentry(overview)
+
+function openCity(evt, cityName) {
+    var k, tablinks;
+    if(cityName=='overview'){
+    table.column(0)
+         .search('')
+         .draw();
+
+    }
+    else{
+      table.column(0)
+         .search(cityName)
+         .draw();
+       }
+    tablinks = document.getElementsByClassName("tablinks");
+    for (k = 0; k < tablinks.length; k++) {
+          tablinks[k].className = tablinks[k].className.replace(" active", "");
+                                              }
+          evt.currentTarget.className += " active";
+                                              }            
+function addentry(result){
+  for (var key in result) {
+    button="<a href='javascript:del("+result[key]['id']+");' >Delete</a>   <a href='javascript:mov("+result[key]['id']+")';>Move</a>"
+
+      table.row.add([result[key]['group'],[result[key]['shop-name'],result[key]['company_href']],result[key]['image'],result[key]['title'],result[key]['price'],result[key]['price_krw'],result[key]['details'],result[key]['url'],button]).node().id=result[key]['id']
+      table.draw(false)
+ 
+  }
+setTimeout(function () {$($.fn.dataTable.tables( true ) ).DataTable().columns.adjust().draw();},200)
+
+}
+function editdata(id,index){
+document.getElementById('editdataid').style.display='none'
+document.getElementById('editdataloading').style.display=''
+
+  $.ajaxSetup({
+     headers: { "X-CSRFToken": '{{ csrf_token }}' }
+             });
+                
+  $.ajax({
+           url:"/content-downloader/",
+           method:"GET",
+           dataType: 'json',
+           data:{edit:id,data:document.getElementById('edit-data').value,field:document.getElementById('edit-label').innerHTML},
+                    success:function(result)
+                    {
+                     if(document.getElementById('edit-label').innerHTML=='Store Name'){
+                      table.cell($('#'+id),index).data([document.getElementById('edit-data').value,(table.cell($('#'+id),index).data())[1]])
+
+                     }
+                     else{
+                      table.cell($('#'+id),index).data(document.getElementById('edit-data').value)
+                      }
+                        $('#EditData').modal('hide'); 
+                      document.getElementById('editdataid').style.display=''
+                      document.getElementById('editdataloading').style.display='none'
+
+                    },
+                    error:function (xhr, ajaxOptions, thrownError) {
+
+                             alert("Try Again");
+                                                  }
                 });
 
 
-  }
-  function openCity(evt, cityName) {
-    var k, tablinks;
-    a= $('#response tr').not(document.getElementById( "head" )).each(function(){
-      cell=$(this)
-      if(cityName!="Uncategorized"){
-         if(cell[0].childNodes[1].textContent!=cityName){
-          cell.hide()
-         }
-         else{
-          cell.show()
-         }
-        }
-        else{
-          cell.show()
-        }
-    })
-        tablinks = document.getElementsByClassName("tablinks");
-        for (k = 0; k < tablinks.length; k++) {
-          tablinks[k].className = tablinks[k].className.replace(" active", "");
-                                              }
-          document.getElementById(cityName).style.display = "block";
-          evt.currentTarget.className += " active";
-                                              }
-
-        $(document).ready(function(){
-
-          document.getElementById("defaultOpen").click();
-
-          
-    var z=0;
-    $('#add').click(function(){
-                z++;
-                $('#dynamic_field').append('<tr id="row'+z+'"><td><input type="url" name="name" placeholder="HTTP:// Paste Product URL" class="form-control name_list" /></td><td><button type="button" name="remove" id="'+z+'" class="btn btn-danger btn_remove">X</button></td></tr>');
-            });
-
-            
-            $(document).on('click', '.btn_remove', function(){
-                var button_id = $(this).attr("id"); 
-                $('#row'+button_id+'').remove();
-            });
-
-
-            $('#starting').click(function(){    
-                document.getElementById("starting").style.display="none";
-                document.getElementById("loading").style.display="block"
-                var array=[];
-                urls=document.getElementsByName('name')
-                for (var k=0;k<urls.length;k++){
-                  
-                  if(urls[k].value!=""){
+}
+      $('#starting').click(function(){    
+          document.getElementById("starting").style.display="none";
+          document.getElementById("loading").style.display="block"
+          var array=[];
+          urls=document.getElementsByName('name')
+          for (var k=0;k<urls.length;k++){        
+            if(urls[k].value!=""){
                   array.push(urls[k].value)
-                }
-                }
-                if (array.length==0){
+                                  }
+                                         }
+            if (array.length==0){
                 document.getElementById("starting").style.display="";
                 document.getElementById("loading").style.display="none"
-
-                      return  
+                return  
                 }
-                 $.ajaxSetup({
+            $.ajaxSetup({
                    headers: { "X-CSRFToken": '{{ csrf_token }}' }
-                                 });
+                       });
                 
-                $.ajax({
+            $.ajax({
                     url:"/content-downloader/",
                     method:"POST",
                     dataType: 'json',
@@ -568,8 +746,7 @@ active=document.getElementsByClassName('tablinks active')[0].textContent
         
             });
 
-           }); 
-        </script>
+</script>
         
 
 

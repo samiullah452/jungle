@@ -22,6 +22,7 @@
     <link rel="stylesheet" href="{% static 'mysite/css/navBarStyleSheet.css' %}">
     <link rel="stylesheet" href="{% static 'mysite/css/notificationPanelStyle.css' %}">
     <style>
+        
         .bd-placeholder-img {
             font-size: 1.125rem;
             text-anchor: middle;
@@ -122,9 +123,9 @@
                         {{ request.user.username }}
                     </button>
                     
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="margin-left:-80px"> 
                         <div class="arrow"></div>
-                        <a class="dropdown-item font-weight-bold" href="{% url 'settings_page' %}"><i
+                        <a class="dropdown-item font-weight-bold" href="{% url 'profile' %}"><i
                                 class="fas fa-cog mr-2"></i>Settings</a>
                         <a class="dropdown-item font-weight-bold" href="{% url 'logout' %}"><i
                                 class="fas fa-sign-out-alt mr-2"></i>Logout</a>
@@ -176,7 +177,7 @@
                                             class="fas fa-question-circle fa-1x mr-3"></i>Help</a>
                                 </li>
                         <li class="nav-item text-left">
-                            <a class="nav-link list-group-item border-0 font-weight-bold text-left {% if section == 'settings' %} list-group-item-warning{% endif %}" href="{% url 'settings_page' %}"><i
+                            <a class="nav-link list-group-item border-0 font-weight-bold text-left {% if section == 'settings' %} list-group-item-warning{% endif %}" href="{% url 'profile' %}"><i
                                     class="fas fa-cog fa-1x mr-3"></i>Settings</a>
                         </li>
                     </ul>

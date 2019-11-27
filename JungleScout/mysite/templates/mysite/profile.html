@@ -58,15 +58,15 @@
       <div class="mx-auto" style="width: 390px;">
         <div class="card rounded mx-auto d-block border-0" style="width: 100%;">
           {% if request.user|FindProfileImage %}
-            <a href="/media/{{ request.user|FindProfileImage  }}"><img src="/media/{{ request.user|FindProfileImage  }}" class="card-img-top rounded mx-auto d-block" alt="..." height="200px" style="width:auto;"></a>
+            <a href="/media/{{ request.user|FindProfileImage  }}"><img src="/media/{{ request.user|FindProfileImage  }}" class="card-img-top rounded mx-auto d-block" alt="..." height="150px" style="width:auto;"></a>
             <a href="{% url 'delete-profile' %}" id="profileButton" class="btn btn-primary mt-1" style="position: relative;  left:32%;"><i
                 class="fas fa-trash-alt"></i> Delete Photo</a>
           {% else %}
-          <img src="/media/Image/Profiles/default.jpg" class="card-img-top rounded mx-auto d-block" alt="..." height="200px" style="width:auto;">
+          <!-- <img src="/media/Image/Profiles/default.jpg" class="card-img-top rounded mx-auto d-block" alt="..." height="200px" style="width:auto;"> -->
           <form action="{% url 'upload-profile-image' %}" method="POST" enctype="multipart/form-data">
             {% csrf_token %}
           <div class="custom-file">
-              <input type="file" class="custom-file-input" id="customFile" name="profileImage">
+              <input type="file" class="custom-file-input" id="customFile"  name="profileImage">
               <label class="custom-file-label" for="customFile">Upload Profile Image</label>
               <button type="submit" value="Upload Profile Image" class="btn btn-primary mt-1 mx-auto" id="profileButton" style="position: relative;  left:25%;"><i class="fas fa-upload"></i> Upload Profile Image</button>
             </div>
@@ -75,25 +75,18 @@
         </div>
       </div>
 
-      <div class="card-body">
+      <div class="card-body" style="width:420px;">
         <form action="{% url 'profile' %}" method="POST">
           {% csrf_token %}
           <h3 class="card-title border-bottom border-dark">{{ request.user }}</h3>
           <table class="table">
 
-            <tbody style="width:200px;">
+            <tbody style="width:300px;">
+      
               <tr>
 
-                <td class="border-right">First name</td>
-
-                <td><input type="text" name="first_name" value="{{ request.user.first_name }}" class="form-control"
-                    autocomplete="off"></td>
-
-              </tr>
-              <tr>
-
-                <td class="border-right">Last name</td>
-                <td><input type="text" value="{{ request.user.last_name }}" name="last_name" class="form-control"
+                <td class="border-right">my_store_url</td>
+                <td><input type="text" value="{{profile.my_store_url }}" name="my_store_url" class="form-control"
                     autocomplete="off"></td>
 
               </tr>
@@ -130,6 +123,36 @@
                   href="{% url 'change_password' %}">Change Password</a>
               </td>
             </tr>
+            <tr>
+              <td colspan="2" class="border-0">
+                <a type="button" id="profileButton" data-toggle="modal" data-target="#exampleModal" class="btn btn-block p-1 text-white mb-2 mx-auto" value="Log-in"
+                  href="">Delete Account</a>
+              </td>
+            </tr>
+            <!-- Button trigger modal -->
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Warning</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <h5>Are You sure you want to delete the account. This action Will not be reversed</h5> 
+      </div>
+      <div class="modal-footer">
+        <a type="button" id="profileButton" class="btn btn-block p-1 text-white mb-2 mx-auto" value="Log-in"
+        href="{% url 'del_user'  %}">Delete Account</a>      </div>
+    </div>
+  </div>
+</div>
+
+
           </table>
 
 

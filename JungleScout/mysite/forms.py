@@ -4,6 +4,7 @@ from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
+from .models import *
 
 
 # User Login Form
@@ -56,3 +57,12 @@ class EditProfileForm(UserChangeForm):
                   'last_name',
                   'password',
                   ]
+
+
+class profileInformForm(forms.ModelForm):
+    class Meta:
+        model = profileModel
+        fields = [
+            'my_store_url',
+            #'Teacher_or_Parent'
+        ]

@@ -5,7 +5,14 @@ from django.contrib.auth import get_user_model
 class profilePicture(models.Model):
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     profileImage = models.ImageField(upload_to = 'Image/Profiles/',blank=True , default="Image/Profiles/default.jpg")
+    my_store_url=models.URLField()
+    def __str__(self):
+        return self.user.username
 
+
+class profileModel(models.Model):
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
+    my_store_url=models.URLField()
     def __str__(self):
         return self.user.username
 
@@ -21,11 +28,12 @@ class user_content_downloader(models.Model):
 	url=models.TextField()
 	store_name=models.TextField()
 	product_name=models.TextField()
-	price=models.TextField()
+	price=models.FloatField()
+	price_krw=models.FloatField()
 	image=models.TextField()
 	name=models.ForeignKey(content_downloader_groups,on_delete=models.CASCADE)
 	details=models.TextField()
-
+	company_href=models.TextField()
 
 class supplier_finder_groups(models.Model):
 	name=models.CharField(max_length=255)
@@ -38,9 +46,11 @@ class user_supplier_finder(models.Model):
 	url=models.TextField()
 	store_name=models.TextField()
 	product_name=models.TextField()
-	price=models.TextField()
+	price=models.FloatField()
+	price_krw=models.FloatField()
 	name=models.ForeignKey(supplier_finder_groups,on_delete=models.CASCADE)
-	details=models.TextField()
+	region=models.TextField()
+	company_href=models.TextField()
 
 class supplier_finder_image(models.Model):
 	src=models.TextField()

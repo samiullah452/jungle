@@ -37,21 +37,34 @@ def keyword_find(request):
         if request.GET.get('move'):
             user_keywords.objects.filter(id=request.GET.get('move')).update(name=keyword_groups.objects.get(user=request.user,name=request.GET.get('group')))
 
+        if request.GET.get('edit'):
+
+            if request.GET.get('field')=='Category Name':
+                user_keywords.objects.filter(id=request.GET.get('edit')).update(category_name=request.GET.get('data'))
+            if request.GET.get('field')=='Category Id':
+                user_keywords.objects.filter(id=request.GET.get('edit')).update(category_id=request.GET.get('data'))
+            if request.GET.get('field')=='Title':
+                user_keywords.objects.filter(id=request.GET.get('edit')).update(product_name=request.GET.get('data'))
+            if request.GET.get('field')=='Description':
+                user_keywords.objects.filter(id=request.GET.get('edit')).update(details=request.GET.get('data'))
+
         if request.GET.get('create'):
             keyword_groups(name=request.GET.get('create'),user=request.user).save()
 
         if request.GET.get('groupdelete'):
             keyword_groups.objects.filter(name=request.GET.get('groupdelete'),user=request.user).delete()
 
-        if request.GET.get('edit'):
-            user_keywords.objects.filter(id=request.GET.get('edit')).update(keywords=request.GET.get('new_keywords'))
+        if request.GET.get('edit_key'):
+            user_keywords.objects.filter(id=request.GET.get('edit_key')).update(keywords=request.GET.get('data'))
+
+        if request.GET.get('editgroup'):
+            keyword_groups.objects.filter(name=request.GET.get('editgroup'),user=request.user).update(name=request.GET.get('data'))
 
         return HttpResponse(json.dumps('Success'), content_type='application/json')       
 
     if request.method == 'POST':
-        key=request.POST.get('key')
-        company=request.POST.get('company')
-        sup=keyword_finder(key,company)        
+        Urls=request.POST.getlist('urls[]')
+        sup=keyword_finder(Urls)        
         try:
             keyword_groups.objects.get(user=request.user,name="Uncategorized")
         except keyword_groups.DoesNotExist:
@@ -280,11 +293,27 @@ def content_downloader(request):
         if request.GET.get('move'):
             user_content_downloader.objects.filter(id=request.GET.get('move')).update(name=content_downloader_groups.objects.get(user=request.user,name=request.GET.get('group')))
 
+        if request.GET.get('edit'):
+            if request.GET.get('field')=='Store Name':
+                user_content_downloader.objects.filter(id=request.GET.get('edit')).update(store_name=request.GET.get('data'))
+            if request.GET.get('field')=='Product Name':
+                user_content_downloader.objects.filter(id=request.GET.get('edit')).update(product_name=request.GET.get('data'))
+            if request.GET.get('field')=='Details':
+                user_content_downloader.objects.filter(id=request.GET.get('edit')).update(details=request.GET.get('data'))
+            if request.GET.get('field')=='Price CNY':
+                user_content_downloader.objects.filter(id=request.GET.get('edit')).update(price=request.GET.get('data'))
+            if request.GET.get('field')=='Price KWON':
+                user_content_downloader.objects.filter(id=request.GET.get('edit')).update(price_krw=request.GET.get('data'))
+
+
         if request.GET.get('create'):
             content_downloader_groups(name=request.GET.get('create'),user=request.user).save()
 
         if request.GET.get('groupdelete'):
             content_downloader_groups.objects.filter(name=request.GET.get('groupdelete'),user=request.user).delete()
+
+        if request.GET.get('editgroup'):
+            content_downloader_groups.objects.filter(name=request.GET.get('editgroup'),user=request.user).update(name=request.GET.get('data'))
 
         return HttpResponse(json.dumps('Success'), content_type='application/json')       
 
@@ -299,7 +328,7 @@ def content_downloader(request):
             grp=content_downloader_groups(user=request.user,name="Uncategorized")
             grp.save()
         for key in cont.keys(): 
-            t=user_content_downloader(store_name=cont[key]['shop-name'],product_name=cont[key]['title'],price=cont[key]['price'],name=content_downloader_groups.objects.get(name='Uncategorized',user=request.user),details=cont[key]['details'],url=cont[key]['url'],image=cont[key]['image']) 
+            t=user_content_downloader(store_name=cont[key]['shop-name'],product_name=cont[key]['title'],price=cont[key]['price'],name=content_downloader_groups.objects.get(name='Uncategorized',user=request.user),details=cont[key]['details'],url=cont[key]['url'],image=cont[key]['image'],company_href=cont[key]['company_href'],price_krw=cont[key]['price_krw']) 
             t.save()
             cont[key]['id']=t.id
 
@@ -307,6 +336,17 @@ def content_downloader(request):
 
 def supplier_find(request):
     if request.method == 'GET':
+        if request.GET.get('edit'):
+            if request.GET.get('field')=='Store Name':
+                user_supplier_finder.objects.filter(id=request.GET.get('edit')).update(store_name=request.GET.get('data'))
+            if request.GET.get('field')=='Product Name':
+                user_supplier_finder.objects.filter(id=request.GET.get('edit')).update(product_name=request.GET.get('data'))
+            if request.GET.get('field')=='Price CNY':
+                user_supplier_finder.objects.filter(id=request.GET.get('edit')).update(price=request.GET.get('data'))
+            if request.GET.get('field')=='Price KWON':
+                user_supplier_finder.objects.filter(id=request.GET.get('edit')).update(price_krw=request.GET.get('data'))
+            if request.GET.get('field')=='Location':
+                user_supplier_finder.objects.filter(id=request.GET.get('edit')).update(region=request.GET.get('data'))
 
         if request.GET.get('delete'):
             user_supplier_finder.objects.filter(id=request.GET.get('delete')).delete()
@@ -317,13 +357,16 @@ def supplier_find(request):
         if request.GET.get('create'):
             supplier_finder_groups(name=request.GET.get('create'),user=request.user).save()
 
+        if request.GET.get('editgroup'):
+           supplier_finder_groups.objects.filter(name=request.GET.get('editgroup'),user=request.user).update(name=request.GET.get('data'))
+
         if request.GET.get('groupdelete'):
             supplier_finder_groups.objects.filter(name=request.GET.get('groupdelete'),user=request.user).delete()
 
         return HttpResponse(json.dumps('Success'), content_type='application/json')       
 
     if request.method == 'POST':
-        keys=request.POST.getlist('keys[]')
+        keys=request.POST.getlist('urls[]')
         website=request.POST.get('website')
         sup=supplier(keys,website)
 
@@ -333,7 +376,7 @@ def supplier_find(request):
             grp=supplier_finder_groups(user=request.user,name="Uncategorized")
             grp.save()
         for key in sup.keys(): 
-            t=user_supplier_finder(store_name=sup[key]['shop-name'],product_name=sup[key]['title'],price=sup[key]['price'],name=supplier_finder_groups.objects.get(name='Uncategorized',user=request.user),details=sup[key]['region'],url=sup[key]['url']) 
+            t=user_supplier_finder(store_name=sup[key]['shop-name'],product_name=sup[key]['title'],price=sup[key]['price'],price_krw=sup[key]['price_krw'],name=supplier_finder_groups.objects.get(name='Uncategorized',user=request.user),region=sup[key]['region'],url=sup[key]['url'],company_href=sup[key]['company_href']) 
             t.save()
             for img in sup[key]['image']:
                 i=supplier_finder_image(src=img,supplier=t)
@@ -348,24 +391,24 @@ def supplier_finder(request):
         Groups=supplier_finder_groups.objects.filter(user=request.user)
         i=0
         for grp in Groups:
-            if grp.name!="Uncategorized":
-                groups_show.append(grp.name)
+            groups_show.append(grp.name)
             Overview=user_supplier_finder.objects.filter(name=grp)
             for over in Overview:
               overview[i]={}
               overview[i]['id']=over.id
               overview[i]['group']=over.name.name
               overview[i]['shop-name']=over.store_name
+              overview[i]['company_href']=over.company_href
               overview[i]['image']=[]
               images=supplier_finder_image.objects.filter(supplier=over)
               for image in images:
                 overview[i]['image'].append(image.src)
               overview[i]['title']=over.product_name
               overview[i]['price']=over.price
-              overview[i]['details']=over.details
+              overview[i]['price_krw']=over.price_krw
+              overview[i]['region']=over.region
               overview[i]['url']=over.url
               i+=1
-
         context={
         'overview':json.dumps(overview),
         'groups':groups_show,
@@ -384,17 +427,18 @@ def home(request):
         Groups=content_downloader_groups.objects.filter(user=request.user)
         i=0
         for grp in Groups:
-            if grp.name!="Uncategorized":
-                groups_show.append(grp.name)
+            groups_show.append(grp.name)
             Overview=user_content_downloader.objects.filter(name=grp)
             for over in Overview:
               overview[i]={}
               overview[i]['id']=over.id
               overview[i]['group']=over.name.name
               overview[i]['shop-name']=over.store_name
+              overview[i]['company_href']=over.company_href
               overview[i]['image']=over.image
               overview[i]['title']=over.product_name
               overview[i]['price']=over.price
+              overview[i]['price_krw']=over.price_krw
               overview[i]['details']=over.details
               overview[i]['url']=over.url
               i+=1
@@ -402,7 +446,7 @@ def home(request):
         context={
         'overview':json.dumps(overview),
         'groups':groups_show,
-            'section' : 'findProduct'
+        'section' : 'findProduct'
         }
         return render(request, 'mysite/home.html', context)
     context={
@@ -421,8 +465,7 @@ def keyword_view(request):
         Groups=keyword_groups.objects.filter(user=request.user)
         i=0
         for grp in Groups:
-            if grp.name!="Uncategorized":
-                groups_show.append(grp.name)
+            groups_show.append(grp.name)
             Overview=user_keywords.objects.filter(name=grp)
             for over in Overview:
               overview[i]={}
@@ -476,14 +519,19 @@ def logout_user(request):
 def register_user(request):
     if request.method!='POST':
         form = registerForm()
+        form_2 = profileInformForm()
     else:
         form = registerForm(request.POST)
-        if form.is_valid():
+        form_2 = profileInformForm(request.POST)
+        if form.is_valid() & form_2.is_valid():
             user = form.save(commit=False)
             user.is_active = False
             user.set_password(form.cleaned_data['password2'])
             user.email = form.cleaned_data['email']
             user.save()
+            profile = profileModel.objects.create(user=user)
+            profile.my_store_url = form_2.cleaned_data['my_store_url']
+            profile.save()
             current_site = get_current_site(request)
             message = render_to_string('mysite/acc_active_email.html', {
                 'user':user, 'domain':current_site.domain,
@@ -523,20 +571,25 @@ def activate(request, uidb64, token):
 # User Profile View
 @login_required()
 def profile_user(request):
-    if request.method!="POST":
+    if request.method!='POST':
         form = EditProfileForm(instance = request.user)
     else:
         form = EditProfileForm(request.POST, instance = request.user)
         if form.is_valid():
             form.save()
-            messages.success(request, 'Profile has been updated')
-            return redirect('profile')
-        else:
-            messages.error(request, 'Invalid form inputs.')
+            messages.success(request, 'Profile has been updated.')
+            return redirect('home')
+    try:
+        profile=profileModel.objects.get(user=request.user)
+       
+    except:
+        profile=None
     context={
-        'section' : 'settings'
+        'profile' : profile,
+        'section' : "settings",
+        'form' : form
     }
-    return render(request, 'mysite/profile.html', context )
+    return render(request, 'mysite/profile.html',context)
 
 
 @login_required()
@@ -578,3 +631,18 @@ def upload_profileImage(request):
             return redirect('profile')
     else:
         return redirect('profile')
+
+def del_user(request):    
+    try:
+        u = User.objects.get(username = request.user.username)
+        u.delete()
+        messages.success(request, "The user is deleted")            
+
+    except User.DoesNotExist:
+        messages.error(request, "User doesnot exist")    
+        return render(request, 'front.html')
+
+    except Exception as e: 
+        return redirect('home')
+
+    return redirect('home') 
