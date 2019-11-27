@@ -546,7 +546,7 @@ function mov1(id){
          $('#myModal').modal('hide'); 
           table.rows().every( function ( rowIdx, tableLoop, rowLoop ) {
                 var data = this.data();
-                data[1] = document.getElementById('groupmove').value;
+                data[0] = document.getElementById('groupmove').value;
                 this.data(data);
                                                                   } )
 
