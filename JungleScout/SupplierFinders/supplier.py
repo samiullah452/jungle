@@ -62,8 +62,6 @@ def supplier(keys,website):
 			Send.send_keys(key)
 			button = driver.find_element_by_xpath('//*[@id="J_SC_header"]/header/div[2]/div[2]/div/div[1]/form/input[4]').click()
 			for company_detali in driver.find_elements_by_xpath('//div[@class="item-main"]'):
-				if i%10==0 and i>0:
-					break
 				name=company_detali.find_elements_by_xpath('.//*[@class="ellipsis search"]')
 				region=name[0].text
 				try:
