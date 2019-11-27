@@ -100,7 +100,7 @@ def content(urls,website):
 					for d in (price.text)[index:-1]:
 						if d.isdigit() or d=='.':
 							content_price+=d
-						if d=="/" or d==" " or d.isalpha():
+						if d=="/" or d==" " or d=="\n" or d=="\r\n" or d=="\r" or d=="$" or d=="\n\r" or d.isalpha():
 							break
 
 					content[i]['price']=round((1/rate)*float(content_price), 2)
@@ -115,7 +115,7 @@ def content(urls,website):
 						for d in (price.text)[index:-1]:
 							if d.isdigit() or d=='.':
 								content_price+=d
-							if d=="/" or d==" " or d.isalpha():
+							if d=="/" or d==" " or d=="\n" or d=="\r\n" or d=="\r" or d=="$" or d=="\n\r" or d.isalpha():
 								break
 					content[i]['price']=round((1/rate)*float(content_price), 2)
 
@@ -130,7 +130,7 @@ def content(urls,website):
 						for d in (price.text)[index:-1]:
 							if d.isdigit() or d=='.':
 								content_price+=d
-							if d=="/" or d==" " or d.isalpha():
+						if d=="/" or d==" " or d=="\n" or d=="\r\n" or d=="\r" or d=="$" or d=="\n\r" or d.isalpha():
 								break
 					content[i]['price']=round((1/rate)*float(content_price), 2)
 
