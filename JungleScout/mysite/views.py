@@ -372,7 +372,7 @@ def supplier_find(request):
             return HttpResponse(json.dumps('Success'), content_type='application/json')       
 
         if request.POST.getlist('moveselected[]'):
-            user_supplier_finder.objects.filter(id__in=request.POST.getlist('moveselected[]')).update(name=supplier_finder_groups.objects.get(user=request.user,name=request.GET.get('group')))
+            user_supplier_finder.objects.filter(id__in=request.POST.getlist('moveselected[]')).update(name=supplier_finder_groups.objects.get(user=request.user,name=request.POST.get('group')))
             return HttpResponse(json.dumps('Success'), content_type='application/json')       
 
         keys=request.POST.getlist('urls[]')
