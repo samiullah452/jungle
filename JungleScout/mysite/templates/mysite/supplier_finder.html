@@ -401,6 +401,10 @@ function deleteselected(){
   table.rows().every( function () {
   array.push(table.row(this).node().id)
                                     });
+              $.ajaxSetup({
+                   headers: { "X-CSRFToken": '{{ csrf_token }}' }
+                       });
+
      $.ajax({
        url:"/supplier-find/",
        method:"POST",
@@ -528,6 +532,10 @@ function mov1(id){
   table.rows().every( function () {
   array.push(table.row(this).node().id)
                                     });
+            $.ajaxSetup({
+                   headers: { "X-CSRFToken": '{{ csrf_token }}' }
+                       });
+
      $.ajax({
        url:"/supplier-find/",
        method:"POST",
