@@ -544,7 +544,12 @@ function mov1(id){
         success:function(result)
                     {
          $('#myModal').modal('hide'); 
-          table.column( 0 ).data(document.getElementById('groupmove').value).draw()
+          table.rows().every( function ( rowIdx, tableLoop, rowLoop ) {
+                var data = this.data();
+                data[1] = document.getElementById('groupmove').value;
+                this.data(data);
+                                                                  } )
+
           document.getElementsByClassName("tablinks active")[0].click();
           document.getElementById('move').style.display=''
           document.getElementById('moveloading').style.display='none'
