@@ -95,7 +95,6 @@ def content(urls,website):
 					index=(price.text).find("$")
 					if index==-1:
 						index=0
-					print(index)
 					content_price=''
 
 					for d in (price.text)[index:-1]:
@@ -105,7 +104,7 @@ def content(urls,website):
 						if d=="/" or d=="$" or d.isalpha():
 							break
 					while 1:
-						print(index)
+						print((price.text)[index])
 						print("fffffffffffffffff")
 						print(content_price)
 					content[i]['price']=round((1/rate)*float(content_price), 2)
