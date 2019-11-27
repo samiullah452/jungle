@@ -99,5 +99,6 @@ def alibaba(urls):
 			content[i]['url']=urls[url]['url']
 			i+=1
 		except Exception as e:
+			print(urls[url]['url'])
 			print(e)
 	return content
