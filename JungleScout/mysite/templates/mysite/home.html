@@ -385,25 +385,28 @@ $(document).on('click', '.btn_remove', function(){
 }
 
 function deleteselected(){
-$('tbody tr').each(function(){
-del($(this).attr('id'))
-})
+  var array=[]
+  table.rows().every( function () {
+  array.push(table.row(this).node().id)
+                                    });
+     $.ajaxSetup({
+                   headers: { "X-CSRFToken": '{{ csrf_token }}' }
+                       });
+
+     $.ajax({
+       url:"/content-downloader/",
+       method:"POST",
+       dataType: 'json',
+       data:{deleteselected:array},
+        success:function(result)
+                    {
+       table.rows().remove().draw()
+                       }
+                });
 
 
 }
 
-function show(id){
-      $(id).parent().css('display','none')
-      $(id).parent().next().css('display','')
-      $(id).parent().next().next().css('display','')
-    }
-
-function hide(id){
-      $(id).css('display','none')
-      $(id).prev().css('display','none')
-      $(id).prev().prev().css('display','')
-
-    }
 
 function mov(id){
     document.getElementById('groupmove').value=table.cell($('#'+id),0).data()
@@ -499,31 +502,39 @@ function editgroup(){
 function mov1(id){
         document.getElementById('move').style.display='none'
       document.getElementById('moveloading').style.display=''
-
   if(id=='selected'){
-        $('tbody tr').each(function(){
-          mov1($(this).attr('id'))
-            })
-          return
-        }
+  var array=[]
+  table.rows().every( function () {
+  array.push(table.row(this).node().id)
+                                    });
+       $.ajaxSetup({
+             headers: { "X-CSRFToken": '{{ csrf_token }}' }
+                   });
 
-  $.ajax({
+     $.ajax({
        url:"/content-downloader/",
-       method:"GET",
+       method:"POST",
        dataType: 'json',
-       data:{move:id,group:document.getElementById('groupmove').value},
-       success:function(result)
-       {
-          $('#myModal').modal('hide'); 
-          table.cell($('#'+id),0).data(document.getElementById('groupmove').value)
-                       
+       data:{moveselected:array,group:document.getElementById('groupmove').value},
+        success:function(result)
+                    {
+         $('#myModal').modal('hide'); 
+          table.rows().every( function ( rowIdx, tableLoop, rowLoop ) {
+                var data = this.data();
+                data[0] = document.getElementById('groupmove').value;
+                this.data(data);
+                                                                  } )
+
           document.getElementsByClassName("tablinks active")[0].click();
-        document.getElementById('move').style.display=''
-      document.getElementById('moveloading').style.display='none'
+          document.getElementById('move').style.display=''
+          document.getElementById('moveloading').style.display='none'
 
                        }
                 });
-}
+
+
+          return
+        }
 
 var overview={{overview|safe}};
 var index=0;

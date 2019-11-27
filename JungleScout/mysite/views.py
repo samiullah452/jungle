@@ -63,6 +63,14 @@ def keyword_find(request):
         return HttpResponse(json.dumps('Success'), content_type='application/json')       
 
     if request.method == 'POST':
+        if request.POST.getlist('deleteselected[]'):
+            user_keywords.objects.filter(id__in=request.POST.getlist('deleteselected[]')).delete()
+            return HttpResponse(json.dumps('Success'), content_type='application/json')       
+
+        if request.POST.getlist('moveselected[]'):
+            user_keywords.objects.filter(id__in=request.POST.getlist('moveselected[]')).update(name=keyword_groups.objects.get(user=request.user,name=request.POST.get('group')))
+            return HttpResponse(json.dumps('Success'), content_type='application/json')       
+
         Urls=request.POST.getlist('urls[]')
         sup=keyword_finder(Urls)        
         try:
@@ -318,6 +326,14 @@ def content_downloader(request):
         return HttpResponse(json.dumps('Success'), content_type='application/json')       
 
     if request.method == 'POST':
+        if request.POST.getlist('deleteselected[]'):
+            user_content_downloader.objects.filter(id__in=request.POST.getlist('deleteselected[]')).delete()
+            return HttpResponse(json.dumps('Success'), content_type='application/json')       
+
+        if request.POST.getlist('moveselected[]'):
+            user_content_downloader.objects.filter(id__in=request.POST.getlist('moveselected[]')).update(name=content_downloader_groups.objects.get(user=request.user,name=request.POST.get('group')))
+            return HttpResponse(json.dumps('Success'), content_type='application/json')       
+
         Urls=request.POST.getlist('urls[]')
         website=request.POST.get('website')
         cont=content(Urls,website)

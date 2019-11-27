@@ -378,12 +378,28 @@ $(document).on('click', '.btn_remove', function(){
 
 
 function deleteselected(){
-$('tbody tr').each(function(){
-del($(this).attr('id'))
-})
+  var array=[]
+  table.rows().every( function () {
+  array.push(table.row(this).node().id)
+                                    });
+              $.ajaxSetup({
+                   headers: { "X-CSRFToken": '{{ csrf_token }}' }
+                       });
+
+     $.ajax({
+       url:"/keyword-find/",
+       method:"POST",
+       dataType: 'json',
+       data:{deleteselected:array},
+        success:function(result)
+                    {
+       table.rows().remove().draw()
+                       }
+                });
 
 
 }
+
 
 function show(id){
       $(id).parent().css('display','none')
@@ -494,11 +510,39 @@ function mov1(id){
       document.getElementById('moveloading').style.display=''
 
   if(id=='selected'){
-        $('tbody tr').each(function(){
-          mov1($(this).attr('id'))
-            })
+  var array=[]
+  table.rows().every( function () {
+  array.push(table.row(this).node().id)
+                                    });
+       $.ajaxSetup({
+             headers: { "X-CSRFToken": '{{ csrf_token }}' }
+                   });
+
+     $.ajax({
+       url:"/keyword-find/",
+       method:"POST",
+       dataType: 'json',
+       data:{moveselected:array,group:document.getElementById('groupmove').value},
+        success:function(result)
+                    {
+         $('#myModal').modal('hide'); 
+          table.rows().every( function ( rowIdx, tableLoop, rowLoop ) {
+                var data = this.data();
+                data[0] = document.getElementById('groupmove').value;
+                this.data(data);
+                                                                  } )
+
+          document.getElementsByClassName("tablinks active")[0].click();
+          document.getElementById('move').style.display=''
+          document.getElementById('moveloading').style.display='none'
+
+                       }
+                });
+
+
           return
         }
+
 
   $.ajax({
        url:"/keyword-find/",
