@@ -142,18 +142,18 @@ def content(urls,website):
 				    content[i]['details']+=table.text
 				content[i]['url']=url
 
-				path="C:\\Users\\sami1\\Downloads\\Compressed\\jungle-master\\jungle-master\\media\\products\\"+content[i]['shop-name'].translate(str.maketrans('', '', string.punctuation))
+				path="/jungle/media/products/"+content[i]['shop-name'].translate(str.maketrans('', '', string.punctuation))
 
 				if not os.path.isdir(path):
 					os.mkdir(path)
 
-				path="C:\\Users\\sami1\\Downloads\\Compressed\\jungle-master\\jungle-master\\media\\products\\"+content[i]['shop-name'].translate(str.maketrans('', '', string.punctuation))+"\\"+content[i]['title'].translate(str.maketrans('', '', string.punctuation))
+				path="/jungle/media/products/"+content[i]['shop-name'].translate(str.maketrans('', '', string.punctuation))+"/"+content[i]['title'].translate(str.maketrans('', '', string.punctuation))
 				if not os.path.isdir(path):
 					os.mkdir(path)
 
 				videos=driver.find_elements_by_xpath('//video')
 				for j,video in enumerate(videos):
-					urllib.request.urlretrieve(video.get_attribute('src'), path+"\\video"+str(j)+".mp4")
+					urllib.request.urlretrieve(video.get_attribute('src'), path+"/video"+str(j)+".mp4")
 
 				images=driver.find_elements_by_xpath('//div[@class="thumb"]/a/img')
 				for j,image in enumerate(images):
@@ -161,10 +161,10 @@ def content(urls,website):
 						image.click()
 						imgs = driver.find_elements_by_xpath('//div[@class="iwrap nopic"]/a/img')
 						for img in imgs:
-							urllib.request.urlretrieve(img.get_attribute('src'), path+"\\image"+str(j)+'.jpg')
+							urllib.request.urlretrieve(img.get_attribute('src'), path+"/image"+str(j)+'.jpg')
 					except Exception as e:
 						pass
-				with open(path+'\\text.txt', 'w') as f:
+				with open(path+'/text.txt', 'w') as f:
 					f.write(json.dumps(content[i]))
 				i+=1
 			except Exception as e:
