@@ -829,7 +829,7 @@ document.getElementById('editdataloading').style.display=''
                     document.getElementById("starting").style.display="";
                     document.getElementById("loading").style.display="none"
                      addentry(result)
-                     $('input').not("input[name='name']").not("input[value='Search']").tagsinput('refresh');
+                     $('input[data-role="tagsinput"]').tagsinput('refresh');
 
                     },
                     error:function (xhr, ajaxOptions, thrownError) {

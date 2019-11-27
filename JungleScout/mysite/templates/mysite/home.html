@@ -389,12 +389,12 @@ function deleteselected(){
   table.rows().every( function () {
   array.push(table.row(this).node().id)
                                     });
-     $.ajaxSetup({
+              $.ajaxSetup({
                    headers: { "X-CSRFToken": '{{ csrf_token }}' }
                        });
 
      $.ajax({
-       url:"/content-downloader/",
+       url:"/keyword-find/",
        method:"POST",
        dataType: 'json',
        data:{deleteselected:array},
@@ -407,6 +407,18 @@ function deleteselected(){
 
 }
 
+function show(id){
+      $(id).parent().css('display','none')
+      $(id).parent().next().css('display','')
+      $(id).parent().next().next().css('display','')
+    }
+
+function hide(id){
+      $(id).css('display','none')
+      $(id).prev().css('display','none')
+      $(id).prev().prev().css('display','')
+
+    }
 
 function mov(id){
     document.getElementById('groupmove').value=table.cell($('#'+id),0).data()
@@ -502,6 +514,7 @@ function editgroup(){
 function mov1(id){
         document.getElementById('move').style.display='none'
       document.getElementById('moveloading').style.display=''
+
   if(id=='selected'){
   var array=[]
   table.rows().every( function () {
@@ -535,6 +548,25 @@ function mov1(id){
 
           return
         }
+
+
+  $.ajax({
+       url:"/content-downloader/",
+       method:"GET",
+       dataType: 'json',
+       data:{move:id,group:document.getElementById('groupmove').value},
+       success:function(result)
+       {
+          $('#myModal').modal('hide'); 
+          table.cell($('#'+id),0).data(document.getElementById('groupmove').value)
+                       
+          document.getElementsByClassName("tablinks active")[0].click();
+        document.getElementById('move').style.display=''
+      document.getElementById('moveloading').style.display='none'
+
+                       }
+                });
+}
 
 var overview={{overview|safe}};
 var index=0;
