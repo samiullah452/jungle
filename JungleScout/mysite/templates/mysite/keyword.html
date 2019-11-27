@@ -348,6 +348,7 @@ box-shadow: none
             <th>Keywords</th>
             <th>Product Url</th>
             <th>Manage</th>
+            <th></th>
           </thead>
           <tbody></tbody>
           </table>
@@ -518,7 +519,7 @@ function mov1(id){
 }
 
 var overview={{overview|safe}};
-
+var index=0;
 $('#response').on( 'dblclick', 'tbody td:not(:first-child, :nth-child(7), :nth-child(6), :nth-child(8))', function (e) {
 
 document.getElementById('edit-label').innerHTML=table.settings().init().columns[table.cell(this).index().column].name
@@ -552,7 +553,14 @@ var table = $('#response').DataTable( {
             { "name": "url" },
             { "name": "manage" }
             ],
+                    "order": [[ 8, 'desc' ]],
+
               columnDefs: [{
+            "searchable": false,
+            "orderable": true,
+            "visible":false,
+            "targets": 8
+             },{
                     render: function (data, type, full, meta) {
                       if (data.length<100){
                         return "<div class='text-wrap width-20'>" + data +"</div>";        
@@ -615,7 +623,7 @@ function addentry(result){
   for (var key in result) {
     button="<a href='javascript:del("+result[key]['id']+");' >Delete</a>   <a href='javascript:mov("+result[key]['id']+")';>Move</a>"
 
-      table.row.add([result[key]['group'],result[key]['category_name'],result[key]['category_id'],result[key]['title'],result[key]['description'],result[key]['keywords'],result[key]['url'],button]).node().id=result[key]['id']
+      table.row.add([result[key]['group'],result[key]['category_name'],result[key]['category_id'],result[key]['title'],result[key]['description'],result[key]['keywords'],result[key]['url'],button,index++]).node().id=result[key]['id']
       table.draw(false)
  
   }
@@ -690,7 +698,7 @@ $(document).ready(function() {
     var csv=[];
     var names=table.settings().init().columns
     var row=[]
-    for(var i=0;i<names.length-1;i++){
+    for(var i=0;i<names.length-2;i++){
 
       row.push(names[i]['name'])
                                       }

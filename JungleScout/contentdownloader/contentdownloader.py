@@ -50,6 +50,7 @@ def content(urls,website):
 		import os
 		import urllib.request
 		from selenium.webdriver.chrome.options import Options
+		import json
 		options = Options()
 		options.add_argument('--headless')
 		options.add_argument('--no-sandbox')
@@ -99,7 +100,7 @@ def content(urls,website):
 					for d in (price.text)[index:-1]:
 						if d.isdigit() or d=='.':
 							content_price+=d
-						if d=="/" or d==" ":
+						if d=="/" or d==" " or d.isalpha():
 							break
 
 					content[i]['price']=round((1/rate)*float(content_price), 2)
@@ -114,7 +115,7 @@ def content(urls,website):
 						for d in (price.text)[index:-1]:
 							if d.isdigit() or d=='.':
 								content_price+=d
-							if d=="/" or d==" ":
+							if d=="/" or d==" " or d.isalpha():
 								break
 					content[i]['price']=round((1/rate)*float(content_price), 2)
 
@@ -129,7 +130,7 @@ def content(urls,website):
 						for d in (price.text)[index:-1]:
 							if d.isdigit() or d=='.':
 								content_price+=d
-							if d=="/" or d==" ":
+							if d=="/" or d==" " or d.isalpha():
 								break
 					content[i]['price']=round((1/rate)*float(content_price), 2)
 
@@ -164,7 +165,6 @@ def content(urls,website):
 					except Exception as e:
 						pass
 				with open(path+'\\text.txt', 'w') as f:
-					import json
 					f.write(json.dumps(content[i]))
 				i+=1
 			except Exception as e:

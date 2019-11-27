@@ -18,7 +18,7 @@ def alibaba(urls):
 	options.add_argument('--disable-dev-shm-usage')
 	content={}
 	i=0
-	driver = webdriver.Chrome('contentdownloader/chromedriver.exe',options=options)
+	driver = webdriver.Chrome('contentdownloader/chromedriver',options=options)
 	for url in urls:
 		try:
 			content[i]={}
@@ -60,7 +60,7 @@ def alibaba(urls):
 				for d in (price.text)[index:-1]:
 					if d.isdigit() or d=='.':
 						content_price+=d
-					if d=="/" or d==" ":
+					if d=="/" or d==" " or d.isalpha():
 						break
 
 				content[i]['price']=round((1/rate)*float(content_price), 2)
@@ -75,7 +75,7 @@ def alibaba(urls):
 					for d in (price.text)[index:-1]:
 						if d.isdigit() or d=='.':
 							content_price+=d
-						if d=="/" or d==" ":
+						if d=="/" or d==" " or d.isalpha():
 							break
 				content[i]['price']=round((1/rate)*float(content_price), 2)
 
@@ -90,7 +90,7 @@ def alibaba(urls):
 					for d in (price.text)[index:-1]:
 						if d.isdigit() or d=='.':
 							content_price+=d
-						if d=="/" or d==" ":
+						if d=="/" or d==" " or d.isalpha():
 							break
 				content[i]['price']=round((1/rate)*float(content_price), 2)
 

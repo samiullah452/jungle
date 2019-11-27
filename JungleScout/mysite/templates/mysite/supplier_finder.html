@@ -326,7 +326,8 @@ border: 1px solid black;
             <th>Price CNY</th>
             <th>Price KWON</th>
             <th>Product Url</th>         
-            <th>Manage</th>           
+            <th>Manage</th> 
+            <th></th>          
           </thead>
           <tbody></tbody>
       
@@ -358,7 +359,7 @@ $(document).on('click', '.btn_remove', function(){
     var csv=[];
     var names=table.settings().init().columns
     var row=[]
-    for(var i=0;i<names.length-1;i++){
+    for(var i=0;i<names.length-2;i++){
 
       row.push(names[i]['name'])
                                       }
@@ -537,7 +538,7 @@ function mov1(id){
 }
 
 var overview={{overview|safe}};
-
+var index=0;
 $('#response').on( 'dblclick', 'tbody td:not(:first-child, :nth-child(3), :nth-child(8), :nth-child(9))', function (e) {
 
 document.getElementById('edit-label').innerHTML=table.settings().init().columns[table.cell(this).index().column].name
@@ -590,8 +591,14 @@ var table = $('#response').DataTable( {
             { "name": "url" },
             { "name": "manage" }
             ],
-              columnDefs: [
-                     {
+                    "order": [[ 9, 'desc' ]],
+
+              columnDefs: [{
+            "searchable": false,
+            "orderable": true,
+            "visible":false,
+            "targets": 9
+             },                     {
                     render: function (data, type, full, meta) {
                         return "<div align='center' class='text-wrap width-20'>" + data+"</div>"
                     },
@@ -666,7 +673,7 @@ function addentry(result){
   for (var key in result) {
     button="<a href='javascript:del("+result[key]['id']+");' >Delete</a>   <a href='javascript:mov("+result[key]['id']+")';>Move</a>"
 
-      table.row.add([result[key]['group'],[result[key]['shop-name'],result[key]['company_href']],result[key]['image'],result[key]['title'],result[key]['region'],result[key]['price'],result[key]['price_krw'],result[key]['url'],button]).node().id=result[key]['id']
+      table.row.add([result[key]['group'],[result[key]['shop-name'],result[key]['company_href']],result[key]['image'],result[key]['title'],result[key]['region'],result[key]['price'],result[key]['price_krw'],result[key]['url'],button,index++]).node().id=result[key]['id']
       table.draw(false)
  
   }
