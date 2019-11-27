@@ -1,0 +1,133 @@
+Watching for file changes with StatReloader
+Internal Server Error: /content-downloader/
+Traceback (most recent call last):
+  File "/root/myenv/lib/python3.6/site-packages/django/core/handlers/exception.py", line 34, in inner
+    response = get_response(request)
+  File "/root/myenv/lib/python3.6/site-packages/django/core/handlers/base.py", line 115, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/root/myenv/lib/python3.6/site-packages/django/core/handlers/base.py", line 113, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/jungle/JungleScout/mysite/views.py", line 331, in content_downloader
+    t=user_content_downloader(store_name=cont[key]['shop-name'],product_name=cont[key]['title'],price=cont[key]['price'],name=content_downloader_groups.objects.get(name='Uncategorized',user=request.user),details=cont[key]['details'],url=cont[key]['url'],image=cont[key]['image'],company_href=cont[key]['company_href'],price_krw=cont[key]['price_krw'])
+KeyError: 'price'
+[27/Nov/2019 17:20:42] "POST /content-downloader/ HTTP/1.1" 500 15128
+/jungle/JungleScout/contentdownloader/contentdownloader.py changed, reloading.
+Performing system checks...
+
+System check identified no issues (0 silenced).
+November 27, 2019 - 17:20:18
+Django version 2.2.7, using settings 'JungleScount.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+3-10 Pieces
+$21.00
+$28.00
+11-20 Pieces
+$19.95
+$26.60
+>=21 Pieces
+$18.90
+$25.20
+
+could not convert string to float: 
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+[27/Nov/2019 17:25:15] "GET / HTTP/1.1" 200 55765
+[27/Nov/2019 17:25:16] "GET /static/mysite/css/style4.css HTTP/1.1" 304 0
+[27/Nov/2019 17:25:16] "GET /static/mysite/images/js-logo-full.svg HTTP/1.1" 304 0
+[27/Nov/2019 17:25:16] "GET /static/mysite/css/navBarStyleSheet.css HTTP/1.1" 304 0
+[27/Nov/2019 17:25:16] "GET /static/mysite/css/notificationPanelStyle.css HTTP/1.1" 304 0
+[27/Nov/2019 17:25:16] "GET /static/mysite/css/dashboard.css HTTP/1.1" 304 0
+[27/Nov/2019 17:25:16] "GET /static/mysite/css/findProductStyleSheet.css HTTP/1.1" 304 0
+[27/Nov/2019 17:25:16] "GET /static/mysite/images/giphy.gif HTTP/1.1" 304 0
+[27/Nov/2019 17:25:16] "GET /static/mysite/js/login_Script.js HTTP/1.1" 304 0
+[27/Nov/2019 17:25:16] "GET /static/mysite/js/dashboard.js HTTP/1.1" 304 0
+Internal Server Error: /content-downloader/
+Traceback (most recent call last):
+  File "/root/myenv/lib/python3.6/site-packages/django/core/handlers/exception.py", line 34, in inner
+    response = get_response(request)
+  File "/root/myenv/lib/python3.6/site-packages/django/core/handlers/base.py", line 115, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/root/myenv/lib/python3.6/site-packages/django/core/handlers/base.py", line 113, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/jungle/JungleScout/mysite/views.py", line 331, in content_downloader
+    t=user_content_downloader(store_name=cont[key]['shop-name'],product_name=cont[key]['title'],price=cont[key]['price'],name=content_downloader_groups.objects.get(name='Uncategorized',user=request.user),details=cont[key]['details'],url=cont[key]['url'],image=cont[key]['image'],company_href=cont[key]['company_href'],price_krw=cont[key]['price_krw'])
+KeyError: 'price'
+[27/Nov/2019 17:25:39] "POST /content-downloader/ HTTP/1.1" 500 15128
+/jungle/JungleScout/contentdownloader/contentdownloader.py changed, reloading.
+Performing system checks...
+
+System check identified no issues (0 silenced).
+November 27, 2019 - 17:24:45
+Django version 2.2.7, using settings 'JungleScount.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+3-10 Pieces
+$21.00
+$28.00
+11-20 Pieces
+$19.95
+$26.60
+>=21 Pieces
+$18.90
+$25.20
+
+could not convert string to float: 
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+Internal Server Error: /content-downloader/
+Traceback (most recent call last):
+  File "/root/myenv/lib/python3.6/site-packages/django/core/handlers/exception.py", line 34, in inner
+    response = get_response(request)
+  File "/root/myenv/lib/python3.6/site-packages/django/core/handlers/base.py", line 115, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/root/myenv/lib/python3.6/site-packages/django/core/handlers/base.py", line 113, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/jungle/JungleScout/mysite/views.py", line 331, in content_downloader
+    t=user_content_downloader(store_name=cont[key]['shop-name'],product_name=cont[key]['title'],price=cont[key]['price'],name=content_downloader_groups.objects.get(name='Uncategorized',user=request.user),details=cont[key]['details'],url=cont[key]['url'],image=cont[key]['image'],company_href=cont[key]['company_href'],price_krw=cont[key]['price_krw'])
+KeyError: 'price'
+[27/Nov/2019 17:28:29] "POST /content-downloader/ HTTP/1.1" 500 15128
+Watching for file changes with StatReloader
+/jungle/JungleScout/contentdownloader/contentdownloader.py changed, reloading.
+Performing system checks...
+
+System check identified no issues (0 silenced).
+November 27, 2019 - 17:27:49
+Django version 2.2.7, using settings 'JungleScount.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+3-10 Pieces
+$21.00
+$28.00
+11-20 Pieces
+$19.95
+$26.60
+>=21 Pieces
+$18.90
+$25.20
+
+could not convert string to float: 
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+[27/Nov/2019 17:31:43] "GET / HTTP/1.1" 200 55765
+[27/Nov/2019 17:31:43] "GET /static/mysite/css/navBarStyleSheet.css HTTP/1.1" 304 0
+[27/Nov/2019 17:31:43] "GET /static/mysite/css/style4.css HTTP/1.1" 304 0
+[27/Nov/2019 17:31:43] "GET /static/mysite/css/notificationPanelStyle.css HTTP/1.1" 304 0
+[27/Nov/2019 17:31:43] "GET /static/mysite/css/findProductStyleSheet.css HTTP/1.1" 304 0
+[27/Nov/2019 17:31:43] "GET /static/mysite/css/dashboard.css HTTP/1.1" 304 0
+[27/Nov/2019 17:31:43] "GET /static/mysite/images/js-logo-full.svg HTTP/1.1" 304 0
+[27/Nov/2019 17:31:43] "GET /static/mysite/images/giphy.gif HTTP/1.1" 304 0
+[27/Nov/2019 17:31:44] "GET /static/mysite/js/login_Script.js HTTP/1.1" 304 0
+[27/Nov/2019 17:31:44] "GET /static/mysite/js/dashboard.js HTTP/1.1" 304 0
+Internal Server Error: /content-downloader/
+Traceback (most recent call last):
+  File "/root/myenv/lib/python3.6/site-packages/django/core/handlers/exception.py", line 34, in inner
+    response = get_response(request)
+  File "/root/myenv/lib/python3.6/site-packages/django/core/handlers/base.py", line 115, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/root/myenv/lib/python3.6/site-packages/django/core/handlers/base.py", line 113, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/jungle/JungleScout/mysite/views.py", line 331, in content_downloader
+    t=user_content_downloader(store_name=cont[key]['shop-name'],product_name=cont[key]['title'],price=cont[key]['price'],name=content_downloader_groups.objects.get(name='Uncategorized',user=request.user),details=cont[key]['details'],url=cont[key]['url'],image=cont[key]['image'],company_href=cont[key]['company_href'],price_krw=cont[key]['price_krw'])
+KeyError: 'price'
+[27/Nov/2019 17:32:09] "POST /content-downloader/ HTTP/1.1" 500 15128

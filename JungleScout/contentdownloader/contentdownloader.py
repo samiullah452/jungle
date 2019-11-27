@@ -95,14 +95,17 @@ def content(urls,website):
 					index=(price.text).find("$")
 					if index==-1:
 						index=0
+					print(index)
 					content_price=''
 
 					for d in (price.text)[index:-1]:
+						print(d)
 						if d.isdigit() or d=='.':
 							content_price+=d
-						if d=="/" or d==" " or d=="$" or d.isalpha():
+						if d=="/" or d=="$" or d.isalpha():
 							break
-
+					print(price.text)
+					print(content_price)
 					content[i]['price']=round((1/rate)*float(content_price), 2)
 
 				if 'price' not in content[i]:
@@ -117,6 +120,8 @@ def content(urls,website):
 								content_price+=d
 							if d=="/" or d==" " or d=="$" or d.isalpha():
 								break
+					print("-----------------------")
+					print(content_price)
 					content[i]['price']=round((1/rate)*float(content_price), 2)
 
 
@@ -132,6 +137,8 @@ def content(urls,website):
 								content_price+=d
 						if d=="/" or d==" " or d=="$" or d.isalpha():
 								break
+					print("sadasdasdas")
+					print(content_price)
 					content[i]['price']=round((1/rate)*float(content_price), 2)
 
 
