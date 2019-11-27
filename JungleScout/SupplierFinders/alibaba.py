@@ -57,7 +57,7 @@ def alibaba(urls):
 					index=0
 				content_price=''
 
-				for d in (price.text)[index:-1]:
+				for d in (price.text)[index+1:-1]:
 					if d.isdigit() or d=='.':
 						content_price+=d
 					if d=="/" or d==" " or d=="$" or d.isalpha():
@@ -72,7 +72,7 @@ def alibaba(urls):
 					if index==-1:
 						index=0
 					content_price=''
-					for d in (price.text)[index:-1]:
+					for d in (price.text)[index+1:-1]:
 						if d.isdigit() or d=='.':
 							content_price+=d
 						if d=="/" or d==" " or d=="$" or d.isalpha():
@@ -87,7 +87,7 @@ def alibaba(urls):
 					if index==-1:
 						index=0
 					content_price=''
-					for d in (price.text)[index:-1]:
+					for d in (price.text)[index+1:-1]:
 						if d.isdigit() or d=='.':
 							content_price+=d
 						if d=="/" or d==" " or d=="$" or d.isalpha():
