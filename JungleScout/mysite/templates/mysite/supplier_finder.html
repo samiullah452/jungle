@@ -403,7 +403,7 @@ function deleteselected(){
                                     });
      $.ajax({
        url:"/supplier-find/",
-       method:"GET",
+       method:"POST",
        dataType: 'json',
        data:{deleteselected:array},
         success:function(result)
@@ -530,7 +530,7 @@ function mov1(id){
                                     });
      $.ajax({
        url:"/supplier-find/",
-       method:"GET",
+       method:"POST",
        dataType: 'json',
        data:{moveselected:array},
         success:function(result)
