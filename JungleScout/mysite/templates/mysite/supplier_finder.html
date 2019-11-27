@@ -397,11 +397,9 @@ $(document).on('click', '.btn_remove', function(){
 }
 
 function deleteselected(){
-table.rows().each(function(){
-del($(this).attr('id'))
-})
-
-
+table.rows().every( function () {
+   del(table.row(this).node().id)
+});
 }
 
 function show(id){
@@ -513,9 +511,10 @@ function mov1(id){
       document.getElementById('moveloading').style.display=''
 
   if(id=='selected'){
-        $('tbody tr').each(function(){
-          mov1($(this).attr('id'))
-            })
+        table.rows().every( function () {
+            mov1(table.row(this).node().id)
+            });
+
           return
         }
 

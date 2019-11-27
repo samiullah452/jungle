@@ -33,7 +33,7 @@ def alibaba(urls):
 						content[i]['image'].append(imgs[:imgs.find(".jpg")]+".jpg")
 						j+=1
 					elif imgs.find(".png")!=-1:
-						content[i]['image'].append(imgs[:imgs.find(".jpg")]+".png")
+						content[i]['image'].append(imgs[:imgs.find(".png")]+".png")
 						j+=1
 
 
