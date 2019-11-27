@@ -540,7 +540,7 @@ function mov1(id){
        url:"/supplier-find/",
        method:"POST",
        dataType: 'json',
-       data:{moveselected:array},
+       data:{moveselected:array,group:document.getElementById('groupmove').value},
         success:function(result)
                     {
           table.column( 0 ).data(document.getElementById('groupmove').value).draw()
