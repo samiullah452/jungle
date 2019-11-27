@@ -37,7 +37,7 @@ def alibaba(urls):
 						j+=1
 
 
-			title = soup.findAll("div",{"class":'ma-title'})
+			title = soup.findAll("h1",{"class":'ma-title'})
 			for title in title:
 			    content[i]['title']=title.text
 
