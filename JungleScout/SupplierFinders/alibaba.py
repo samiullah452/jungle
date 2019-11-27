@@ -21,6 +21,7 @@ def alibaba(urls):
 	driver = webdriver.Chrome('contentdownloader/chromedriver',options=options)
 	for url in urls:
 		try:
+			print(urls[url]['url'])
 			content[i]={}
 			content[i]['group']='Uncategorized'			    
 			content[i]['image']=[]
