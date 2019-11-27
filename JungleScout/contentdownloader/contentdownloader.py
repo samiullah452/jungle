@@ -104,8 +104,10 @@ def content(urls,website):
 							content_price+=d
 						if d=="/" or d=="$" or d.isalpha():
 							break
-					print(price.text)
-					print(content_price)
+					while 1:
+						print(price.text)
+						print("faaaaaaaaaaaaaaaaaaaaa")
+						print(content_price)
 					content[i]['price']=round((1/rate)*float(content_price), 2)
 
 				if 'price' not in content[i]:
