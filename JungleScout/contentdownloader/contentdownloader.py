@@ -105,8 +105,8 @@ def content(urls,website):
 						if d=="/" or d=="$" or d.isalpha():
 							break
 					while 1:
-						print(price.text)
-						print("faaaaaaaaaaaaaaaaaaaaa")
+						print(index)
+						print("fffffffffffffffff")
 						print(content_price)
 					content[i]['price']=round((1/rate)*float(content_price), 2)
 
