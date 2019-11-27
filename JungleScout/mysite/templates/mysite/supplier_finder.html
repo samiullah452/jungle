@@ -397,7 +397,7 @@ $(document).on('click', '.btn_remove', function(){
 }
 
 function deleteselected(){
-$('tbody tr').each(function(){
+table.rows().each(function(){
 del($(this).attr('id'))
 })
 

@@ -45,7 +45,6 @@ def content(urls,website):
 		ratekrw=data["rates"]["KRW"]
 
 		from selenium import webdriver
-		import time
 		import string
 		import os
 		import urllib.request
