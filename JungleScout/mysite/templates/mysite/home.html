@@ -713,8 +713,12 @@ function openCity(evt, cityName) {
 function addentry(result){
   for (var key in result) {
     button="<a href='javascript:del("+result[key]['id']+");' >Delete</a>   <a href='javascript:mov("+result[key]['id']+")';>Move</a>"
+Object.keys(result).reverse().forEach(function(key) { 
 
       table.row.add([result[key]['group'],[result[key]['shop-name'],result[key]['company_href']],result[key]['image'],result[key]['title'],result[key]['price'],result[key]['price_krw'],result[key]['details'],result[key]['url'],button,index++]).node().id=result[key]['id']
+
+   });
+
       table.draw(false)
  
   }
