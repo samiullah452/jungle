@@ -563,7 +563,6 @@ function mov1(id){
 }
 
 var overview={{overview|safe}};
-var index=0;
 $('#response').on( 'dblclick', 'tbody td:not(:first-child, :nth-child(7), :nth-child(6), :nth-child(8))', function (e) {
 
 document.getElementById('edit-label').innerHTML=table.settings().init().columns[table.cell(this).index().column].name
@@ -664,16 +663,13 @@ function openCity(evt, cityName) {
           evt.currentTarget.className += " active";
                                               }            
 function addentry(result){
-   
-Object.keys(result).reverse().forEach(function(key) { 
+  for (var key in result) {
+    button="<a href='javascript:del("+result[key]['id']+");' >Delete</a>   <a href='javascript:mov("+result[key]['id']+")';>Move</a>"
 
- button="<a href='javascript:del("+result[key]['id']+");' >Delete</a>   <a href='javascript:mov("+result[key]['id']+")';>Move</a>"
-
-      table.row.add([result[key]['group'],result[key]['category_name'],result[key]['category_id'],result[key]['title'],result[key]['description'],result[key]['keywords'],result[key]['url'],button,index++]).node().id=result[key]['id']
-       });
-
+      table.row.add([result[key]['group'],result[key]['category_name'],result[key]['category_id'],result[key]['title'],result[key]['description'],result[key]['keywords'],result[key]['url'],button,result[key]['id']]).node().id=result[key]['id']
       table.draw(false)
  
+  }
 setTimeout(function () {$($.fn.dataTable.tables( true ) ).DataTable().columns.adjust().draw();},200)
 
 }
