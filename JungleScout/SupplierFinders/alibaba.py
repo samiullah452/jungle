@@ -19,8 +19,8 @@ def alibaba(urls):
 			soup = BeautifulSoup(response.content, 'html5lib')
 			name = soup.findAll("div",{"class":'company-name-container'})
 			for name in name:
-				content[i]['company_href']=(name.find("a"))['href']
-				content[i]['shop-name']=name.text
+				content[i]['shop-name']=' '.join((name.text).split())
+
 
 			images=soup.findAll("div",{"class":"thumb"})
 			j=0

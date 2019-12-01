@@ -344,7 +344,7 @@ def content_downloader(request):
             grp=content_downloader_groups(user=request.user,name="Uncategorized")
             grp.save()
         for key in cont.keys(): 
-            t=user_content_downloader(store_name=cont[key]['shop-name'],product_name=cont[key]['title'],price=cont[key]['price'],name=content_downloader_groups.objects.get(name='Uncategorized',user=request.user),details=cont[key]['details'],url=cont[key]['url'],image=cont[key]['image'],company_href=cont[key]['company_href'],price_krw=cont[key]['price_krw']) 
+            t=user_content_downloader(store_name=cont[key]['shop-name'],product_name=cont[key]['title'],price=cont[key]['price'],name=content_downloader_groups.objects.get(name='Uncategorized',user=request.user),details=cont[key]['details'],url=cont[key]['url'],image=cont[key]['image'],price_krw=cont[key]['price_krw']) 
             t.save()
             cont[key]['id']=t.id
 
@@ -401,7 +401,7 @@ def supplier_find(request):
             grp=supplier_finder_groups(user=request.user,name="Uncategorized")
             grp.save()
         for key in sup.keys(): 
-            t=user_supplier_finder(store_name=sup[key]['shop-name'],product_name=sup[key]['title'],price=sup[key]['price'],price_krw=sup[key]['price_krw'],name=supplier_finder_groups.objects.get(name='Uncategorized',user=request.user),region=sup[key]['region'],url=sup[key]['url'],company_href=sup[key]['company_href']) 
+            t=user_supplier_finder(store_name=sup[key]['shop-name'],product_name=sup[key]['title'],price=sup[key]['price'],price_krw=sup[key]['price_krw'],name=supplier_finder_groups.objects.get(name='Uncategorized',user=request.user),region=sup[key]['region'],url=sup[key]['url']) 
             t.save()
             for img in sup[key]['image']:
                 i=supplier_finder_image(src=img,supplier=t)
@@ -423,7 +423,6 @@ def supplier_finder(request):
               overview[i]['id']=over.id
               overview[i]['group']=over.name.name
               overview[i]['shop-name']=over.store_name
-              overview[i]['company_href']=over.company_href
               overview[i]['image']=[]
               images=supplier_finder_image.objects.filter(supplier=over)
               for image in images:
@@ -459,7 +458,6 @@ def home(request):
               overview[i]['id']=over.id
               overview[i]['group']=over.name.name
               overview[i]['shop-name']=over.store_name
-              overview[i]['company_href']=over.company_href
               overview[i]['image']=over.image
               overview[i]['title']=over.product_name
               overview[i]['price']=over.price

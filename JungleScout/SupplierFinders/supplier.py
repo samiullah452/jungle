@@ -2,41 +2,68 @@ from SupplierFinders.alibaba import alibaba
 
 def supplier(keys,website):
 	if website=='1688':
-		from selenium import webdriver
-		import time
-		from selenium.webdriver.chrome.options import Options
-		options = Options()
-		options.add_argument('--headless')
-		driver= webdriver.Chrome('contentdownloader/chromedriver',options=options)
-
-		from selenium.webdriver.common.keys import Keys
-		i=0	
+		import requests
+		from bs4 import BeautifulSoup
+		from dicttoxml import dicttoxml
+		url = 'https://api.exchangerate-api.com/v4/latest/CNY'
+		response = requests.get(url)	
+		data = response.json()
+		ratekrw=data["rates"]["KRW"]
+		content={}
+		i=0
 		for key in keys:
-			supplier[i]={}
-			driver.get('https://s.1688.com/company/company_search.htm?keywords=watch&n=y&netType=1%2C11&encode=utf-8&spm=a260k.dacugeneral.search.0')
-			supplier[i]['image']=[]
-			time.sleep(5)
-			Send = driver.find_element_by_css_selector('div>input[type="text"]')
-			Send.clear()
-			Send.send_keys(key)
-			button = driver.find_element_by_xpath('//*[@id="s_search_form"]/fieldset/div[2]/div[1]/div/div[2]/button').click()
-
-			company_detalis = driver.find_elements_by_class_name('list-item-left')
-			for company_detalis in company_detalis:
-			    supplier[i]['company_detalis']=company_detalis.text
-
-			title = driver.find_elements_by_class_name('list-item-right')
-			for title in title:
-				supplier[i]['title']=title.text
-
-			title = driver.find_elements_by_css_selector('div[class="img-thumb"]>a>img')
-			for title in title:
-				supplier[i]['image'].append(title.get_attribute('src'))
-
-			images = driver.find_elements_by_xpath('//*[@id="mod-detail-bd"]/div[1]/div/div/div/div/div[1]/div/a/img')
-			for images in images:
-				supplier[i]['image'].append(title.get_attribute('src'))
-		print(supplier)
+			xml={}
+			xml['SearchItemsParameters']={}
+			xml['SearchItemsParameters']["Provider"]="Alibaba1688"
+			xml['SearchItemsParameters']["LanguageOfQuery"]="en"
+			xml['SearchItemsParameters']['ItemTitle']=key
+			xml_str = dicttoxml(xml,attr_type=False)
+			xml_str=str(xml_str)
+			xml_str=xml_str[xml_str.find('<SearchItemsParameters>'):xml_str.find('</root>')]
+			req = requests.get('http://otapi.net/OtapiWebService2.asmx/SearchItemsFrame?instanceKey=36bafd6e-baea-41e4-9e8d-4eb2436b0166&language=en&xmlParameters='+str(xml_str)+'&framePosition=0&frameSize=40')
+			soup = BeautifulSoup(req.content,'xml')
+			Items=soup.find("Items")
+			itms=Items.findAll('Item')
+			for item in itms:
+				try:
+					content[i]={}
+					title=item.find('OriginalTitle')
+					content[i]['group']='Uncategorized'			    
+					content[i]['title']=title.text
+					content[i]['image']=[]	
+					pics=item.findAll('ItemPicture')
+					for j,pic in enumerate(pics):
+						if j==3:
+						    break
+						content[i]['image'].append(pic.Url.text)
+					price=item.find('OriginalPrice')
+					content[i]['price']=round(float(price.text), 2)
+					content[i]['price_krw']=round((ratekrw)*float(content[i]['price']), 2)					
+					location=item.find('Location')
+					content[i]['region']=''
+					if location.City is not None:
+						content[i]['region']+=location.City.text+" "
+					if location.State is not None:
+							content[i]['region']+=location.State.text	
+					if content[i]['region']=='':
+						content[i]['region']="China"
+					vendorid=item.find('VendorId').text
+					req = requests.get('http://otapi.net/OtapiWebService2.asmx/GetVendorInfo?instanceKey=36bafd6e-baea-41e4-9e8d-4eb2436b0166&language=en&vendorId='+vendorid)
+					soup = BeautifulSoup(req.content,'xml')
+					vendor=soup.find('ShopName')
+					if vendor is not None:
+						content[i]['shop-name']=vendor.text
+					else:
+						vendor=soup.find('DisplayName')						
+						content[i]['shop-name']=vendor.text
+					url=item.find('ExternalItemUrl')
+					content[i]['url']=url.text
+					i+=1
+				except Exception as e:
+						print(e)		
+						pass
+		return content
+	
 	elif website=="Alibaba":
 		from selenium import webdriver
 		import time
@@ -53,7 +80,6 @@ def supplier(keys,website):
 		urls={}
 		driver= webdriver.Chrome('contentdownloader/chromedriver',options=options)
 		driver.get('https://www.alibaba.com/corporations/watch.html')
-
 		i=0
 		for key in keys:
 			time.sleep(5)

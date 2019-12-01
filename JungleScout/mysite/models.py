@@ -33,7 +33,6 @@ class user_content_downloader(models.Model):
 	image=models.TextField()
 	name=models.ForeignKey(content_downloader_groups,on_delete=models.CASCADE)
 	details=models.TextField()
-	company_href=models.TextField()
 
 class supplier_finder_groups(models.Model):
 	name=models.CharField(max_length=255)
@@ -50,7 +49,6 @@ class user_supplier_finder(models.Model):
 	price_krw=models.FloatField()
 	name=models.ForeignKey(supplier_finder_groups,on_delete=models.CASCADE)
 	region=models.TextField()
-	company_href=models.TextField()
 
 class supplier_finder_image(models.Model):
 	src=models.TextField()

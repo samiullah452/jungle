@@ -100,15 +100,6 @@ word-break:break-word;
     border: 1px solid #f57706;
   }
 
-.shop{
-  display:none;
-
-}
-.shopim:hover .shop{
-display:block;
-background: white;
-border: 1px solid black;
-}
   button[id="profileButton"]:hover,
   button[id="profileButton"]:focus,
   button[id="profileButton"]:active {
@@ -368,15 +359,11 @@ $(document).on('click', '.btn_remove', function(){
     table.rows().data().each(function(val){
     row=[]
     for(var i=0;i<8;i++){
-      if(i==1){
-        row.push(val[i][0])
-      }
-      else{
         if (i==3){
           val[i]=val[i].replace(/(\r\n|\n|\r|\n\r)/gm," ")
         }
         row.push(val[i])
-           }
+           
            }
         csv.push(row.join(','));
                                   
@@ -385,7 +372,7 @@ $(document).on('click', '.btn_remove', function(){
     // Construct csv
     var csv_string = csv.join('\n');
     // Download it
-    var filename = 'content_downloader' + '_' + new Date().toLocaleDateString() + '.csv';
+    var filename = 'supplier_finder' + '_' + new Date().toLocaleDateString() + '.csv';
     var link = document.createElement('a');
     link.style.display = 'none';
     link.setAttribute('target', '_blank');
@@ -588,9 +575,8 @@ document.getElementById('editdataid').setAttribute('tableindex',$(this).index())
 
 $('#EditData').modal('show'); 
 
-
 if($(this).index()==1){
-document.getElementById('edit-data').value=$(this).children(":first").children(":first").text()
+    document.getElementById('edit-data').value=($(this).children(":first").text())
 
 }
 
@@ -643,7 +629,7 @@ var table = $('#response').DataTable( {
                     render: function (data, type, full, meta) {
                         return "<div align='center' class='text-wrap width-20'>" + data+"</div>"
                     },
-                    targets: [0,3,4]
+                    targets: [0,3,4,1]
                 },
                      {
                     render: function (data, type, full, meta) {
@@ -658,12 +644,6 @@ var table = $('#response').DataTable( {
                     targets: [6]
                 },
 
-                     {
-                    render: function (data, type, full, meta) {
-                        return "<div align='center' class='shopim text-wrap width-20'><div>" + data[0]+"</div><div class='shop'><a target='_blank' href='"+data[1]+"'>Open</a></div></div>"
-                    },
-                    targets: [1]
-                },
 
                {
 
@@ -714,7 +694,7 @@ function addentry(result){
   for (var key in result) {
     button="<a href='javascript:del("+result[key]['id']+");' >Delete</a>   <a href='javascript:mov("+result[key]['id']+")';>Move</a>"
 
-      table.row.add([result[key]['group'],[result[key]['shop-name'],result[key]['company_href']],result[key]['image'],result[key]['title'],result[key]['region'],result[key]['price'],result[key]['price_krw'],result[key]['url'],button,result[key]['id']]).node().id=result[key]['id']
+      table.row.add([result[key]['group'],result[key]['shop-name'],result[key]['image'],result[key]['title'],result[key]['region'],result[key]['price'],result[key]['price_krw'],result[key]['url'],button,result[key]['id']]).node().id=result[key]['id']
       table.draw(false)
  
   }
