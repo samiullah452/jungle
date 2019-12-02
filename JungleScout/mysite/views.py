@@ -99,7 +99,7 @@ def testing(request):
                         file_names.append("http://138.197.67.53:8000"+"/media/"+filename)
                 else:
                         file_names.append(settings.MEDIA_ROOT+"/"+filename)
-        print(filenames)
+        print(file_names)
         test=test(file_names,website)
         i=0
         for key in test.keys(): 
