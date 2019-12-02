@@ -42,7 +42,6 @@ def content(urls,website):
 						resp = urllib.request.urlopen(content[i]['image'])
 					except:
 						mainpic=False
-
 					price=soup.find('OriginalPrice')
 					content[i]['price']=round(float(price.text), 2)
 					content[i]['price_krw']=round((ratekrw)*float(content[i]['price']), 2)					
@@ -101,12 +100,8 @@ def content(urls,website):
 						try:
 							urllib.request.urlretrieve(pic.Url.text, path+"/image"+str(j)+".jpg")
 							if mainpic==False:
-								try:
-									urllib.request.urlopen(pic.Url.text)
 									content[i]['image']=pic.Url.text
 									mainpic=True
-								except:
-									pass
 						except:
 								pass
 
@@ -340,12 +335,8 @@ def content(urls,website):
 					try:
 							urllib.request.urlretrieve(pic.Url.text, "image"+str(j)+".jpg")
 							if mainpic==False:
-								try:
-									urllib.request.urlopen(pic.Url.text)
 									content[i]['image']=pic.Url.text
 									mainpic=True
-								except:
-									pass
 					except:
 							pass
 				vids=soup.findAll('Video')
