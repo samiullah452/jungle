@@ -101,8 +101,12 @@ def content(urls,website):
 						try:
 							urllib.request.urlretrieve(pic.Url.text, path+"/image"+str(j)+".jpg")
 							if mainpic==False:
+								try:
+									urllib.request.urlopen(pic.Url.text)
 									content[i]['image']=pic.Url.text
 									mainpic=True
+								except:
+									pass
 						except:
 								pass
 
@@ -336,8 +340,12 @@ def content(urls,website):
 					try:
 							urllib.request.urlretrieve(pic.Url.text, "image"+str(j)+".jpg")
 							if mainpic==False:
+								try:
+									urllib.request.urlopen(pic.Url.text)
 									content[i]['image']=pic.Url.text
 									mainpic=True
+								except:
+									pass
 					except:
 							pass
 				vids=soup.findAll('Video')
