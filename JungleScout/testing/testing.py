@@ -80,6 +80,7 @@ def test(keys,website):
 		options.add_argument('--disable-dev-shm-usage')
 		browser = webdriver.Chrome('contentdownloader/chromedriver',options=options)
 		i=0
+		urls={}
 		url =  'https://www.alibaba.com/'
 		browser.implicitly_wait(20)
 		for key in keys:
@@ -106,6 +107,7 @@ def test(keys,website):
 					urls[i]['url']=company_detali.get_attribute('href')
 					i+=1
 				except Exception as e:
+					print(e)
 					pass
 		supplier=alibaba(urls)
 		return supplier
