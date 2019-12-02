@@ -28,6 +28,7 @@ def content(urls,website):
 			itms=Items.findAll('Item')
 			for item in itms:
 				try:
+					mainpic=True
 					content[i]={}
 					Itemid=item.find('Id')
 					req = requests.get('http://otapi.net/OtapiWebService2.asmx/GetItemFullInfo?instanceKey=36bafd6e-baea-41e4-9e8d-4eb2436b0166&language=en&itemId='+Itemid.text)
@@ -37,6 +38,11 @@ def content(urls,website):
 					content[i]['title']=title.text
 					pic=soup.find('MainPictureUrl')
 					content[i]['image']=pic.text
+					try:
+						resp = urllib.request.urlopen(content[i]['image'])
+					except:
+						mainpic=False
+
 					price=soup.find('OriginalPrice')
 					content[i]['price']=round(float(price.text), 2)
 					content[i]['price_krw']=round((ratekrw)*float(content[i]['price']), 2)					
@@ -93,7 +99,10 @@ def content(urls,website):
 					pics=soup.findAll('ItemPicture')
 					for j,pic in enumerate(pics):
 						try:
-								urllib.request.urlretrieve(pic.Url.text, path+"/image"+str(j)+".jpg")
+							urllib.request.urlretrieve(pic.Url.text, path+"/image"+str(j)+".jpg")
+							if mainpic==False:
+									content[i]['image']=pic.Url.text
+									mainpic=True
 						except:
 								pass
 
@@ -259,12 +268,17 @@ def content(urls,website):
 			req = requests.get('http://otapi.net/OtapiWebService2.asmx/GetItemFullInfo?instanceKey=36bafd6e-baea-41e4-9e8d-4eb2436b0166&language=en&itemId='+t['id'][0])
 			soup = BeautifulSoup(req.content,'xml')
 			try:
+				mainpic=True
 				content[i]={}
 				title=soup.find('OriginalTitle')
 				content[i]['group']='Uncategorized'			    
 				content[i]['title']=title.text
 				pic=soup.find('MainPictureUrl')
 				content[i]['image']=pic.text
+				try:
+					resp = urllib.request.urlopen(content[i]['image'])
+				except:
+					mainpic=False
 				price=soup.find('OriginalPrice')
 				content[i]['price']=round(float(price.text), 2)
 				content[i]['price_krw']=round((ratekrw)*float(content[i]['price']), 2)					
@@ -321,6 +335,9 @@ def content(urls,website):
 				for j,pic in enumerate(pics):
 					try:
 							urllib.request.urlretrieve(pic.Url.text, "image"+str(j)+".jpg")
+							if mainpic==False:
+									content[i]['image']=pic.Url.text
+									mainpic=True
 					except:
 							pass
 				vids=soup.findAll('Video')
