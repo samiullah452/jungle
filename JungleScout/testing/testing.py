@@ -18,8 +18,10 @@ def test(keys,website):
 			xml['SearchItemsParameters']["Provider"]="Alibaba1688"
 			xml['SearchItemsParameters']["LanguageOfQuery"]="en"
 			xml['ImageUrl']=key
+			print(key)
 			xml_str = dicttoxml(xml,attr_type=False)
 			xml_str=str(xml_str)
+			print(xml_str)
 			xml_str=xml_str[xml_str.find('<SearchItemsParameters>'):xml_str.find('</root>')]
 			req = requests.get('http://otapi.net/OtapiWebService2.asmx/SearchItemsFrame?instanceKey=36bafd6e-baea-41e4-9e8d-4eb2436b0166&language=en&xmlParameters='+str(xml_str)+'&framePosition=0&frameSize=40')
 			soup = BeautifulSoup(req.content,'xml')
