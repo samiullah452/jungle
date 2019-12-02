@@ -2,6 +2,8 @@ def content(urls,website):
 	content={}
 	if website=='1688':
 		import requests
+		import string
+		import os
 		import urllib.request
 		from bs4 import BeautifulSoup
 		from dicttoxml import dicttoxml
@@ -235,6 +237,8 @@ def content(urls,website):
 
 	elif website=="TAOBAO":
 		import requests
+		import string
+		import os
 		import urllib.request
 		from urllib import parse
 		from bs4 import BeautifulSoup

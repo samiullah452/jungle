@@ -1,25 +1,11 @@
 {% extends 'Base.html' %}
+{% block content %}
 {% load static %}
 
-{% block content %}
 <style>
-    .bs-example {
-        margin: 150px 50px;
-    }
-</style>
-<script>
-    $(document).ready(function () {
-        $('[data-toggle="popover"]').popover(
-            {
-                title: "Suleamn",
-                template: '<div class="popover" role="tooltip"><div class="arrow"></div><div class="card" style="width: 18rem;"><div class="card-body"><a href="https://www.youtube.com/embed/gQz-4YgxpUU" class="btn btn-primary"><i class="fab fa-youtube mr-2"></i>Tutorial - Product Tracker</a></div</div><div class="popover-body"></div></div>'
-            }
-        );
-    });
-</script>
+  /* Style the tab */
 
-<link rel="stylesheet" href="{% static 'mysite/css/findProductStyleSheet.css' %}">
-<style>
+/* Create an active/current tablink class */
 .tab {
   overflow: hidden;
   border: 1px solid #ccc;
@@ -39,7 +25,15 @@
   transition: 0.3s;
   font-size: 12px;
 }
+th{
+  border: 1px solid #ccc;
+  background-color: #f1f1f1;
 
+}
+td{
+font-size:14px;
+
+}
 /* Change background color of buttons on hover */
 .tab button:hover {
   background-color: #ddd;
@@ -50,30 +44,10 @@
   background-color: #ccc;
 }
 
-th{
-  text-align:center;
-  border: 1px solid #ccc;
-  background-color: #f1f1f1;
-
-}
-td{
-  font-size:11px;
-}
-.text-wrap{
-    white-space:normal;
-}
-.width-200{
-    width:200px;
- word-break:break-word;
-}
-.width-20{
-    width:100px;
-word-break:break-word;
-}
 /* Style the tab content */
 .tabcontent {
   clear: both;
-  display: block;
+  display: none;
   padding: 6px 12px;
 }
 
@@ -128,10 +102,9 @@ word-break:break-word;
     box-shadow: none !important;
   }
 </style>
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" />
 
 <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
-  <div class="modal fade" id="myModal" role="dialog">
+      <div class="modal fade" id="myModal" role="dialog">
     <div class="modal-dialog">
     
       <!-- Modal content-->
@@ -141,13 +114,14 @@ word-break:break-word;
         </div>
         <div class="modal-body">
         <select class="form-control" id="groupmove">          
+           <option value="Uncategorized" >Uncategorized</option>
             {% for grp in groups %}
            <option value="{{grp}}" >{{grp}}</option>
             {%endfor%}
         </select>
 
         <input type="button" class="btn btn-primary" id="move" onclick="mov1(document.getElementById('move').getAttribute('data'))" style="margin-top:10px;" value="Move"></input>
-        <img src="{% static 'mysite/images/giphy.gif' %}" style="display:none" id="moveloading" width="100px" height=40px></img>
+
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -167,9 +141,8 @@ word-break:break-word;
         </div>
         <div class="modal-body">
         <input type="text" id="new-group" class="form-control name_list" placeholder="Enter Name of Group" />
-        <input type="button" class="btn btn-primary" id='createbutton' onclick="create()" style="margin-top:10px;" value="Create"></input>
-        <img src="{% static 'mysite/images/giphy.gif' %}" style="display:none" id="createloading" width="100px" height=40px></img>
-        
+        <input type="button" class="btn btn-primary" onclick="create()" style="margin-top:10px;" value="Create"></input>
+
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -179,54 +152,6 @@ word-break:break-word;
     </div>
   </div>
 
-  <div class="modal fade" id="EditGroup" role="dialog">
-    <div class="modal-dialog">
-    
-      <!-- Modal content-->
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-        </div>
-        <div class="modal-body">
-        <select class="form-control" id="groupedit">          
-            {% for grp in groups %}
-           <option value="{{grp}}" >{{grp}}</option>
-            {%endfor%}
-        </select>
-        <br />
-        <input type="text" id="edit-group" class="form-control name_list" placeholder="Enter Name of Group" />
-        <input type="button" class="btn btn-primary" id='editbutton' onclick="editgroup()" style="margin-top:10px;" value="Edit"></input>
-        <img src="{% static 'mysite/images/giphy.gif' %}" style="display:none" id="editloading" width="100px" height=40px></img>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-      
-    </div>
-  </div>
-
-  <div class="modal fade" id="EditData" role="dialog">
-    <div class="modal-dialog">
-    
-      <!-- Modal content-->
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-        </div>
-        <div class="modal-body">
-        <label for="edit-data" style='font-weight:bold;font-size:18px;'id='edit-label'></label>
-        <textarea rows="4" cols="50" type="textarea" id="edit-data" class="form-control" placeholder="Enter Value" ></textarea>
-        <input type="button" class="btn btn-primary" id='editdataid' onclick="editdata(document.getElementById('editdataid').getAttribute('data'),document.getElementById('editdataid').getAttribute('tableindex'))" style="margin-top:10px;" value="Edit"></input>
-        <img src="{% static 'mysite/images/giphy.gif' %}" style="display:none" id="editdataloading" width="100px" height=40px></img>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-      
-    </div>
-  </div>
 
     <div class="modal fade" id="DeleteGroup" role="dialog">
     <div class="modal-dialog">
@@ -243,8 +168,8 @@ word-break:break-word;
             {%endfor%}
         </select>
 
-        <input type="button" class="btn btn-primary" onclick="dele()" id='deletebutton' style="margin-top:10px;" value="Delete"></input>
-        <img src="{% static 'mysite/images/giphy.gif' %}" style="display:none" id="deleteloading" width="100px" height=40px></img>
+        <input type="button" class="btn btn-primary" onclick="dele()" style="margin-top:10px;" value="Delete"></input>
+
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -253,45 +178,47 @@ word-break:break-word;
       
     </div>
   </div>
-        <div class="card mx-auto shadow-lg p-3 mb-5 bg-white rounded" style="width: 100%;">
-                    <div class="card-body">
-                      <h5 class="card-title">Find Your Supplier!</h5>
-                      <form action="." method="POST">
-                          {% csrf_token %}
-                            <div class="form-group">
-                                    <label for="exampleFormControlSelect1">SELECT WEBSITE TO DOWN</label>
-                                    <select class="form-control" id="exampleFormControlSelect1">
-                                      <option value="1688">1688.com</option>
-                                      <option value="Alibaba">Alibaba.com</option>
-                                    </select>
-                                  </div>
-                                          
-                                        <div class="form-group">
-                                                    <div class="table-responsive">
-                                                        <table class="table table-bordered" id="dynamic_field">
-                                                            <tr>
-                                                                <td><input type="text" name="name" placeholder="Enter Product" class="form-control name_list" /></td>
-                                                                <td><button type="button" name="add" id="add" class="btn btn-success"><i class="fas fa-plus"></i></button></td>
-                                                            </tr>
-                                                        </table>
-                                                    </div>
-                                            </div>
-                                            
-                                                                                  <div class="form-group">  
-                                      <div class="row">
-                                            <div class="col">
 
-                                             <div class="form-group mb-2" style="float:left;" >
-                                                <a href="#" class="btn btn-primary" onclick="download_table_as_csv('response');" id="profileButton">Save As .CSV FILE <i class="fas fa-download"></i></a>
-                                          </div>
 
-                                                    <input type="button" style="margin-left: 10px"class="btn btn-primary" id="starting" value="Start"></input>
-                                                    <img src="{% static 'mysite/images/giphy.gif' %}" style="display:none" id="loading" width="100px" height=40px></img>
-                                            </div>
-                                          </div>
+  <div class="card mx-auto shadow-lg p-3 mb-5 bg-white rounded" style="width: 100%;">    
+        <div class="card-body">
+          <h5 class="card-title">Profit Calculator</h5>
+          <form id='form' method="POST" enctype="multipart/form-data">
+              {% csrf_token %}
+                <div class="form-group">
+                        <label for="exampleFormControlSelect1">SELECT WEBSITE TO DOWN</label>
+                        <select class="form-control" id="exampleFormControlSelect1">
+                          <option value="TAOBAO" selected >TAOBAO.com</option>
+                          <option value="1688">1688.com</option>
+                          <option value="Alibaba">Alibaba.com</option>
+                        </select>
+                      </div>
+                              
+<!--                             <div class="form-group">
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered" id="dynamic_field">
+                                                <tr>
+                                                    <td><input type="text" name="names" placeholder="Enter Product" class="form-control name_list" /></td>
+                                                    <td><button type="button" name="add" id="add" class="btn btn-success"><i class="fas fa-plus"></i></button></td>
+                                                </tr>
+                                            </table>
                                         </div>
+                                </div>
+ -->                      <div class="form-group">
+                          <div class="row">
+                                <div class="col">
+                              
+                                    <input type="file" id='file_input' class="btn btn-warning" name='file' multiple >
+                                        <input type="button" style="margin-left: 10px"class="btn btn-primary" id="starting" value="Start"></input>
+                                        <img src="{% static 'mysite/images/giphy.gif' %}" style="display:none" id="loading" width="100px" height=40px></img>
+                                </div>
+                              </div>
+                            </div>
 
-                      </form>
+          </form>
+
+
+   
   <div style="float:right;margin-right: 50px">
     <p onclick="deleteselected()" style="float:left;padding-right:5px;cursor:pointer;font-size: 12px;color:black;font-weight:bold;"><i class="fas fa-minus"></i>Delete All</p>
  <p onclick="moveselected()" style="float:right;cursor:pointer;font-size: 12px;color:black;font-weight:bold;">Move All</p>
@@ -306,6 +233,7 @@ word-break:break-word;
    <button type="button" class="tablinks" onclick="  $('#DeleteGroup').modal('show');" class="btn btn-success"><i class="fas fa-minus"></i>Delete</button>  
    <button type="button" class="tablinks" onclick="  $('#EditGroup').modal('show');" class="btn btn-success">Edit</button>  
 </div>
+
 <div id="Uncategorized" class="tabcontent">
   
           <div class="table-responsive">
@@ -324,17 +252,27 @@ word-break:break-word;
           </thead>
           <tbody></tbody>
       
+      
                                                      </table>
                                                     </div>
 
 </div>
+        </div>
+        
+    </div>
+               
 
-                    </div>
-                  </div>
+</div>
+
+</div>
+
+</div>
+
 </main>
 <script  src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
 
-<script>
+<script type="text/javascript">
+
 var z=0;
 $('#add').click(function(){
                 z++;
@@ -568,7 +506,6 @@ function mov1(id){
                 });
 }
 
-var overview={{overview|safe}};
 $('#response').on( 'dblclick', 'tbody td:not(:first-child, :nth-child(3), :nth-child(8), :nth-child(9))', function (e) {
 
 document.getElementById('edit-label').innerHTML=table.settings().init().columns[table.cell(this).index().column].name
@@ -671,7 +608,6 @@ var table = $('#response').DataTable( {
 
       document.getElementById("defaultOpen").click();
 
-      addentry(overview)
 
 function openCity(evt, cityName) {
     var k, tablinks;
@@ -738,47 +674,63 @@ document.getElementById('editdataloading').style.display=''
 
 
 }
-      $('#starting').click(function(){    
-          document.getElementById("starting").style.display="none";
-          document.getElementById("loading").style.display="block"
-          var array=[];
-          urls=document.getElementsByName('name')
-          for (var k=0;k<urls.length;k++){        
-            if(urls[k].value!=""){
-                  array.push(urls[k].value)
-                                  }
-                                         }
-            if (array.length==0){
-                document.getElementById("starting").style.display="";
-                document.getElementById("loading").style.display="none"
-                return  
+ $('#starting').click(function(){    
+    document.getElementById("starting").style.display="none";
+    document.getElementById("loading").style.display="block"
+
+    var fd = new FormData();
+    var filesLength=document.getElementById('file_input').files.length;
+    var enter=false
+    keys=document.getElementsByName('names')
+
+    for (var k=0;k<keys.length;k++){           
+        if(keys[k].value!=""){
+                fd.append("keys[]", keys[k].value);
+                enter=true
+        }
+    }
+
+    if (enter==false&&filesLength==0){
+        document.getElementById("starting").style.display="";
+        document.getElementById("loading").style.display="none"
+
+                      return  
                 }
-            $.ajaxSetup({
-                   headers: { "X-CSRFToken": '{{ csrf_token }}' }
-                       });
+
+    for(var i=0;i<filesLength;i++){
+     fd.append("file[]", document.getElementById('file_input').files[i]);
+    }
+         fd.append("website", document.getElementById('exampleFormControlSelect1').value);
+
+    $.ajaxSetup({
+        headers: { "X-CSRFToken": '{{ csrf_token }}' }
+               });
                 
-            $.ajax({
-                    url:"/supplier-find/",
-                    method:"POST",
-                    dataType: 'json',
-                    data:{urls:array,website:document.getElementById('exampleFormControlSelect1').value},
-                    success:function(result)
+    $.ajax({
+       url:"/testing/",
+       method:"POST",
+       contentType: false,
+       cache: false,
+       processData: false,
+       data:fd,
+       success:function(result)
                     {
-                    document.getElementById("starting").style.display="";
-                    document.getElementById("loading").style.display="none"
-                     addentry(result)
-                    },
-                    error:function (xhr, ajaxOptions, thrownError) {
-                                          document.getElementById("starting").style.display="";
-                    document.getElementById("loading").style.display="none"
+            document.getElementById("starting").style.display="";
+            document.getElementById("loading").style.display="none"
+      addentry(result)
+      edit(result[0]['id'])        
+               },
+       error:function (xhr, ajaxOptions, thrownError) {
+            document.getElementById("starting").style.display="";
+            document.getElementById("loading").style.display="none"
 
                              alert("Try Again");
                                                   }
                 });
-        
-            });
-        </script>
-        
 
+
+                });
+             </script>
+        
 
 {% endblock %}

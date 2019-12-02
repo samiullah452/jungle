@@ -84,6 +84,34 @@ def keyword_find(request):
             sup[key]['id']=t.id
         return HttpResponse(json.dumps(sup), content_type='application/json')
 
+
+def testing(request):
+    from testing.testing import test
+    if request.method == 'POST' and request.is_ajax():
+        website=request.POST.get('website')
+        file_names=[]
+        if 'file[]' in request.FILES:
+            file = request.FILES.getlist('file[]')
+            for myfile in file:
+                fs = FileSystemStorage(settings.MEDIA_ROOT)
+                filename = fs.save(myfile.name, myfile)
+                if website !="Alibaba":
+                        file_names.append("http://138.197.67.53:8000"+"/"+filename)
+                else:
+                        file_names.append(settings.MEDIA_ROOT+"/"+filename)
+        print(file_names)
+        test=test(file_names,website)
+        for key in test.keys(): 
+                test[key]['id']=t.id
+
+        return HttpResponse(json.dumps(test), content_type='application/json')
+    if request.user.is_authenticated:
+        return render(request,'mysite/testing.html')
+    context={
+        'section' : 'findProduct'
+    }
+    return render(request, 'mysite/homebeforeLogin.html' , context)
+
 def profitcalculator(request):
     if request.method == 'GET' and request.is_ajax():
 

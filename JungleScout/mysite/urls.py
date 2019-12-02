@@ -8,6 +8,7 @@ urlpatterns = [
     url(r'^$' , views.home, name="home"),
 
     # Keyword Scrapper URL ...
+          url(r'testing/$', views.testing, name="testing"),
     url(r'profitcalculator/$', views.profitcalculator, name="profitcalculator"),
     url(r'^keyword/$', views.keyword_view, name="keyword"),
     url(r'^keyword-find/$', views.keyword_find, name="keyword_find"),
