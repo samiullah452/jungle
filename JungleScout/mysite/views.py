@@ -372,7 +372,7 @@ def content_downloader(request):
             grp=content_downloader_groups(user=request.user,name="Uncategorized")
             grp.save()
         for key in cont.keys(): 
-            t=user_content_downloader(store_name=cont[key]['shop-name'],product_name=cont[key]['title'],price=cont[key]['price'],name=content_downloader_groups.objects.get(name='Uncategorized',user=request.user),details=cont[key]['details'],url=cont[key]['url'],image=cont[key]['image'],price_krw=cont[key]['price_krw']) 
+            t=user_content_downloader(store_name=cont[key]['shop-name'],product_name=cont[key]['title'],price=cont[key]['price'],name=content_downloader_groups.objects.get(name='Uncategorized',user=request.user),details=cont[key]['details'],url=cont[key]['url'],image=cont[key]['image'][0],price_krw=cont[key]['price_krw']) 
             t.save()
             cont[key]['id']=t.id
 
