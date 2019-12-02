@@ -96,10 +96,9 @@ def testing(request):
                 fs = FileSystemStorage(settings.MEDIA_ROOT)
                 filename = fs.save(myfile.name, myfile)
                 if website !="Alibaba":
-                        file_names.append("http://138.197.67.53:8000"+"/media/"+filename)
+                        file_names.append("http://138.197.67.53:8000"+"/media/1.PNG")
                 else:
                         file_names.append(settings.MEDIA_ROOT+"/"+filename)
-        print(file_names)
         test=test(file_names,website)
         i=0
         for key in test.keys(): 
