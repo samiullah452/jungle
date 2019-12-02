@@ -96,7 +96,7 @@ def test(keys,website):
 			        time.sleep(1)
 			time.sleep(3)
 
-			for company_detali in driver.find_elements_by_xpath('//div[@class="item-main"]'):
+			for company_detali in browser.find_elements_by_xpath('//div[@class="item-main"]'):
 				name=company_detali.find_elements_by_xpath('.//*[@class="ellipsis search"]')
 				region=name[0].text
 				try:
