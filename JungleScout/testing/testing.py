@@ -98,14 +98,12 @@ def test(keys,website):
 			        time.sleep(1)
 			time.sleep(3)
 
-			for company_detali in browser.find_elements_by_xpath('//div[@class="item-main"]'):
-				name=company_detali.find_elements_by_xpath('.//*[@class="ellipsis search"]')
-				region=name[0].text
+			for company_detali in browser.find_elements_by_xpath('//div[@class="bc-ife-gallery-item-title bc-ife-gallery-item-title-line2"]/a'):
+				region='China'
 				try:
-					link = company_detali.find_element_by_xpath('.//*[@class="img-thumb"]/a')
 					urls[i]={}
 					urls[i]['region']=region
-					urls[i]['url']=link.get_attribute('href')
+					urls[i]['url']=company_detali.get_attribute('href')
 					i+=1
 				except Exception as e:
 					pass
