@@ -26,6 +26,7 @@ def test(keys,website):
 			Items=soup.find("Items")
 			itms=Items.findAll('Item')
 			for item in itms:
+				try:
 					content[i]={}
 					title=item.find('OriginalTitle')
 					content[i]['group']='Uncategorized'			    
