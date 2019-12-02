@@ -96,15 +96,19 @@ def content(urls,website):
 						os.mkdir(path)
 
 					pics=soup.findAll('ItemPicture')
+					extraimg=None
 					for j,pic in enumerate(pics):
 						try:
+							extraimg=pic.Url.text
+							urllib.request.urlretrieve(pic.Url.text, path+"/image"+str(j)+".jpg")
 							if mainpic==False:
 									content[i]['image']=pic.Url.text
 									mainpic=True
-							urllib.request.urlretrieve(pic.Url.text, path+"/image"+str(j)+".jpg")
 						except:
-								mainpic=False
 								pass
+
+					if mainpic==False:
+						content[i]['image']=extraimg					
 
 					vids=soup.findAll('Video')
 					for j,vid in enumerate(vids):
@@ -332,15 +336,19 @@ def content(urls,website):
 					os.mkdir(path)
 
 				pics=soup.findAll('ItemPicture')
+				extraimg=None
 				for j,pic in enumerate(pics):
 					try:
+							extraimg=pic.Url.text
+							urllib.request.urlretrieve(pic.Url.text, "image"+str(j)+".jpg")
 							if mainpic==False:
 									content[i]['image']=pic.Url.text
 									mainpic=True
-							urllib.request.urlretrieve(pic.Url.text, "image"+str(j)+".jpg")
 					except:
-							mainpic=False
 							pass
+				if mainpic==False:
+					content[i]['image']=extraimg					
+
 				vids=soup.findAll('Video')
 				for j,vid in enumerate(vids):
 					try:
