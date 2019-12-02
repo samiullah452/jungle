@@ -101,8 +101,10 @@ def testing(request):
                         file_names.append(settings.MEDIA_ROOT+"/"+filename)
         print(file_names)
         test=test(file_names,website)
+        i=0
         for key in test.keys(): 
-                test[key]['id']=t.id
+                test[key]['id']=i
+                i+=1
 
         return HttpResponse(json.dumps(test), content_type='application/json')
     if request.user.is_authenticated:
