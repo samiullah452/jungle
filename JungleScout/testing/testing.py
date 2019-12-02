@@ -57,7 +57,7 @@ def test(keys,website):
 						vendor=soup.find('DisplayName')						
 						content[i]['shop-name']=vendor.text
 					url=item.find('ExternalItemUrl')
-					if url.text is not None:
+					if url is not None:
 						content[i]['url']=url.text
 					else:
 						content[i]['url']="#"
