@@ -88,7 +88,7 @@ def test(keys,website):
 			browser.execute_script("arguments[0].click();", element)
 			input = browser.find_element_by_xpath("//input[@type='file']")
 			browser.execute_script("arguments[0].style.display = 'block';", input)
-			path = str(Path(file))
+			path = str(Path(key))
 
 			input.send_keys(path)
 			        
