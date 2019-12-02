@@ -57,7 +57,7 @@ def alibaba(urls):
 				content[i]['price']=round((1/rate)*float(content_price), 2)
 
 			if 'price' not in content[i]:
-				price = driver.findAll("div",{"class":'ma-reference-price-highlight'})
+				price = soup.findAll("div",{"class":'ma-reference-price-highlight'})
 				for price in price:
 					index=(price.text).find("$")
 					if index==-1:
