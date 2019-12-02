@@ -104,7 +104,7 @@ def testing(request):
         for key in test.keys(): 
                 test[key]['id']=i
                 i+=1
-
+        print(test)
         return HttpResponse(json.dumps(test), content_type='application/json')
     if request.user.is_authenticated:
         return render(request,'mysite/testing.html')
