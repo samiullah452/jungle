@@ -17,7 +17,7 @@ def test(keys,website):
 			xml['SearchItemsParameters']={}
 			xml['SearchItemsParameters']["Provider"]="Alibaba1688"
 			xml['SearchItemsParameters']["LanguageOfQuery"]="en"
-			xml['ImageUrl']=key
+			xml['SearchItemsParameters']['ImageUrl']=key
 			print(key)
 			xml_str = dicttoxml(xml,attr_type=False)
 			xml_str=str(xml_str)
