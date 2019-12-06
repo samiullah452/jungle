@@ -193,25 +193,25 @@ def profitcalculator(request):
         for key in prof.keys(): 
             t=user_profit(buying_price_avg=prof[key]['avg'],buying_price_min=prof[key]['min'],buying_price_max=prof[key]['max'],product_name=prof[key]['title'],name=profit_groups.objects.get(name='Uncategorized',user=request.user))
             if request.POST.get('product_name')!='':
-                t.exchange_rate=request.POST.get('product_name')
+                t.product_name=request.POST.get('product_name')
             if request.POST.get('exchange_rate')!='':
                 t.exchange_rate=request.POST.get('exchange_rate')
             if request.POST.get('oversea_shipping')!='':
                 t.oversea_shipping=request.POST.get('oversea_shipping')
             if request.POST.get('tax_rate')!='':
-                tax_rate=request.POST.get('tax_rate')
+                t.tax_rate=request.POST.get('tax_rate')
             if request.POST.get('roi')!='':
-                tax_rate=request.POST.get('roi')
+                t.roi=request.POST.get('roi')
             if request.POST.get('vat')!='':
-                vat=request.POST.get('vat')
+                t.vat=request.POST.get('vat')
             if request.POST.get('local_delievery_cost')!='':
-                local_delievery_cost=request.POST.get('local_delievery_cost')
+                t.local_delievery_cost=request.POST.get('local_delievery_cost')
             if request.POST.get('extra_cost')!='':
-                extra_cost=request.POST.get('extra_cost')                            
+                t.extra_cost=request.POST.get('extra_cost')                            
             if request.POST.get('commision')!='':
-                commision=request.POST.get('commision')                            
+                t.commision=request.POST.get('commision')                            
             if request.POST.get('sales_goal')!='':
-                sales_goal=request.POST.get('sales_goal')                            
+                t.sales_goal=request.POST.get('sales_goal')                            
             t.save()
             profs[key]={}
             profs[key]['group']="Uncategorized"
