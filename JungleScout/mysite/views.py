@@ -143,7 +143,7 @@ def profitcalculator(request):
                 user_profit.objects.filter(id=request.GET.get('edit')).update(vat=request.GET.get('data'))
             if request.GET.get('field')=='Local Delievery Cost':
                 user_profit.objects.filter(id=request.GET.get('edit')).update(local_delievery_cost=request.GET.get('data'))
-            if request.GET.get('field')=='Extra':
+            if request.GET.get('field')=='Extra Cost':
                 user_profit.objects.filter(id=request.GET.get('edit')).update(extra_cost=request.GET.get('data'))
             if request.GET.get('field')=='Target ROI':
                 user_profit.objects.filter(id=request.GET.get('edit')).update(roi=request.GET.get('data'))
@@ -177,7 +177,10 @@ def profitcalculator(request):
             for myfile in file:
                 fs = FileSystemStorage(settings.MEDIA_ROOT)
                 filename = fs.save(myfile.name, myfile)
-                file_names.append(settings.MEDIA_ROOT+"/"+filename)
+                if website !="Alibaba":
+                        file_names.append("http://138.197.67.53:8000"+"/media/"+filename)
+                else:
+                        file_names.append(settings.MEDIA_ROOT+"/"+filename)
 
         
         prof=profitcal(file_names,website)
