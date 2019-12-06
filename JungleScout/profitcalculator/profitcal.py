@@ -145,7 +145,7 @@ def profitcal(files,website):
 			if len(p):
 				minimum = min(p) 
 				maximum = max(p)
-				average = round(sum(price_list)/len(price_list) ,2)       
+				average = round(sum(p)/len(p) ,2)       
 
 			else:
 				minimum=0
