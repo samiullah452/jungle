@@ -93,6 +93,12 @@ def profitcal(files,website):
 		return content
 
 	if website=="Alibaba":
+		import requests
+		url = 'https://api.exchangerate-api.com/v4/latest/CNY'
+		response = requests.get(url)	
+		data = response.json()
+		rate=data["rates"]["USD"]
+
 		from selenium import webdriver
 		#from selenium.webdriver.firefox.options import Options
 		import subprocess
@@ -141,7 +147,7 @@ def profitcal(files,website):
 			for prices in prices:
 			    P = re.findall("\d{1,10}\.\d{2}",prices.text)
 			    for pr in P:
-			        p.append(float(pr))
+			        p.append(round( (1/rate)*float(pr),2 ) )
 			if len(p):
 				minimum = min(p) 
 				maximum = max(p)
