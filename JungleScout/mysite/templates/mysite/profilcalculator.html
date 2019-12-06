@@ -317,7 +317,7 @@ word-break:break-word;
 <br />
 <div class="form-group">
         <label>Sales Goal</label>
-        <input class="form-control" type="text" name="sales_goal" id='sales_goal' placeholder="Target ROI">
+        <input class="form-control" type="text" name="sales_goal" id='sales_goal' placeholder="Sales Goal">
 </div>
 <br />
 
@@ -774,37 +774,37 @@ var table = $('#response').DataTable( {
 
             { 
               targets : [ 6 ], data:  function ( row, type, val, meta ) {
-                   return parseFloat(row["Exchange Rate"])* parseFloat(row[["Buying Price MIN"]]);
+                   return parseFloat(row["Exchange Rate"]).toFixed(2)* parseFloat(row[["Buying Price MIN"]]).toFixed(2);
             }
               },
             { 
               targets : [ 7 ], data:  function ( row, type, val, meta ) {
-                   return parseFloat(row["Exchange Rate"])* parseFloat(row[["Buying Price AVG"]]);
+                   return parseFloat(row["Exchange Rate"]).toFixed(2)* parseFloat(row[["Buying Price AVG"]]).toFixed(2);
             }
               }, 
             { 
               targets : [ 8 ], data:  function ( row, type, val, meta ) {
-                   return parseFloat(row["Exchange Rate"])* parseFloat(row[["Buying Price MAX"]]);
+                   return parseFloat(row["Exchange Rate"]).toFixed(2)* parseFloat(row[["Buying Price MAX"]]).toFixed(2);
             }
               },
 
             { 
               targets : [ 11 ], data:  function ( row, type, val, meta ) {
                 currency=parseFloat(row["Exchange Rate"])* parseFloat(row[["Buying Price MIN"]]);
-                   return parseFloat(row["Shipping Cost"])+ currency+parseFloat(row[["Extra Cost"]]);
+                   return parseFloat(parseFloat(row["Shipping Cost"])+ currency+parseFloat(row[["Extra Cost"]])).toFixed(2);
             }
               },
             { 
               targets : [ 12 ], data:  function ( row, type, val, meta ) {
                 currency=parseFloat(row["Exchange Rate"])* parseFloat(row[["Buying Price AVG"]]);
-                   return parseFloat(row["Shipping Cost"])+ currency+parseFloat(row[["Extra Cost"]]);
+                   return parseFloat(parseFloat(row["Shipping Cost"])+ currency+parseFloat(row[["Extra Cost"]])).toFixed(2);
    
             }
               }, 
             { 
               targets : [ 13 ], data:  function ( row, type, val, meta ) {
                 currency=parseFloat(row["Exchange Rate"])* parseFloat(row[["Buying Price MAX"]]);
-                   return parseFloat(row["Shipping Cost"])+ currency+parseFloat(row[["Extra Cost"]]);
+                   return parseFloat(parseFloat(row["Shipping Cost"])+ currency+parseFloat(row[["Extra Cost"]]));
 
                }
               },
@@ -812,14 +812,14 @@ var table = $('#response').DataTable( {
               targets : [ 15 ], data:  function ( row, type, val, meta ) {
                 currency=parseFloat(row["Exchange Rate"])* parseFloat(row[["Buying Price MIN"]]);
                    total_cost= parseFloat(row["Shipping Cost"])+ currency+parseFloat(row[["Extra Cost"]]);
-                   return total_cost*parseFloat(row["Tax Rate"])/100
+                   return parseFloat(total_cost*parseFloat(row["Tax Rate"])/100).toFixed(2)
             }
               },
             { 
               targets : [ 16 ], data:  function ( row, type, val, meta ) {
                 currency=parseFloat(row["Exchange Rate"])* parseFloat(row[["Buying Price AVG"]]);
                    total_cost=parseFloat(row["Shipping Cost"])+ currency+parseFloat(row[["Extra Cost"]]);
-                   return total_cost*parseFloat(row["Tax Rate"])/100
+                   return parseFloat(total_cost*parseFloat(row["Tax Rate"])/100).toFixed(2)
    
             }
               }, 
@@ -827,7 +827,7 @@ var table = $('#response').DataTable( {
               targets : [ 17 ], data:  function ( row, type, val, meta ) {
                 currency=parseFloat(row["Exchange Rate"])* parseFloat(row[["Buying Price MAX"]]);
                    total_cost=parseFloat(row["Shipping Cost"])+ currency+parseFloat(row[["Extra Cost"]]);
-                   return total_cost*parseFloat(row["Tax Rate"])/100
+                   return parseFloat(total_cost*parseFloat(row["Tax Rate"])/100).toFixed(2)
 
                }
               } ,
@@ -835,14 +835,15 @@ var table = $('#response').DataTable( {
               targets : [ 19 ], data:  function ( row, type, val, meta ) {
                 currency=parseFloat(row["Exchange Rate"])* parseFloat(row[["Buying Price MIN"]]);
                    total_cost= parseFloat(row["Shipping Cost"])+ currency+parseFloat(row[["Extra Cost"]]);
-                   return total_cost*parseFloat(row["VAT %"])/100
+                   return parseFloat(total_cost*parseFloat(row["VAT %"])/100).toFixed(2)
             }
               },
             { 
               targets : [ 20 ], data:  function ( row, type, val, meta ) {
                 currency=parseFloat(row["Exchange Rate"])* parseFloat(row[["Buying Price AVG"]]);
                    total_cost=parseFloat(row["Shipping Cost"])+ currency+parseFloat(row[["Extra Cost"]]);
-                   return total_cost*parseFloat(row["VAT %"])/100
+                   return parseFloat(total_cost*parseFloat(row["VAT %"])/100).toFixed(2)
+
    
             }
               }, 
@@ -850,7 +851,7 @@ var table = $('#response').DataTable( {
               targets : [ 21 ], data:  function ( row, type, val, meta ) {
                 currency=parseFloat(row["Exchange Rate"])* parseFloat(row[["Buying Price MAX"]]);
                    total_cost=parseFloat(row["Shipping Cost"])+ currency+parseFloat(row[["Extra Cost"]]);
-                   return total_cost*parseFloat(row["VAT %"])/100
+                   return parseFloat(total_cost*parseFloat(row["VAT %"])/100).toFixed(2)
 
                }
               },
@@ -858,23 +859,21 @@ var table = $('#response').DataTable( {
               targets : [ 22 ], data:  function ( row, type, val, meta ) {
                 currency=parseFloat(row["Exchange Rate"])* parseFloat(row[["Buying Price MIN"]]);
                    total_cost= parseFloat(row["Shipping Cost"])+ currency+parseFloat(row[["Extra Cost"]]);
-                   return total_cost*parseFloat(row["VAT %"])/100+total_cost*parseFloat(row["Tax Rate"])/100+total_cost
+                   return paseFloat(total_cost*parseFloat(row["VAT %"])/100+total_cost*parseFloat(row["Tax Rate"])/100+total_cost).toFixed(2)
             }
               },
             { 
               targets : [ 23 ], data:  function ( row, type, val, meta ) {
                 currency=parseFloat(row["Exchange Rate"])* parseFloat(row[["Buying Price AVG"]]);
                    total_cost=parseFloat(row["Shipping Cost"])+ currency+parseFloat(row[["Extra Cost"]]);
-                   return total_cost*parseFloat(row["VAT %"])/100+total_cost*parseFloat(row["Tax Rate"])/100+total_cost
-   
+                   return paseFloat(total_cost*parseFloat(row["VAT %"])/100+total_cost*parseFloat(row["Tax Rate"])/100+total_cost).toFixed(2)   
             }
               }, 
             { 
               targets : [ 24 ], data:  function ( row, type, val, meta ) {
                 currency=parseFloat(row["Exchange Rate"])* parseFloat(row[["Buying Price MAX"]]);
                    total_cost=parseFloat(row["Shipping Cost"])+ currency+parseFloat(row[["Extra Cost"]]);
-                   return total_cost*parseFloat(row["VAT %"])/100+total_cost*parseFloat(row["Tax Rate"])/100+total_cost
-
+                   return paseFloat(total_cost*parseFloat(row["VAT %"])/100+total_cost*parseFloat(row["Tax Rate"])/100+total_cost).toFixed(2)
                }
               } , 
             { 
@@ -882,7 +881,7 @@ var table = $('#response').DataTable( {
                 currency=parseFloat(row["Exchange Rate"])* parseFloat(row[["Buying Price MIN"]]);
                    total_cost= parseFloat(row["Shipping Cost"])+ currency+parseFloat(row[["Extra Cost"]]);
                    final= total_cost*parseFloat(row["VAT %"])/100+total_cost*parseFloat(row["Tax Rate"])/100+total_cost
-                   return final*parseFloat(row["ROI"])/100
+                   return parseFloat(final*parseFloat(row["ROI"])/100).toFixed(2)
             }
               },
             { 
@@ -890,7 +889,7 @@ var table = $('#response').DataTable( {
                 currency=parseFloat(row["Exchange Rate"])* parseFloat(row[["Buying Price AVG"]]);
                    total_cost=parseFloat(row["Shipping Cost"])+ currency+parseFloat(row[["Extra Cost"]]);
                    final= total_cost*parseFloat(row["VAT %"])/100+total_cost*parseFloat(row["Tax Rate"])/100+total_cost
-                   return final*parseFloat(row["ROI"])/100
+                   return parseFloat(final*parseFloat(row["ROI"])/100).toFixed(2)
    
             }
               }, 
@@ -899,7 +898,7 @@ var table = $('#response').DataTable( {
                 currency=parseFloat(row["Exchange Rate"])* parseFloat(row[["Buying Price MAX"]]);
                    total_cost=parseFloat(row["Shipping Cost"])+ currency+parseFloat(row[["Extra Cost"]]);
                    final= total_cost*parseFloat(row["VAT %"])/100+total_cost*parseFloat(row["Tax Rate"])/100+total_cost
-                   return final*parseFloat(row["ROI"])/100
+                   return parseFloat(final*parseFloat(row["ROI"])/100).toFixed(2)
 
                }
               }  ,
@@ -908,7 +907,7 @@ var table = $('#response').DataTable( {
                 currency=parseFloat(row["Exchange Rate"])* parseFloat(row[["Buying Price MIN"]]);
                    total_cost= parseFloat(row["Shipping Cost"])+ currency+parseFloat(row[["Extra Cost"]]);
                    final= total_cost*parseFloat(row["VAT %"])/100+total_cost*parseFloat(row["Tax Rate"])/100+total_cost
-                   return final*parseFloat(row["ROI"])/100+final
+                   return parseFloat(final*parseFloat(row["ROI"])/100+final).toFixed(2)
             }
               },
             { 
@@ -916,7 +915,7 @@ var table = $('#response').DataTable( {
                 currency=parseFloat(row["Exchange Rate"])* parseFloat(row[["Buying Price AVG"]]);
                    total_cost=parseFloat(row["Shipping Cost"])+ currency+parseFloat(row[["Extra Cost"]]);
                    final= total_cost*parseFloat(row["VAT %"])/100+total_cost*parseFloat(row["Tax Rate"])/100+total_cost
-                   return final*parseFloat(row["ROI"])/100+final
+                   return parseFloat(final*parseFloat(row["ROI"])/100+final).toFixed(2)
    
             }
               }, 
@@ -925,7 +924,7 @@ var table = $('#response').DataTable( {
                 currency=parseFloat(row["Exchange Rate"])* parseFloat(row[["Buying Price MAX"]]);
                    total_cost=parseFloat(row["Shipping Cost"])+ currency+parseFloat(row[["Extra Cost"]]);
                    final= total_cost*parseFloat(row["VAT %"])/100+total_cost*parseFloat(row["Tax Rate"])/100+total_cost
-                   return final*parseFloat(row["ROI"])/100+final
+                   return parseFloat(final*parseFloat(row["ROI"])/100+final).toFixed(2)
 
                }
               } , 
@@ -935,7 +934,7 @@ var table = $('#response').DataTable( {
                    total_cost= parseFloat(row["Shipping Cost"])+ currency+parseFloat(row[["Extra Cost"]]);
                    final= total_cost*parseFloat(row["VAT %"])/100+total_cost*parseFloat(row["Tax Rate"])/100+total_cost
                    selling=final*parseFloat(row["ROI"])/100+final
-                   return selling-parseFloat(row["Local Delievery Cost"])-(selling*parseFloat(row["Selling Commision"])/100)
+                   return parseFloat(selling-parseFloat(row["Local Delievery Cost"])-(selling*parseFloat(row["Selling Commision"])/100)).toFixed(2)
             }
               },
             { 
@@ -944,7 +943,7 @@ var table = $('#response').DataTable( {
                    total_cost=parseFloat(row["Shipping Cost"])+ currency+parseFloat(row[["Extra Cost"]]);
                    final= total_cost*parseFloat(row["VAT %"])/100+total_cost*parseFloat(row["Tax Rate"])/100+total_cost
                    selling=final*parseFloat(row["ROI"])/100+final
-                   return selling-parseFloat(row["Local Delievery Cost"])-(selling*parseFloat(row["Selling Commision"])/100)
+                   return parseFloat(selling-parseFloat(row["Local Delievery Cost"])-(selling*parseFloat(row["Selling Commision"])/100)).toFixed(2)
    
             }
               }, 
@@ -954,7 +953,7 @@ var table = $('#response').DataTable( {
                    total_cost=parseFloat(row["Shipping Cost"])+ currency+parseFloat(row[["Extra Cost"]]);
                    final= total_cost*parseFloat(row["VAT %"])/100+total_cost*parseFloat(row["Tax Rate"])/100+total_cost
                    selling=final*parseFloat(row["ROI"])/100+final
-                   return selling-parseFloat(row["Local Delievery Cost"])-(selling*parseFloat(row["Selling Commision"])/100)
+                   return parseFloat(selling-parseFloat(row["Local Delievery Cost"])-(selling*parseFloat(row["Selling Commision"])/100)).toFixed(2)
 
                }
               } , 
@@ -965,7 +964,7 @@ var table = $('#response').DataTable( {
                    final= total_cost*parseFloat(row["VAT %"])/100+total_cost*parseFloat(row["Tax Rate"])/100+total_cost
                    selling=final*parseFloat(row["ROI"])/100+final
                    consumer=selling-parseFloat(row["Local Delievery Cost"])-(selling*parseFloat(row["Selling Commision"])/100)
-                   return (consumer-final)*parseFloat(row["VAT %"])/100
+                   return parseFloat((consumer-final)*parseFloat(row["VAT %"])/100).toFixed(2)
             }
               },
             { 
@@ -975,7 +974,7 @@ var table = $('#response').DataTable( {
                    final= total_cost*parseFloat(row["VAT %"])/100+total_cost*parseFloat(row["Tax Rate"])/100+total_cost
                    selling=final*parseFloat(row["ROI"])/100+final
                    consumer=selling-parseFloat(row["Local Delievery Cost"])-(selling*parseFloat(row["Selling Commision"])/100)
-                   return (consumer-final)*parseFloat(row["VAT %"])/100
+                   return parseFloat((consumer-final)*parseFloat(row["VAT %"])/100).toFixed(2)
    
             }
               }, 
@@ -986,7 +985,7 @@ var table = $('#response').DataTable( {
                    final= total_cost*parseFloat(row["VAT %"])/100+total_cost*parseFloat(row["Tax Rate"])/100+total_cost
                    selling=final*parseFloat(row["ROI"])/100+final
                    consumer=selling-parseFloat(row["Local Delievery Cost"])-(selling*parseFloat(row["Selling Commision"])/100)
-                   return (consumer-final)*parseFloat(row["VAT %"])/100
+                   return parseFloat((consumer-final)*parseFloat(row["VAT %"])/100).toFixed(2)
 
                }
               } , 
@@ -998,7 +997,7 @@ var table = $('#response').DataTable( {
                    selling=final*parseFloat(row["ROI"])/100+final
                    consumer=selling-parseFloat(row["Local Delievery Cost"])-(selling*parseFloat(row["Selling Commision"])/100)
                    vat= (consumer-final)*parseFloat(row["VAT %"])/100
-                   return consumer-final-vat
+                   return parseFloat(consumer-final-vat).toFixed(2)
             }
               },
             { 
@@ -1009,7 +1008,7 @@ var table = $('#response').DataTable( {
                    selling=final*parseFloat(row["ROI"])/100+final
                    consumer=selling-parseFloat(row["Local Delievery Cost"])-(selling*parseFloat(row["Selling Commision"])/100)
                    vat= (consumer-final)*parseFloat(row["VAT %"])/100
-                   return consumer-final-vat
+                   return parseFloat(consumer-final-vat).toFixed(2)
    
             }
               }, 
@@ -1021,7 +1020,7 @@ var table = $('#response').DataTable( {
                    selling=final*parseFloat(row["ROI"])/100+final
                    consumer=selling-parseFloat(row["Local Delievery Cost"])-(selling*parseFloat(row["Selling Commision"])/100)
                    vat= (consumer-final)*parseFloat(row["VAT %"])/100
-                   return consumer-final-vat
+                   return parseFloat(consumer-final-vat).toFixed(2)
 
                }
               }  ,
@@ -1035,7 +1034,7 @@ var table = $('#response').DataTable( {
                    consumer=selling-parseFloat(row["Local Delievery Cost"])-(selling*parseFloat(row["Selling Commision"])/100)
                    vat= (consumer-final)*parseFloat(row["VAT %"])/100
                    prof= consumer-final-vat
-                   return prof*row["Sales Goal"]
+                   return parseFloat(prof*row["Sales Goal"]).toFixed(2)
             }
               },
             { 
@@ -1047,7 +1046,7 @@ var table = $('#response').DataTable( {
                    consumer=selling-parseFloat(row["Local Delievery Cost"])-(selling*parseFloat(row["Selling Commision"])/100)
                    vat= (consumer-final)*parseFloat(row["VAT %"])/100
                    prof= consumer-final-vat
-                   return prof*row["Sales Goal"]
+                   return parseFloat(prof*row["Sales Goal"]).toFixed(2)
 
    
             }
@@ -1061,18 +1060,10 @@ var table = $('#response').DataTable( {
                    consumer=selling-parseFloat(row["Local Delievery Cost"])-(selling*parseFloat(row["Selling Commision"])/100)
                    vat= (consumer-final)*parseFloat(row["VAT %"])/100
                    prof= consumer-final-vat
-                   return prof*row["Sales Goal"]
+                   return parseFloat(prof*row["Sales Goal"]).toFixed(2)
 
                }
               }  
-
-
-
-
-
-
-
-
              ],
                    } );
       document.getElementById("defaultOpen").click();
