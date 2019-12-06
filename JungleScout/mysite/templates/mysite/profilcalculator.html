@@ -3,10 +3,7 @@
 {% load static %}
 
 <style>
-  /* Style the tab */
-
-/* Create an active/current tablink class */
-.tab {
+ .tab {
   overflow: hidden;
   border: 1px solid #ccc;
   position: relative; 
@@ -25,15 +22,7 @@
   transition: 0.3s;
   font-size: 12px;
 }
-th{
-  border: 1px solid #ccc;
-  background-color: #f1f1f1;
 
-}
-td{
-font-size:14px;
-
-}
 /* Change background color of buttons on hover */
 .tab button:hover {
   background-color: #ddd;
@@ -44,10 +33,30 @@ font-size:14px;
   background-color: #ccc;
 }
 
+th{
+  text-align:center;
+  border: 1px solid #ccc;
+  background-color: #f1f1f1;
+
+}
+td{
+  font-size:11px;
+}
+.text-wrap{
+    white-space:normal;
+}
+.width-200{
+    width:200px;
+ word-break:break-word;
+}
+.width-20{
+    width:100px;
+word-break:break-word;
+}
 /* Style the tab content */
 .tabcontent {
   clear: both;
-  display: none;
+  display: block;
   padding: 6px 12px;
 }
 
@@ -73,7 +82,6 @@ font-size:14px;
     opacity: 1;
     border: 1px solid #f57706;
   }
-
   button[id="profileButton"]:hover,
   button[id="profileButton"]:focus,
   button[id="profileButton"]:active {
@@ -103,8 +111,11 @@ font-size:14px;
   }
 </style>
 
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" />
+
 <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
-      <div class="modal fade" id="myModal" role="dialog">
+  <div class="modal fade" id="myModal" role="dialog">
     <div class="modal-dialog">
     
       <!-- Modal content-->
@@ -114,14 +125,13 @@ font-size:14px;
         </div>
         <div class="modal-body">
         <select class="form-control" id="groupmove">          
-           <option value="Uncategorized" >Uncategorized</option>
             {% for grp in groups %}
            <option value="{{grp}}" >{{grp}}</option>
             {%endfor%}
         </select>
 
         <input type="button" class="btn btn-primary" id="move" onclick="mov1(document.getElementById('move').getAttribute('data'))" style="margin-top:10px;" value="Move"></input>
-
+        <img src="{% static 'mysite/images/giphy.gif' %}" style="display:none" id="moveloading" width="100px" height=40px></img>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -141,8 +151,9 @@ font-size:14px;
         </div>
         <div class="modal-body">
         <input type="text" id="new-group" class="form-control name_list" placeholder="Enter Name of Group" />
-        <input type="button" class="btn btn-primary" onclick="create()" style="margin-top:10px;" value="Create"></input>
-
+        <input type="button" class="btn btn-primary" id='createbutton' onclick="create()" style="margin-top:10px;" value="Create"></input>
+        <img src="{% static 'mysite/images/giphy.gif' %}" style="display:none" id="createloading" width="100px" height=40px></img>
+        
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -152,6 +163,54 @@ font-size:14px;
     </div>
   </div>
 
+  <div class="modal fade" id="EditGroup" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+        <select class="form-control" id="groupedit">          
+            {% for grp in groups %}
+           <option value="{{grp}}" >{{grp}}</option>
+            {%endfor%}
+        </select>
+        <br />
+        <input type="text" id="edit-group" class="form-control name_list" placeholder="Enter Name of Group" />
+        <input type="button" class="btn btn-primary" id='editbutton' onclick="editgroup()" style="margin-top:10px;" value="Edit"></input>
+        <img src="{% static 'mysite/images/giphy.gif' %}" style="display:none" id="editloading" width="100px" height=40px></img>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+
+  <div class="modal fade" id="EditData" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+        <label for="edit-data" style='font-weight:bold;font-size:18px;'id='edit-label'></label>
+        <textarea rows="4" cols="50" type="textarea" id="edit-data" class="form-control" placeholder="Enter Value" ></textarea>
+        <input type="button" class="btn btn-primary" id='editdataid' onclick="editdata(document.getElementById('editdataid').getAttribute('data'),document.getElementById('editdataid').getAttribute('tableindex'))" style="margin-top:10px;" value="Edit"></input>
+        <img src="{% static 'mysite/images/giphy.gif' %}" style="display:none" id="editdataloading" width="100px" height=40px></img>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
 
     <div class="modal fade" id="DeleteGroup" role="dialog">
     <div class="modal-dialog">
@@ -168,8 +227,8 @@ font-size:14px;
             {%endfor%}
         </select>
 
-        <input type="button" class="btn btn-primary" onclick="dele()" style="margin-top:10px;" value="Delete"></input>
-
+        <input type="button" class="btn btn-primary" onclick="dele()" id='deletebutton' style="margin-top:10px;" value="Delete"></input>
+        <img src="{% static 'mysite/images/giphy.gif' %}" style="display:none" id="deleteloading" width="100px" height=40px></img>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -178,7 +237,6 @@ font-size:14px;
       
     </div>
   </div>
-
 
   <div class="card mx-auto shadow-lg p-3 mb-5 bg-white rounded" style="width: 100%;">    
         <div class="card-body">
@@ -193,28 +251,8 @@ font-size:14px;
                           <option value="Alibaba">Alibaba.com</option>
                         </select>
                       </div>
-                              
-<!--                             <div class="form-group">
-                                        <div class="table-responsive">
-                                            <table class="table table-bordered" id="dynamic_field">
-                                                <tr>
-                                                    <td><input type="text" name="names" placeholder="Enter Product" class="form-control name_list" /></td>
-                                                    <td><button type="button" name="add" id="add" class="btn btn-success"><i class="fas fa-plus"></i></button></td>
-                                                </tr>
-                                            </table>
-                                        </div>
-                                </div>
- -->                      <div class="form-group">
-                          <div class="row">
-                                <div class="col">
-                              
-                                    <input type="file" id='file_input' class="btn btn-warning" name='file' multiple >
-                                        <input type="button" style="margin-left: 10px"class="btn btn-primary" id="starting" value="Start"></input>
-                                        <img src="{% static 'mysite/images/giphy.gif' %}" style="display:none" id="loading" width="100px" height=40px></img>
-                                </div>
-                              </div>
-                            </div>
-
+<input type="file" id='file_input' class="btn btn-warning" name='file' multiple >
+                                    
           </form>
     </div>
 </div>
@@ -223,55 +261,40 @@ font-size:14px;
 <div class="card mx-auto shadow-lg p-3 mb-5 bg-white rounded" style="width: 100%;">
     <div class="card-body">
    
-      <form action="." method="POST">
+      <form action="." method="POST" id="myForm">
           {% csrf_token %}
-    <div class="row border-light">
+      <div class="row border-light">
             <div class="col-md-6">
         <div class="form-group">
             <label>Product Name</label>
             <input class="form-control" type="text" id="product_name" name="product_name" placeholder="Product Name">
         </div>
-        <div class="form-group">
-                <label>Korea Selling Price</label>
-                <div class="row">
-                    <div class="col-md-4">
-                <input class="form-control" type="text" id="sel_min" name="sel_min" placeholder="minimum">
-            </div>
-            <div class="col-md-4">
-                    <input class="form-control" type="text" id="sel_avg" name="sel_avg" placeholder="average">
-                </div>
-                <div class="col-md-4">
-                        <input class="form-control" type="text" id="sel_max" name="sel_max" placeholder="maximum">
-                    </div>
-
-        </div>
-        </div>
-        <div class="form-group">
-                <label>China Price KWON</label>
-                <div class="row">
-                    <div class="col-md-4">
-                <input class="form-control" type="text" id="china_min" name="china_min" placeholder="minimum">
-            </div>
-            <div class="col-md-4">
-                    <input class="form-control" type="text" id="china_avg" name="china_avg" placeholder="average">
-                </div>
-                <div class="col-md-4">
-                        <input class="form-control" type="text" id="china_max" name="china_max" placeholder="maximum">
-                    </div>
-
-        </div>
-       </div>
        <div class="form-group">
             <label>Currency Rate</label>
-            <input class="form-control" type="text" id="exchange" name="exchange" placeholder="168.5">
+            <input class="form-control" type="text" id="exchange" name="exchange_rate" placeholder="168.5">
     </div>
     <br>
-<hr  style="border-width: 3px;border-color:black">
-<br>
-<div class="form-group">
+  <div class="form-group">
         <label>Oversea Shipping Cost</label>
-        <input class="form-control" type="text" id="shipping" name="shipping" placeholder="Oversea Shipping Cost">
+        <input class="form-control" type="text" id="shipping" name="oversea_shipping" placeholder="Oversea Shipping Cost">
 </div>
+
+<br>
+  <div class="form-group">
+        <label>Selling Commision</label>
+        <input class="form-control" type="text" id="commision" name="commision" placeholder="Selling Commision">
+</div>
+
+<br>
+
+<div class="form-group">
+        <label>Extra Cost</label>
+        <input class="form-control" type="text" name="extra" id='extra_cost' placeholder="Extra Cost">
+</div>
+
+    </div>
+
+<div class="col-md-6">
 <div class="form-group">
         <label>Tax Rate</label>
         <input class="form-control" type="text" name="tax_rate" id="tax_rate" placeholder="Tax Rate">
@@ -280,104 +303,132 @@ font-size:14px;
         <label>VAT</label>
         <input class="form-control" type="text" name="vat" id='vat' placeholder="VAT">
 </div>
+<br />
 <div class="form-group">
         <label>Local Delivery Cost</label>
-        <input class="form-control" type="text" name="local" id='local' placeholder="Local Delivery Cost">
+        <input class="form-control" type="text" name="local" id='local_delievery_cost' placeholder="Local Delivery Cost">
 </div>
+<br />
 <div class="form-group">
-        <label>Extra Cost</label>
-        <input class="form-control" type="text" name="extra" id='extra' placeholder="Extra Cost">
+        <label>Target ROI</label>
+        <input class="form-control" type="text" name="roi" id='target ROI' placeholder="Target ROI">
 </div>
-    </div>
+<br />
+<div class="form-group">
+        <label>Sales Goal</label>
+        <input class="form-control" type="text" name="roi" id='target ROI' placeholder="Target ROI">
+</div>
+<br />
 
+<div style="float:right;">
+<input type='button' value='Calculate' class="btn btn-danger" id='starting' ></input>
+ <img src="{% static 'mysite/images/giphy.gif' %}" style="display:none" id="loading" width="100px" height=40px></img>
+</div>
 
+</div>
+  </form>
+   </div>
 
-     
-    
+<br />
+ <div class="row">
+                                            <div class="col">
+                                             <div class="form-group mb-2" style="float:left;" >
+                                                <a href="#" class="btn btn-primary" onclick="download_table_as_csv();" id="profileButton">Save As .CSV FILE <i class="fas fa-download"></i></a>
+                                          </div>
+</div>
+</div>
 
-        <div class="col-md-6">
-                <div class="form-group">
-                        <label>Total Cost</label>
-                        <div class="row">
-                            <div class="col-md-4">
-                        <input class="form-control" type="text" id='total_min' name='total_min' placeholder="minimum">
-                    </div>
-                    <div class="col-md-4">
-                            <input class="form-control" type="text" id='total_avg' name='total_avg' placeholder="average">
-                        </div>
-                        <div class="col-md-4">
-                                <input class="form-control" type="text" id='total_max' name='total_max' placeholder="maximum">
-                            </div>
-        
-                </div>
-                </div>
-                <div class="form-group">
-                        <label>Net Profit</label>
-                        <div class="row">
-                            <div class="col-md-4">
-                        <input class="form-control" type="text" id='net_min' name='net_min' placeholder="minimum">
-                    </div>
-                    <div class="col-md-4">
-                            <input class="form-control" type="text" id='net_avg' name='net_avg' placeholder="maximum">
-                        </div>
-                        <div class="col-md-4">
-                                <input class="form-control" type="text" id='net_max' name='net_max' placeholder="maximum">
-                            </div>
-        
-                </div>
-               </div>
-            <input type='button' value='Calculate' class="btn btn-danger" id='calculate' ></input>
-                                          <img src="{% static 'mysite/images/giphy.gif' %}" style="display:none" id="loading_calculate" width="100px" height=40px></img>
-
-        </div>
-    </div>
-
-
-</form>
- <div style="float:right;margin-right: 50px">
-    <p onclick="deleteselected()" style="float:left;padding-right:5px;cursor:pointer;font-size: 12px;color:black;font-weight:bold;"><i class="fas fa-minus"></i>Delete Selected</p>
- <p onclick="moveselected()" style="float:right;cursor:pointer;font-size: 12px;color:black;font-weight:bold;">Move Selected</p>
+<div style="float:right;margin-right: 50px">
+<p onclick="deleteselected()" style="float:left;padding-right:5px;cursor:pointer;font-size: 12px;color:black;font-weight:bold;"><i class="fas fa-minus"></i>Delete All</p>
+ <p onclick="moveselected()" style="float:right;cursor:pointer;font-size: 12px;color:black;font-weight:bold;">Move All</p>
   </div>
     <div class="tab">
-  <button class="tablinks" onclick="openCity(event, 'Uncategorized')" id="defaultOpen">Overview</button>
+  <button class="tablinks" onclick="openCity(event, 'overview')" id="defaultOpen">Overview</button>
   {% for grp in groups %}
   <button class="tablinks" onclick="openCity(event, '{{grp}}')" id="{{grp}}">{{grp}}</button>
 
   {%endfor%}
-   <button type="button" class="tablinks" onclick="  $('#NewGroup').modal('show');" class="btn btn-success"><i class="fas fa-plus"></i>New Group</button>
-   <button type="button" class="tablinks" onclick="  $('#DeleteGroup').modal('show');" class="btn btn-success"><i class="fas fa-minus"></i>Delete Group</button>  
+   <button type="button" class="tablinks" onclick="  $('#NewGroup').modal('show');" class="btn btn-success"><i class="fas fa-plus"></i>New</button>
+   <button type="button" class="tablinks" onclick="  $('#DeleteGroup').modal('show');" class="btn btn-success"><i class="fas fa-minus"></i>Delete</button> 
+    <button type="button" class="tablinks" onclick="  $('#EditGroup').modal('show');" class="btn btn-success">Edit</button>  
 </div>
+
 <div id="Uncategorized" class="tabcontent">
   
           <div class="table-responsive">
         <table class="table table-bordered" id="response">
-          <tr id='head'>
-            <th style="cursor:pointer;" onclick="selectall();">Selected</th>
-            <th>Group</th>
-            <th>Product Name</th>
-            <th>China Price (min,avg,max)</th>
-            <th>Currency Rate</th>
-	    <th>Currency (min,avg,max)</th>
-            <th>Shipping Cost</th>
-            <th>Extra Cost</th>
-	    <th>Total Cost (min,avg,max)</th>
-            <th>Tax Rate %</th>
-	    <th>Tax (min,avg,max)</th>
-            <th>VAT %</th>
-	    <th>VAT (min,avg,max)</th>
-            <th>Final Cost (min,avg,max)</th>
-            <th>Selling Price (min,avg,max)</th>
-            <th>Local Delievery Cost</th>
-            <th>Consumer Price (min,avg,max)</th>
-	    <th>Final Vat (min,avg,max)</th>
-            <th>Net Profit (min,avg,max)</th>
-            <th>Edit</th>
-            <th>Manage</th>
-
+          <thead>
+            <tr>
+            <th rowspan="2">Group</th>
+            <th rowspan="2">Product Name</th>
+            <th colspan="3">Buying Price</th>
+            <th rowspan="2">Exchange Rate</th>
+            <th colspan="3">Currency</th>
+            <th rowspan="2">Shipping Cost</th>
+            <th rowspan="2">Extra Cost</th>
+            <th colspan="3">Total Cost</th>
+            <th rowspan="2">Tax Rate</th>
+      	    <th colspan="3">Tax</th>
+            <th rowspan="2">VAT %</th>
+            <th colspan="3">VAT</th>
+            <th colspan="3">Final Cost</th>
+            <th rowspan="2">Target ROI</th>
+            <th colspan="3">Profit Per</th>
+            <th colspan="3">Selling Price</th>
+            <th rowspan="2">Local Delievery Cost</th>
+            <th rowspan="2">Selling Commision</th>
+            <th colspan="3">Consumer Price</th>
+      	    <th colspan="3">Final VAT</th>
+            <th colspan="3">Net Profit</th>
+            <th rowspan="2">Sales Goal</th>
+            <th colspan="3">Total Assumed Profit</th> 
+            <th rowspan="2">Manage</th>
+            <th></th>
           </tr>
+          <tr>
+            <th>MIN</th>
+            <th>AVG</th>
+            <th>MAX</th>
+            <th>MIN</th>
+            <th>AVG</th>
+            <th>MAX</th>
+            <th>MIN</th>
+            <th>AVG</th>
+            <th>MAX</th>
+            <th>MIN</th>
+            <th>AVG</th>
+            <th>MAX</th>
+            <th>MIN</th>
+            <th>AVG</th>
+            <th>MAX</th>
+            <th>MIN</th>
+            <th>AVG</th>
+            <th>MAX</th>
+            <th>MIN</th>
+            <th>AVG</th>
+            <th>MAX</th>
+            <th>MIN</th>
+            <th>AVG</th>
+            <th>MAX</th>
+            <th>MIN</th>
+            <th>AVG</th>
+            <th>MAX</th>
+            <th>MIN</th>
+            <th>AVG</th>
+            <th>MAX</th>
+            <th>MIN</th>
+            <th>AVG</th>
+            <th>MAX</th>
+            <th>MIN</th>
+            <th>AVG</th>
+            <th>MAX</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
       
                                                      </table>
                                                     </div>
+    </div>
 
 </div>
         </div>
@@ -392,50 +443,36 @@ font-size:14px;
 </div>
 
 </main>
-<script type="text/javascript">
-
-  var overview={{overview|safe}};
-  var table = document.getElementById("response");
-  var i=1;
-  var selected=false;
-  addentry(overview)
-function selectall(){
-
-$('#response input[type=checkbox]').each(function(){
-  $(this).prop('checked', !selected);
-});
-selected=!selected
-}
-
-  function download_table_as_csv(table_id) {
+<script  src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+<script>
+ function download_table_as_csv(table_id) {
     // Select rows from table_id
-    var rows = document.querySelectorAll('table#' + table_id + ' tr');
+    var csv=[];
+    var names=table.settings().init().columns
+    var row=[]
+    for(var i=0;i<names.length-2;i++){
+
+      row.push(names[i]['name'])
+                                      }
+      csv.push(row.join(','));
+
+    table.rows().every(function(){
+          row=[]
+
+this.cells().every( function () {
+        row.push(this.data())
+
+           } );
+
+        csv.push(row.join(','));
+                                  
+
+    });
+
     // Construct csv
-    var csv = [];
-    for (var l = 0; l < rows.length; l++) {
-        var row = [], cols = rows[l].querySelectorAll('td, th');
-        for (var j = 1; j < cols.length-2; j++) {
-            // Clean innertext to remove multiple spaces and jumpline (break csv)
-            var data = cols[j].innerText
-            // Escape double-quote with double-double-quote (see https://stackoverflow.com/questions/17808511/properly-escape-a-double-quote-in-csv)
-            data = data.replace(/"/g, '""');
-            // Push escaped string
-            row.push('"' + data + '"');
-        }
-
-        if(l!=0){
-          data=cols[j]
-            row.push('"' + $(cols[j])[0].childNodes[0].href + '"');
-        }
-        else{
-                      row.push('"Supplier Info"');
-
-        }
-        csv.push(row.join(';'));
-    }
     var csv_string = csv.join('\n');
     // Download it
-    var filename = 'export_' + table_id + '_' + new Date().toLocaleDateString() + '.csv';
+    var filename = 'content_downloader' + '_' + new Date().toLocaleDateString() + '.csv';
     var link = document.createElement('a');
     link.style.display = 'none';
     link.setAttribute('target', '_blank');
@@ -446,145 +483,76 @@ selected=!selected
     document.body.removeChild(link);
 }
 
+function deleteselected(){
+  var array=[]
+  table.rows({search:'applied'}).every( function () {
+  array.push(table.row(this).node().id)
+                                    });
+              $.ajaxSetup({
+                   headers: { "X-CSRFToken": '{{ csrf_token }}' }
+                       });
 
-  function addentry(result){
-   for (var key in result) {
-      var row = table.insertRow(i++);
-            row.id=result[key]['id']
-
-      j=0;
-      var cell = row.insertCell(j++);              
-      cell.innerHTML="<input type='checkbox'>"    
-      for (var k in result[key]){
-      if (result[key].hasOwnProperty(k)) {           
-          if(k=='id'){
-            continue
-          }
-
-          var cell = row.insertCell(j++);
-          if(k=='image'){
-              for(var l=0;l<result[key][k].length;l++){
-               cell.innerHTML += "<img src='"+result[key][k][l]+"' widht=60px height=60px></img>"; 
-                       }
-              }
-          else{
-
-            if(k=='url'){
-            cell.innerHTML="<a style='color:blue;'href='"+result[key][k]+"'>Open Link</a>"    
-
-            }
-          else{
-              cell.innerHTML = result[key][k];
-              }
-            }
-                }
-                     }
-
-     var cell = row.insertCell(j++);              
-      cell.innerHTML="<a href='javascript:edit("+row.id+");' >Edit</a>"    
-     var cell = row.insertCell(j++);              
-      cell.innerHTML="<a href='javascript:del("+row.id+");' >Delete</a>   <a href=javascript:mov("+row.id+");>Move</a>"    
-                                   
-                      }
-$(function(){ $("#response").each(function(elem,index){ var arr = $.makeArray($("tr:not(#head)",this).detach()); arr.reverse(); $(this).append(arr); }); });
-  }
-function mov1(id){
-  if(id=='selected'){
-          active=document.getElementsByClassName('tablinks active')[0].textContent
-      $('input:checkbox:checked').each(function(){
-        if (active!="Overview"){
-          if(active==$(this).parent().parent()[0].childNodes[1].textContent){
-             mov1($(this).parent().parent().attr('id'))
-                }
-
-              }
-              else{
-                  mov1($(this).parent().parent().attr('id'))
-              }
-
-      
-});
-  }
-  else{
-       $.ajax({
+     $.ajax({
        url:"/profitcalculator/",
-       method:"GET",
+       method:"POST",
        dataType: 'json',
-       data:{move:id,group:document.getElementById('groupmove').value},
-       success:function(result)
-       {
-          $('#myModal').modal('hide'); 
-          document.getElementById(id).childNodes[1].textContent=document.getElementById('groupmove').value
-                       
-          document.getElementsByClassName("tablinks active")[0].click();
-
+       data:{deleteselected:array},
+        success:function(result)
+                    {
+       table.rows({search:'applied'}).remove().draw()
                        }
                 });
+
+
 }
+
+function show(id){
+      $(id).parent().css('display','none')
+      $(id).parent().next().css('display','')
+      $(id).parent().next().next().css('display','')
+    }
+
+function hide(id){
+      $(id).css('display','none')
+      $(id).prev().css('display','none')
+      $(id).prev().prev().css('display','')
+
+    }
+
+function mov(id){
+    document.getElementById('groupmove').value=table.cell($('#'+id),0).data()
+    $('#myModal').modal('show'); 
+    document.getElementById('move').setAttribute('data',id)
   }
-function deleteselected(){
-active=document.getElementsByClassName('tablinks active')[0].textContent
 
-      $('input:checkbox:checked').each(function(){
-        if (active!="Overview"){
-          if(active==$(this).parent().parent()[0].childNodes[1].textContent){
-         del($(this).parent().parent().attr('id'))
-                }
-
-              }
-              else{
-                  del($(this).parent().parent().attr('id'))
-              }
-
-      
-});
-
-  }
-
-  function moveselected(){
+function moveselected(){
           document.getElementById('groupmove').value='Uncategorized'
           $('#myModal').modal('show'); 
           document.getElementById('move').setAttribute('data','selected')
 
+  }
+
+function del(id){
+
+     $.ajax({
+       url:"/profitcalculator/",
+       method:"GET",
+       dataType: 'json',
+       data:{delete:id},
+        success:function(result)
+                    {
+              table.row($('#'+id)).remove().draw()
+                       }
+                });
+
 
   }
 
-  function edit(id){
-document.getElementById('product_name').value=document.getElementById(id).childNodes[2].textContent
-selling_price=document.getElementById(id).childNodes[14].textContent.split(',')
-document.getElementById('sel_min').value=selling_price[0]
-document.getElementById('sel_avg').value=selling_price[1]
-document.getElementById('sel_max').value=selling_price[2]
+function dele(){
+      document.getElementById('deletebutton').style.display='none'
+      document.getElementById('deleteloading').style.display=''
 
-china_price=document.getElementById(id).childNodes[3].textContent.split(',')
-document.getElementById('china_min').value=china_price[0]
-document.getElementById('china_avg').value=china_price[1]
-document.getElementById('china_max').value=china_price[2]
-
-document.getElementById('exchange').value=document.getElementById(id).childNodes[4].textContent
-document.getElementById('shipping').value=document.getElementById(id).childNodes[6].textContent
-document.getElementById('tax_rate').value=document.getElementById(id).childNodes[9].textContent
-document.getElementById('vat').value=document.getElementById(id).childNodes[11].textContent
-document.getElementById('local').value=document.getElementById(id).childNodes[15].textContent
-document.getElementById('extra').value=document.getElementById(id).childNodes[7].textContent
-
-total_price=document.getElementById(id).childNodes[13].textContent.split(',')
-document.getElementById('total_min').value=total_price[0]
-document.getElementById('total_avg').value=total_price[1]
-document.getElementById('total_max').value=total_price[2]
-
-total_price=document.getElementById(id).childNodes[18].textContent.split(',')
-document.getElementById('net_min').value=total_price[0]
-document.getElementById('net_avg').value=total_price[1]
-document.getElementById('net_max').value=total_price[2]
-document.getElementById('calculate').setAttribute('data',id)
-
-  }
-
-
-  function dele(){
       var deleted_group=document.getElementById('groupdelete').value
-
       $.ajax({
            url:"/profitcalculator/",
            method:"GET",
@@ -598,9 +566,12 @@ document.getElementById('calculate').setAttribute('data',id)
 
       
                   }
-  function create(){
-                            var created_group=document.getElementById('new-group').value
+ 
+function create(){
+        document.getElementById('createbutton').style.display='none'
+      document.getElementById('createloading').style.display=''
 
+      var created_group=document.getElementById('new-group').value
       $.ajax({
            url:"/profitcalculator/",
            method:"GET",
@@ -612,142 +583,582 @@ document.getElementById('calculate').setAttribute('data',id)
 
                     }});
 
+
       
                   }
 
-  function mov(id){
-          document.getElementById('groupmove').value=document.getElementById(id).childNodes[1].textContent
-          $('#myModal').modal('show'); 
-          document.getElementById('move').setAttribute('data',id)
-  }
-  function del(id){
+function editgroup(){
+          document.getElementById('editbutton').style.display='none'
+      document.getElementById('editloading').style.display=''
+
+        var data=document.getElementById('edit-group').value
+        if (data==''){
+          return
+        }
+      var editgroup=document.getElementById('groupedit').value
+      $.ajax({
+           url:"/profitcalculator/",
+           method:"GET",
+           dataType: 'json',
+           data:{editgroup:editgroup,data:data},
+           success:function(result)
+                    { 
+          location.reload()
+
+                    }});
+
+
+      
+                  }
+function mov1(id){
+        document.getElementById('move').style.display='none'
+      document.getElementById('moveloading').style.display=''
+
+  if(id=='selected'){
+  var array=[]
+  table.rows({search:'applied'}).every( function () {
+  array.push(table.row(this).node().id)
+                                    });
+       $.ajaxSetup({
+             headers: { "X-CSRFToken": '{{ csrf_token }}' }
+                   });
 
      $.ajax({
        url:"/profitcalculator/",
-       method:"GET",
+       method:"POST",
        dataType: 'json',
-       data:{delete:id},
+       data:{moveselected:array,group:document.getElementById('groupmove').value},
         success:function(result)
                     {
+         $('#myModal').modal('hide'); 
+          table.rows({search:'applied'}).every( function ( rowIdx, tableLoop, rowLoop ) {
+                var data = this.data();
+                data["group"] = document.getElementById('groupmove').value;
+                this.data(data);
+                                                                  } )
 
-              var row = document.getElementById(id);
-              row.parentNode.removeChild(row)
-          i--;
+          document.getElementsByClassName("tablinks active")[0].click();
+          document.getElementById('move').style.display=''
+          document.getElementById('moveloading').style.display='none'
 
                        }
                 });
 
 
-  }
-  function openCity(evt, cityName) {
+          return
+        }
+
+
+  $.ajax({
+       url:"/profitcalculator/",
+       method:"GET",
+       dataType: 'json',
+       data:{move:id,group:document.getElementById('groupmove').value},
+       success:function(result)
+       {
+          $('#myModal').modal('hide'); 
+          table.cell($('#'+id),0).data(document.getElementById('groupmove').value)
+                       
+          document.getElementsByClassName("tablinks active")[0].click();
+        document.getElementById('move').style.display=''
+      document.getElementById('moveloading').style.display='none'
+
+                       }
+                });
+}
+
+var overview={{overview|safe}};
+$('#response').on( 'dblclick', 'tbody td:eq(1),tbody td:eq(5),tbody td:eq(9),tbody td:eq(10),tbody td:eq(14),tbody td:eq(18),tbody td:eq(25),tbody td:eq(32),tbody td:eq(33),tbody td:eq(43)', function (e) {
+
+document.getElementById('edit-label').innerHTML=table.settings().init().columns[table.cell(this).index().column].name
+document.getElementById('editdataid').setAttribute('data',$(this).parents('tr').attr('id'))
+document.getElementById('editdataid').setAttribute('tableindex',$(this).index())
+
+$('#EditData').modal('show'); 
+
+document.getElementById('edit-data').value=$(this).children(":first").text()
+
+document.getElementById('edit-data').setAttribute('rows',4)
+
+    } );
+
+var table = $('#response').DataTable( {     
+          "scrollY":        "70vh",
+          "scrollCollapse": true,
+          "scrollX":"700vh",
+          columns: [
+            { "name": "group","data": "group" },
+            { "name": "Product Name","data": "Product Name" },
+            { "name": "Buying Price MIN","data": "Buying Price MIN" },
+            { "name": "Buying Price AVG","data": "Buying Price AVG" },
+            { "name": "Buying Price MAX","data": "Buying Price MAX" },
+            { "name": "Exchange Rate","data": "Exchange Rate" },            
+            { "name": "Currency MIN" },
+            { "name": "Currency AVG" },
+            { "name": "Currency MAX" },
+            { "name": "Shipping Cost","data": "Shipping Cost" },
+            { "name": "Extra Cost","data": "Extra Cost" },
+            { "name": "Total Cost MIN" },
+            { "name": "Total Cost AVG" },
+            { "name": "Total Cost MAX" },
+            { "name": "Tax Rate","data": "Tax Rate" },
+            { "name": "Tax MIN" },
+            { "name": "Tax AVG" },
+            { "name": "Tax MAX" },
+            { "name": "VAT %","data": "VAT %" },
+            { "name": "VAT MIN" },
+            { "name": "VAT AVG" },
+            { "name": "VAT MAX" },
+            { "name": "Final Cost MIN" },
+            { "name": "Final Cost AVG" },
+            { "name": "Final Cost MAX" },
+            { "name": "Target ROI","data":"ROI" },
+            { "name": "Profit Per MIN" },
+            { "name": "Profit Per AVG" },
+            { "name": "Profit Per MAX" },
+            { "name": "Selling Price MIN" },
+            { "name": "Selling Price AVG" },
+            { "name": "Selling Price MAX" },
+            { "name": "Local Delievery Cost","data":"Local Delievery Cost" },
+            { "name": "Selling Commision","data":"Selling Commision" },
+            { "name": "Consumer Price MIN" },
+            { "name": "Consumer Price AVG" },
+            { "name": "Consumer Price MAX" },
+            { "name": "Final VAT MIN" },
+            { "name": "Final VAT AVG" },
+            { "name": "Final VAT MAX" },
+            { "name": "Net Profit MIN" },
+            { "name": "Net Profit AVG" },
+            { "name": "Net Profit MAX" },
+            { "name": "Sales Goal","data": "Sales Goal" },            
+            { "name": "Total Profit MIN" },
+            { "name": "Total Profit AVG" },
+            { "name": "Total Profit MAX" },
+            { "name": "manage","data":"manage"   },
+            {"name":"id","data":"id"}
+            ],
+                    "order": [[ 48, 'desc' ]],
+
+              columnDefs: [{
+            "searchable": false,
+            "orderable": true,
+            "visible":false,
+            "targets": 48
+             },      
+             {
+                    render: function (data, type, full, meta) {
+                        return "<div align='center' class='text-wrap width-20'>" + data+"</div>"
+                    },
+                    targets: [0,1,5,9,10,29,32,43]
+            },
+             {
+                    render: function (data, type, full, meta) {
+                        return "<div align='center' class='text-wrap width-20'>" + data+"%</div>"
+                    },
+                    targets: [25,14,18,33]
+            },
+            
+            {
+                    render: function (data, type, full, meta) {
+                        return "<div align='center' class='text-wrap width-20'>¥" + data+"</div>"
+                    },
+                    targets: [2,3,4]
+            },
+            {
+                    render: function (data, type, full, meta) {
+                        return "<div align='center' class='text-wrap width-20'>₩" + data+"</div>"
+                    },
+                    targets: [6,8,7,11,12,13,15,16,17,19,20,21,22,23,24,26,27,28,29,30,31,34,35,36,37,38,39,40,41,42,44,46,46]
+            },
+
+            { 
+              targets : [ 6 ], data:  function ( row, type, val, meta ) {
+                   return parseFloat(row["Exchange Rate"])* parseFloat(row[["Buying Price MIN"]]);
+            }
+              },
+            { 
+              targets : [ 7 ], data:  function ( row, type, val, meta ) {
+                   return parseFloat(row["Exchange Rate"])* parseFloat(row[["Buying Price AVG"]]);
+            }
+              }, 
+            { 
+              targets : [ 8 ], data:  function ( row, type, val, meta ) {
+                   return parseFloat(row["Exchange Rate"])* parseFloat(row[["Buying Price MAX"]]);
+            }
+              },
+
+            { 
+              targets : [ 11 ], data:  function ( row, type, val, meta ) {
+                currency=parseFloat(row["Exchange Rate"])* parseFloat(row[["Buying Price MIN"]]);
+                   return parseFloat(row["Shipping Cost"])+ currency+parseFloat(row[["Extra Cost"]]);
+            }
+              },
+            { 
+              targets : [ 12 ], data:  function ( row, type, val, meta ) {
+                currency=parseFloat(row["Exchange Rate"])* parseFloat(row[["Buying Price AVG"]]);
+                   return parseFloat(row["Shipping Cost"])+ currency+parseFloat(row[["Extra Cost"]]);
+   
+            }
+              }, 
+            { 
+              targets : [ 13 ], data:  function ( row, type, val, meta ) {
+                currency=parseFloat(row["Exchange Rate"])* parseFloat(row[["Buying Price MAX"]]);
+                   return parseFloat(row["Shipping Cost"])+ currency+parseFloat(row[["Extra Cost"]]);
+
+               }
+              },
+            { 
+              targets : [ 15 ], data:  function ( row, type, val, meta ) {
+                currency=parseFloat(row["Exchange Rate"])* parseFloat(row[["Buying Price MIN"]]);
+                   total_cost= parseFloat(row["Shipping Cost"])+ currency+parseFloat(row[["Extra Cost"]]);
+                   return total_cost*parseFloat(row["Tax Rate"])/100
+            }
+              },
+            { 
+              targets : [ 16 ], data:  function ( row, type, val, meta ) {
+                currency=parseFloat(row["Exchange Rate"])* parseFloat(row[["Buying Price AVG"]]);
+                   total_cost=parseFloat(row["Shipping Cost"])+ currency+parseFloat(row[["Extra Cost"]]);
+                   return total_cost*parseFloat(row["Tax Rate"])/100
+   
+            }
+              }, 
+            { 
+              targets : [ 17 ], data:  function ( row, type, val, meta ) {
+                currency=parseFloat(row["Exchange Rate"])* parseFloat(row[["Buying Price MAX"]]);
+                   total_cost=parseFloat(row["Shipping Cost"])+ currency+parseFloat(row[["Extra Cost"]]);
+                   return total_cost*parseFloat(row["Tax Rate"])/100
+
+               }
+              } ,
+            { 
+              targets : [ 19 ], data:  function ( row, type, val, meta ) {
+                currency=parseFloat(row["Exchange Rate"])* parseFloat(row[["Buying Price MIN"]]);
+                   total_cost= parseFloat(row["Shipping Cost"])+ currency+parseFloat(row[["Extra Cost"]]);
+                   return total_cost*parseFloat(row["VAT %"])/100
+            }
+              },
+            { 
+              targets : [ 20 ], data:  function ( row, type, val, meta ) {
+                currency=parseFloat(row["Exchange Rate"])* parseFloat(row[["Buying Price AVG"]]);
+                   total_cost=parseFloat(row["Shipping Cost"])+ currency+parseFloat(row[["Extra Cost"]]);
+                   return total_cost*parseFloat(row["VAT %"])/100
+   
+            }
+              }, 
+            { 
+              targets : [ 21 ], data:  function ( row, type, val, meta ) {
+                currency=parseFloat(row["Exchange Rate"])* parseFloat(row[["Buying Price MAX"]]);
+                   total_cost=parseFloat(row["Shipping Cost"])+ currency+parseFloat(row[["Extra Cost"]]);
+                   return total_cost*parseFloat(row["VAT %"])/100
+
+               }
+              },
+            { 
+              targets : [ 22 ], data:  function ( row, type, val, meta ) {
+                currency=parseFloat(row["Exchange Rate"])* parseFloat(row[["Buying Price MIN"]]);
+                   total_cost= parseFloat(row["Shipping Cost"])+ currency+parseFloat(row[["Extra Cost"]]);
+                   return total_cost*parseFloat(row["VAT %"])/100+total_cost*parseFloat(row["Tax Rate"])/100+total_cost
+            }
+              },
+            { 
+              targets : [ 23 ], data:  function ( row, type, val, meta ) {
+                currency=parseFloat(row["Exchange Rate"])* parseFloat(row[["Buying Price AVG"]]);
+                   total_cost=parseFloat(row["Shipping Cost"])+ currency+parseFloat(row[["Extra Cost"]]);
+                   return total_cost*parseFloat(row["VAT %"])/100+total_cost*parseFloat(row["Tax Rate"])/100+total_cost
+   
+            }
+              }, 
+            { 
+              targets : [ 24 ], data:  function ( row, type, val, meta ) {
+                currency=parseFloat(row["Exchange Rate"])* parseFloat(row[["Buying Price MAX"]]);
+                   total_cost=parseFloat(row["Shipping Cost"])+ currency+parseFloat(row[["Extra Cost"]]);
+                   return total_cost*parseFloat(row["VAT %"])/100+total_cost*parseFloat(row["Tax Rate"])/100+total_cost
+
+               }
+              } , 
+            { 
+              targets : [ 26 ], data:  function ( row, type, val, meta ) {
+                currency=parseFloat(row["Exchange Rate"])* parseFloat(row[["Buying Price MIN"]]);
+                   total_cost= parseFloat(row["Shipping Cost"])+ currency+parseFloat(row[["Extra Cost"]]);
+                   final= total_cost*parseFloat(row["VAT %"])/100+total_cost*parseFloat(row["Tax Rate"])/100+total_cost
+                   return final*parseFloat(row["ROI"])/100
+            }
+              },
+            { 
+              targets : [ 27 ], data:  function ( row, type, val, meta ) {
+                currency=parseFloat(row["Exchange Rate"])* parseFloat(row[["Buying Price AVG"]]);
+                   total_cost=parseFloat(row["Shipping Cost"])+ currency+parseFloat(row[["Extra Cost"]]);
+                   final= total_cost*parseFloat(row["VAT %"])/100+total_cost*parseFloat(row["Tax Rate"])/100+total_cost
+                   return final*parseFloat(row["ROI"])/100
+   
+            }
+              }, 
+            { 
+              targets : [ 28 ], data:  function ( row, type, val, meta ) {
+                currency=parseFloat(row["Exchange Rate"])* parseFloat(row[["Buying Price MAX"]]);
+                   total_cost=parseFloat(row["Shipping Cost"])+ currency+parseFloat(row[["Extra Cost"]]);
+                   final= total_cost*parseFloat(row["VAT %"])/100+total_cost*parseFloat(row["Tax Rate"])/100+total_cost
+                   return final*parseFloat(row["ROI"])/100
+
+               }
+              }  ,
+            { 
+              targets : [ 29 ], data:  function ( row, type, val, meta ) {
+                currency=parseFloat(row["Exchange Rate"])* parseFloat(row[["Buying Price MIN"]]);
+                   total_cost= parseFloat(row["Shipping Cost"])+ currency+parseFloat(row[["Extra Cost"]]);
+                   final= total_cost*parseFloat(row["VAT %"])/100+total_cost*parseFloat(row["Tax Rate"])/100+total_cost
+                   return final*parseFloat(row["ROI"])/100+final
+            }
+              },
+            { 
+              targets : [ 30 ], data:  function ( row, type, val, meta ) {
+                currency=parseFloat(row["Exchange Rate"])* parseFloat(row[["Buying Price AVG"]]);
+                   total_cost=parseFloat(row["Shipping Cost"])+ currency+parseFloat(row[["Extra Cost"]]);
+                   final= total_cost*parseFloat(row["VAT %"])/100+total_cost*parseFloat(row["Tax Rate"])/100+total_cost
+                   return final*parseFloat(row["ROI"])/100+final
+   
+            }
+              }, 
+            { 
+              targets : [ 31 ], data:  function ( row, type, val, meta ) {
+                currency=parseFloat(row["Exchange Rate"])* parseFloat(row[["Buying Price MAX"]]);
+                   total_cost=parseFloat(row["Shipping Cost"])+ currency+parseFloat(row[["Extra Cost"]]);
+                   final= total_cost*parseFloat(row["VAT %"])/100+total_cost*parseFloat(row["Tax Rate"])/100+total_cost
+                   return final*parseFloat(row["ROI"])/100+final
+
+               }
+              } , 
+            { 
+              targets : [ 34 ], data:  function ( row, type, val, meta ) {
+                currency=parseFloat(row["Exchange Rate"])* parseFloat(row[["Buying Price MIN"]]);
+                   total_cost= parseFloat(row["Shipping Cost"])+ currency+parseFloat(row[["Extra Cost"]]);
+                   final= total_cost*parseFloat(row["VAT %"])/100+total_cost*parseFloat(row["Tax Rate"])/100+total_cost
+                   selling=final*parseFloat(row["ROI"])/100+final
+                   return selling-parseFloat(row["Local Delievery Cost"])-(selling*parseFloat(row["Selling Commision"])/100)
+            }
+              },
+            { 
+              targets : [ 35 ], data:  function ( row, type, val, meta ) {
+                currency=parseFloat(row["Exchange Rate"])* parseFloat(row[["Buying Price AVG"]]);
+                   total_cost=parseFloat(row["Shipping Cost"])+ currency+parseFloat(row[["Extra Cost"]]);
+                   final= total_cost*parseFloat(row["VAT %"])/100+total_cost*parseFloat(row["Tax Rate"])/100+total_cost
+                   selling=final*parseFloat(row["ROI"])/100+final
+                   return selling-parseFloat(row["Local Delievery Cost"])-(selling*parseFloat(row["Selling Commision"])/100)
+   
+            }
+              }, 
+            { 
+              targets : [ 36 ], data:  function ( row, type, val, meta ) {
+                currency=parseFloat(row["Exchange Rate"])* parseFloat(row[["Buying Price MAX"]]);
+                   total_cost=parseFloat(row["Shipping Cost"])+ currency+parseFloat(row[["Extra Cost"]]);
+                   final= total_cost*parseFloat(row["VAT %"])/100+total_cost*parseFloat(row["Tax Rate"])/100+total_cost
+                   selling=final*parseFloat(row["ROI"])/100+final
+                   return selling-parseFloat(row["Local Delievery Cost"])-(selling*parseFloat(row["Selling Commision"])/100)
+
+               }
+              } , 
+            { 
+              targets : [ 37 ], data:  function ( row, type, val, meta ) {
+                currency=parseFloat(row["Exchange Rate"])* parseFloat(row[["Buying Price MIN"]]);
+                   total_cost= parseFloat(row["Shipping Cost"])+ currency+parseFloat(row[["Extra Cost"]]);
+                   final= total_cost*parseFloat(row["VAT %"])/100+total_cost*parseFloat(row["Tax Rate"])/100+total_cost
+                   selling=final*parseFloat(row["ROI"])/100+final
+                   consumer=selling-parseFloat(row["Local Delievery Cost"])-(selling*parseFloat(row["Selling Commision"])/100)
+                   return (consumer-final)*parseFloat(row["VAT %"])/100
+            }
+              },
+            { 
+              targets : [ 38 ], data:  function ( row, type, val, meta ) {
+                currency=parseFloat(row["Exchange Rate"])* parseFloat(row[["Buying Price AVG"]]);
+                   total_cost=parseFloat(row["Shipping Cost"])+ currency+parseFloat(row[["Extra Cost"]]);
+                   final= total_cost*parseFloat(row["VAT %"])/100+total_cost*parseFloat(row["Tax Rate"])/100+total_cost
+                   selling=final*parseFloat(row["ROI"])/100+final
+                   consumer=selling-parseFloat(row["Local Delievery Cost"])-(selling*parseFloat(row["Selling Commision"])/100)
+                   return (consumer-final)*parseFloat(row["VAT %"])/100
+   
+            }
+              }, 
+            { 
+              targets : [ 39 ], data:  function ( row, type, val, meta ) {
+                currency=parseFloat(row["Exchange Rate"])* parseFloat(row[["Buying Price MAX"]]);
+                   total_cost=parseFloat(row["Shipping Cost"])+ currency+parseFloat(row[["Extra Cost"]]);
+                   final= total_cost*parseFloat(row["VAT %"])/100+total_cost*parseFloat(row["Tax Rate"])/100+total_cost
+                   selling=final*parseFloat(row["ROI"])/100+final
+                   consumer=selling-parseFloat(row["Local Delievery Cost"])-(selling*parseFloat(row["Selling Commision"])/100)
+                   return (consumer-final)*parseFloat(row["VAT %"])/100
+
+               }
+              } , 
+            { 
+              targets : [ 40 ], data:  function ( row, type, val, meta ) {
+                currency=parseFloat(row["Exchange Rate"])* parseFloat(row[["Buying Price MIN"]]);
+                   total_cost= parseFloat(row["Shipping Cost"])+ currency+parseFloat(row[["Extra Cost"]]);
+                   final= total_cost*parseFloat(row["VAT %"])/100+total_cost*parseFloat(row["Tax Rate"])/100+total_cost
+                   selling=final*parseFloat(row["ROI"])/100+final
+                   consumer=selling-parseFloat(row["Local Delievery Cost"])-(selling*parseFloat(row["Selling Commision"])/100)
+                   vat= (consumer-final)*parseFloat(row["VAT %"])/100
+                   return consumer-final-vat
+            }
+              },
+            { 
+              targets : [ 41 ], data:  function ( row, type, val, meta ) {
+                currency=parseFloat(row["Exchange Rate"])* parseFloat(row[["Buying Price AVG"]]);
+                   total_cost=parseFloat(row["Shipping Cost"])+ currency+parseFloat(row[["Extra Cost"]]);
+                   final= total_cost*parseFloat(row["VAT %"])/100+total_cost*parseFloat(row["Tax Rate"])/100+total_cost
+                   selling=final*parseFloat(row["ROI"])/100+final
+                   consumer=selling-parseFloat(row["Local Delievery Cost"])-(selling*parseFloat(row["Selling Commision"])/100)
+                   vat= (consumer-final)*parseFloat(row["VAT %"])/100
+                   return consumer-final-vat
+   
+            }
+              }, 
+            { 
+              targets : [ 42 ], data:  function ( row, type, val, meta ) {
+                currency=parseFloat(row["Exchange Rate"])* parseFloat(row[["Buying Price MAX"]]);
+                   total_cost=parseFloat(row["Shipping Cost"])+ currency+parseFloat(row[["Extra Cost"]]);
+                   final= total_cost*parseFloat(row["VAT %"])/100+total_cost*parseFloat(row["Tax Rate"])/100+total_cost
+                   selling=final*parseFloat(row["ROI"])/100+final
+                   consumer=selling-parseFloat(row["Local Delievery Cost"])-(selling*parseFloat(row["Selling Commision"])/100)
+                   vat= (consumer-final)*parseFloat(row["VAT %"])/100
+                   return consumer-final-vat
+
+               }
+              }  ,
+
+                          { 
+              targets : [ 44 ], data:  function ( row, type, val, meta ) {
+                currency=parseFloat(row["Exchange Rate"])* parseFloat(row[["Buying Price MIN"]]);
+                   total_cost= parseFloat(row["Shipping Cost"])+ currency+parseFloat(row[["Extra Cost"]]);
+                   final= total_cost*parseFloat(row["VAT %"])/100+total_cost*parseFloat(row["Tax Rate"])/100+total_cost
+                   selling=final*parseFloat(row["ROI"])/100+final
+                   consumer=selling-parseFloat(row["Local Delievery Cost"])-(selling*parseFloat(row["Selling Commision"])/100)
+                   vat= (consumer-final)*parseFloat(row["VAT %"])/100
+                   prof= consumer-final-vat
+                   return prof*row["Sales Goal"]
+            }
+              },
+            { 
+              targets : [ 45 ], data:  function ( row, type, val, meta ) {
+                currency=parseFloat(row["Exchange Rate"])* parseFloat(row[["Buying Price AVG"]]);
+                   total_cost=parseFloat(row["Shipping Cost"])+ currency+parseFloat(row[["Extra Cost"]]);
+                   final= total_cost*parseFloat(row["VAT %"])/100+total_cost*parseFloat(row["Tax Rate"])/100+total_cost
+                   selling=final*parseFloat(row["ROI"])/100+final
+                   consumer=selling-parseFloat(row["Local Delievery Cost"])-(selling*parseFloat(row["Selling Commision"])/100)
+                   vat= (consumer-final)*parseFloat(row["VAT %"])/100
+                   prof= consumer-final-vat
+                   return prof*row["Sales Goal"]
+
+   
+            }
+              }, 
+            { 
+              targets : [ 46 ], data:  function ( row, type, val, meta ) {
+                currency=parseFloat(row["Exchange Rate"])* parseFloat(row[["Buying Price MAX"]]);
+                   total_cost=parseFloat(row["Shipping Cost"])+ currency+parseFloat(row[["Extra Cost"]]);
+                   final= total_cost*parseFloat(row["VAT %"])/100+total_cost*parseFloat(row["Tax Rate"])/100+total_cost
+                   selling=final*parseFloat(row["ROI"])/100+final
+                   consumer=selling-parseFloat(row["Local Delievery Cost"])-(selling*parseFloat(row["Selling Commision"])/100)
+                   vat= (consumer-final)*parseFloat(row["VAT %"])/100
+                   prof= consumer-final-vat
+                   return prof*row["Sales Goal"]
+
+               }
+              }  
+
+
+
+
+
+
+
+
+             ],
+                   } );
+      document.getElementById("defaultOpen").click();
+
+      addentry(overview)
+
+function openCity(evt, cityName) {
     var k, tablinks;
-    a= $('#response tr').not(document.getElementById( "head" )).each(function(){
-      cell=$(this)
-      if(cityName!="Uncategorized"){
-         if(cell[0].childNodes[1].textContent!=cityName){
-          cell.hide()
-         }
-         else{
-          cell.show()
-         }
-        }
-        else{
-          cell.show()
-        }
-    })
-        tablinks = document.getElementsByClassName("tablinks");
-        for (k = 0; k < tablinks.length; k++) {
+    if(cityName=='overview'){
+    table.column(0)
+         .search('')
+         .draw();
+
+    }
+    else{
+      table.column(0)
+         .search(cityName)
+         .draw();
+       }
+    tablinks = document.getElementsByClassName("tablinks");
+    for (k = 0; k < tablinks.length; k++) {
           tablinks[k].className = tablinks[k].className.replace(" active", "");
                                               }
-          document.getElementById(cityName).style.display = "block";
           evt.currentTarget.className += " active";
-                                              }
+                                              }            
+function addentry(result){
+  for (var key in result) {
+    button="<a href='javascript:del("+result[key]['id']+");' >Delete</a>   <a href='javascript:mov("+result[key]['id']+")';>Move</a>"
+      table.row.add({
+        "group":result[key]['group'],
+        "Product Name":result[key]['product_name'],
+        "Buying Price MIN":result[key]['buying_price_min'],
+        "Buying Price AVG":result[key]['buying_price_avg'],
+        "Buying Price MAX":result[key]['buying_price_max'],
+        "Exchange Rate":result[key]['exchange_rate'],
+        "Shipping Cost":result[key]['oversea_shipping'],
+        "Extra Cost":result[key]['extra_cost'],
+        "Tax Rate":result[key]['tax_rate'],
+        "VAT %":result[key]['vat'],
+        "Local Delievery Cost":result[key]['local_delievery_cost'],
+        "manage":button,
+        "ROI":result[key]['roi'],
+        "Selling Commision":result[key]['commision'],
+        "Sales Goal":result[key]['sales_goal'],
+        "id":result[key]['id']}
+        ).node().id=result[key]['id']
+      table.draw(false)
+ 
+  }
+setTimeout(function () {$($.fn.dataTable.tables( true ) ).DataTable().columns.adjust().draw();},200)
 
-        $(document).ready(function(){
+}
+function editdata(id,index){
+document.getElementById('editdataid').style.display='none'
+document.getElementById('editdataloading').style.display=''
 
-          document.getElementById("defaultOpen").click();
-
-            
-    var z=0;
-    $('#add').click(function(){
-                z++;
-                $('#dynamic_field').append('<tr id="row'+z+'"><td><input type="url" name="name" placeholder="HTTP:// Paste Product URL" class="form-control name_list" /></td><td><button type="button" name="remove" id="'+z+'" class="btn btn-danger btn_remove">X</button></td></tr>');
-            });
-
-            
-            $(document).on('click', '.btn_remove', function(){
-                var button_id = $(this).attr("id"); 
-                $('#row'+button_id+'').remove();
-            });
-
-$('#calculate').click(function(){    
-            document.getElementById("calculate").style.display="none";
-            document.getElementById("loading_calculate").style.display=""
-
-    var fd = new FormData();
-
-fd.append("product_name",document.getElementById('product_name').value)
-fd.append("sel_min",document.getElementById('sel_min').value)
-fd.append("sel_avg",document.getElementById('sel_avg').value)
-fd.append("sel_max",document.getElementById('sel_max').value)
-fd.append("id",document.getElementById('calculate').getAttribute('data'))
-fd.append("china_min",document.getElementById('china_min').value)
-fd.append("china_avg",document.getElementById('china_avg').value)
-fd.append("china_max",document.getElementById('china_max').value)
-
-fd.append("calculate","true")
-
-fd.append("exchange",document.getElementById('exchange').value)
-fd.append("shipping",document.getElementById('shipping').value)
-fd.append("tax_rate",document.getElementById('tax_rate').value)
-fd.append("vat",document.getElementById('vat').value)
-fd.append("local",document.getElementById('local').value)
-fd.append("extra",document.getElementById('extra').value)
-$.ajaxSetup({
-        headers: { "X-CSRFToken": '{{ csrf_token }}' }
-               });
+  $.ajaxSetup({
+     headers: { "X-CSRFToken": '{{ csrf_token }}' }
+             });
                 
-$.ajax({
-       url:"/profitcalculator/",
-       method:"POST",
-       contentType: false,
-       cache: false,
-       processData: false,
-       data:fd,
-       success:function(result)
+  $.ajax({
+           url:"/profitcalculator/",
+           method:"GET",
+           dataType: 'json',
+           data:{edit:id,data:document.getElementById('edit-data').value,field:document.getElementById('edit-label').innerHTML},
+                    success:function(result)
                     {
-            document.getElementById("calculate").style.display="";
-            document.getElementById("loading_calculate").style.display="none"
-            if(result[0]==true){
-             addentry(result[1])
-              }
-              else{
-               var row = document.getElementById(result[2]);
-               row.parentNode.removeChild(row)
-               i--;
-             addentry(result[1])
+                      table.cell($('#'+id),index).data(document.getElementById('edit-data').value)
+                       table.row($('#'+id)).invalidate()
+                        $('#EditData').modal('hide'); 
+                      document.getElementById('editdataid').style.display=''
+                      document.getElementById('editdataloading').style.display='none'
 
-              }
-            edit(result[2])    
-
-                       },
-       error:function (xhr, ajaxOptions, thrownError) {
-            document.getElementById("calculate").style.display="";
-            document.getElementById("loading_calculate").style.display="none"
+                    },
+                    error:function (xhr, ajaxOptions, thrownError) {
 
                              alert("Try Again");
                                                   }
                 });
 
 
-             
-});
-
-$('#starting').click(function(){    
+}
+      $('#starting').click(function(){    
     document.getElementById("starting").style.display="none";
     document.getElementById("loading").style.display="block"
 
-    var fd = new FormData();
+    var fd = new FormData(document.getElementById('myForm'));
     var filesLength=document.getElementById('file_input').files.length;
     var enter=false
     keys=document.getElementsByName('names')
@@ -786,8 +1197,7 @@ $('#starting').click(function(){
                     {
             document.getElementById("starting").style.display="";
             document.getElementById("loading").style.display="none"
-	    addentry(result)
-	    edit(result[0]['id'])        
+      addentry(result)
                },
        error:function (xhr, ajaxOptions, thrownError) {
             document.getElementById("starting").style.display="";
@@ -799,10 +1209,6 @@ $('#starting').click(function(){
 
 
                 });
-           }); 
-
-
-
 
 </script>
 {% endblock %}

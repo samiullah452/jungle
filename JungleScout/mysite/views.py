@@ -121,93 +121,55 @@ def profitcalculator(request):
         if request.GET.get('move'):
             user_profit.objects.filter(id=request.GET.get('move')).update(name=profit_groups.objects.get(user=request.user,name=request.GET.get('group')))
 
+        if request.GET.get('editgroup'):
+            profit_groups.objects.filter(name=request.GET.get('editgroup'),user=request.user).update(name=request.GET.get('data'))
+
+        if request.GET.get('edit'):
+            if request.GET.get('field')=='Product Name':
+                user_profit.objects.filter(id=request.GET.get('edit')).update(product_name=request.GET.get('data'))
+            if request.GET.get('field')=='Buying Price MIN':
+                user_content_downloader.objects.filter(id=request.GET.get('edit')).update(buying_price_min=request.GET.get('data'))
+            if request.GET.get('field')=='Buying Price AVG':
+                user_profit.objects.filter(id=request.GET.get('edit')).update(buying_price_avg=request.GET.get('data'))
+            if request.GET.get('field')=='Buying Price MAX':
+                user_profit.objects.filter(id=request.GET.get('edit')).update(buying_price_max=request.GET.get('data'))
+            if request.GET.get('field')=='Exchange Rate':
+                user_profit.objects.filter(id=request.GET.get('edit')).update(exchange_rate=request.GET.get('data'))
+            if request.GET.get('field')=='Shipping Cost':
+                user_profit.objects.filter(id=request.GET.get('edit')).update(oversea_shipping=request.GET.get('data'))
+            if request.GET.get('field')=='Tax Rate':
+                user_profit.objects.filter(id=request.GET.get('edit')).update(tax_rate=request.GET.get('data'))
+            if request.GET.get('field')=='VAT %':
+                user_profit.objects.filter(id=request.GET.get('edit')).update(vat=request.GET.get('data'))
+            if request.GET.get('field')=='Local Delievery Cost':
+                user_profit.objects.filter(id=request.GET.get('edit')).update(local_delievery_cost=request.GET.get('data'))
+            if request.GET.get('field')=='Extra':
+                user_profit.objects.filter(id=request.GET.get('edit')).update(extra_cost=request.GET.get('data'))
+            if request.GET.get('field')=='Target ROI':
+                user_profit.objects.filter(id=request.GET.get('edit')).update(roi=request.GET.get('data'))
+            if request.GET.get('field')=='Selling Commision':
+                user_profit.objects.filter(id=request.GET.get('edit')).update(commision=request.GET.get('data'))
+            if request.GET.get('field')=='Sales Goal':
+                user_profit.objects.filter(id=request.GET.get('edit')).update(sales_goal=request.GET.get('data'))
+
         if request.GET.get('create'):
             profit_groups(name=request.GET.get('create'),user=request.user).save()
 
         if request.GET.get('groupdelete'):
             profit_groups.objects.filter(name=request.GET.get('groupdelete'),user=request.user).delete()
 
-        if request.GET.get('edit'):
-            user_profit.objects.filter(id=request.GET.get('edit')).update(keywords=request.GET.get('new_keywords'))
-
         return HttpResponse(json.dumps('Success'), content_type='application/json')           
 
     if request.method == 'POST' and request.is_ajax():
-        if request.POST.get('calculate'):
-            create=False
-            if request.POST.get('id') is not None:
-                user_profit.objects.filter(id=request.POST.get('id')).update(product_name=request.POST.get('product_name'),
-                    selling_price_max=float(request.POST.get('sel_max')),
-                    selling_price_min=float(request.POST.get('sel_min')),
-                    selling_price_avg=float(request.POST.get('sel_avg')),
-                    china_price_min=float(request.POST.get('china_min')),
-                    china_price_avg=float(request.POST.get('china_avg')),
-                    china_price_max=float(request.POST.get('china_max')),
-                    exchange_rate=float(request.POST.get('exchange')),
-                    oversea_shipping=float(request.POST.get('shipping')),
-                    tax_rate=float(request.POST.get('tax_rate')),
-                    vat=float(request.POST.get('vat')),
-                    local_delievery_cost=float(request.POST.get('local')),
-                    extra_cost=float(request.POST.get('extra'))
-                    )
-                t=user_profit.objects.get(id=request.POST.get('id'))
-                create=False
-            else:
-                    t=user_profit(product_name=request.POST.get('product_name'),
-                    selling_price_max=float(request.POST.get('sel_max')),
-                    selling_price_min=float(request.POST.get('sel_min')),
-                    selling_price_avg=float(request.POST.get('sel_avg')),
-                    china_price_min=float(request.POST.get('china_min')),
-                    china_price_avg=float(request.POST.get('china_avg')),
-                    china_price_max=float(request.POST.get('china_max')),
-                    exchange_rate=float(request.POST.get('exchange')),
-                    oversea_shipping=float(request.POST.get('shipping')),
-                    tax_rate=float(request.POST.get('tax_rate')),
-                    vat=float(request.POST.get('vat')),
-                    local_delievery_cost=float(request.POST.get('local')),
-                    extra_cost=float(request.POST.get('extra'))
-                    )
-                    t.save()
-                    create=True
 
-            profs={}
-            key=0
-		
-            total_cost_min=(t.china_price_min*t.exchange_rate+t.extra_cost+t.oversea_shipping)*t.tax_rate+(t.china_price_min*t.exchange_rate+t.extra_cost+t.oversea_shipping)*t.vat+(t.china_price_min*t.exchange_rate+t.extra_cost+t.oversea_shipping)
-            total_cost_max=(t.china_price_max*t.exchange_rate+t.extra_cost+t.oversea_shipping)*t.tax_rate+(t.china_price_max*t.exchange_rate+t.extra_cost+t.oversea_shipping)*t.vat+(t.china_price_max*t.exchange_rate+t.extra_cost+t.oversea_shipping)
-            total_cost_avg=(t.china_price_avg*t.exchange_rate+t.extra_cost+t.oversea_shipping)*t.tax_rate+(t.china_price_avg*t.exchange_rate+t.extra_cost+t.oversea_shipping)*t.vat+(t.china_price_avg*t.exchange_rate+t.extra_cost+t.oversea_shipping)
-            
-            total_cost1_min=(t.china_price_min*t.exchange_rate+t.extra_cost+t.oversea_shipping)
-            total_cost1_max=(t.china_price_max*t.exchange_rate+t.extra_cost+t.oversea_shipping)
-            total_cost1_avg=(t.china_price_avg*t.exchange_rate+t.extra_cost+t.oversea_shipping)	
+        if request.POST.getlist('deleteselected[]'):
+            print(request.POST.getlist('deleteselected[]'))
+            user_profit.objects.filter(id__in=request.POST.getlist('deleteselected[]')).delete()
+            return HttpResponse(json.dumps('Success'), content_type='application/json')       
 
-            net_profit_min=(t.selling_price_min-t.local_delievery_cost)-total_cost_min-((t.selling_price_min-t.local_delievery_cost)-total_cost_min)*t.vat
-            net_profit_max=(t.selling_price_max-t.local_delievery_cost)-total_cost_max-((t.selling_price_max-t.local_delievery_cost)-total_cost_max)*t.vat
-            net_profit_avg=(t.selling_price_avg-t.local_delievery_cost)-total_cost_avg-((t.selling_price_avg-t.local_delievery_cost)-total_cost_avg)*t.vat
-
-            profs[key]={}
-            profs[key]['Group']="Uncategorized"
-            profs[key]['Title']=t.product_name
-            profs[key]['china-price']=str(t.china_price_min)+','+str(t.china_price_avg)+','+str(t.china_price_max)
-            profs[key]['exchange_rate']=t.exchange_rate
-            profs[key]['Currency']=str(t.china_price_min*t.exchange_rate)+','+str(t.china_price_avg*t.exchange_rate)+','+str(t.china_price_max*t.exchange_rate)
-            profs[key]['shipping']=str(t.oversea_shipping)
-            profs[key]['extra_cost']=t.extra_cost
-            profs[key]['total-cost']=str(total_cost1_min)+','+str(total_cost1_avg)+','+str(total_cost1_max)
-            profs[key]['tax_rate']=t.tax_rate
-            profs[key]['tax_rate1']=str((t.china_price_min*t.exchange_rate+t.extra_cost+t.oversea_shipping)*t.tax_rate)+','+str((t.china_price_avg*t.exchange_rate+t.extra_cost+t.oversea_shipping)*t.tax_rate)+','+str((t.china_price_max*t.exchange_rate+t.extra_cost+t.oversea_shipping)*t.tax_rate)
-            profs[key]['vat']=t.vat
-            profs[key]['vat1']=str((t.china_price_min*t.exchange_rate+t.extra_cost+t.oversea_shipping)*t.vat)+','+str((t.china_price_avg*t.exchange_rate+t.extra_cost+t.oversea_shipping)*t.vat)+','+str((t.china_price_max*t.exchange_rate+t.extra_cost+t.oversea_shipping)*t.vat)
-            profs[key]['final-cost']=str(total_cost_min)+','+str(total_cost_avg)+','+str(total_cost_max)
-            profs[key]['selling_price']=str(t.selling_price_min)+','+str(t.selling_price_avg)+','+str(t.selling_price_max)
-            profs[key]['local']=t.local_delievery_cost
-            profs[key]['consumer_price']=str(t.selling_price_min-t.local_delievery_cost)+','+str(t.selling_price_avg-t.local_delievery_cost)+','+str(t.selling_price_max-t.local_delievery_cost)
-            profs[key]['final_vat']=str(((t.selling_price_min-t.local_delievery_cost)-total_cost_min)*t.vat)+','+str(((t.selling_price_avg-t.local_delievery_cost)-total_cost_avg)*t.vat)+','+str(((t.selling_price_max-t.local_delievery_cost)-total_cost_max)*t.vat)
-            profs[key]['net profit']=str(net_profit_min)+','+str(net_profit_avg)+','+str(net_profit_max)
-            profs[key]['id']=t.id
-    
-            return HttpResponse(json.dumps([create,profs,t.id]), content_type='application/json')
-
+        if request.POST.getlist('moveselected[]'):
+            user_profit.objects.filter(id__in=request.POST.getlist('moveselected[]')).update(name=profit_groups.objects.get(user=request.user,name=request.POST.get('group')))
+            return HttpResponse(json.dumps('Success'), content_type='application/json')       
         website=request.POST.get('website')
         file_names=[]
         if 'file[]' in request.FILES:
@@ -216,9 +178,9 @@ def profitcalculator(request):
                 fs = FileSystemStorage(settings.MEDIA_ROOT)
                 filename = fs.save(myfile.name, myfile)
                 file_names.append(settings.MEDIA_ROOT+"/"+filename)
+
         
-        keys=request.POST.getlist('keys[]')
-        prof=profitcal(file_names,website,keys)
+        prof=profitcal(file_names,website)
         profs={}
         try:
             profit_groups.objects.get(user=request.user,name="Uncategorized")
@@ -226,44 +188,44 @@ def profitcalculator(request):
             grp=profit_groups(user=request.user,name="Uncategorized")
             grp.save()
         for key in prof.keys(): 
-            t=user_profit(china_price_avg=prof[key]['avg'],china_price_min=prof[key]['min'],china_price_max=prof[key]['max'],product_name=prof[key]['title'],key=prof[key]['key'],name=profit_groups.objects.get(name='Uncategorized',user=request.user)) 
-            total_cost_min=(t.china_price_min*t.exchange_rate+t.extra_cost+t.oversea_shipping)*t.tax_rate+(t.china_price_min*t.exchange_rate+t.extra_cost+t.oversea_shipping)*t.vat+(t.china_price_min*t.exchange_rate+t.extra_cost+t.oversea_shipping)
-            total_cost_max=(t.china_price_max*t.exchange_rate+t.extra_cost+t.oversea_shipping)*t.tax_rate+(t.china_price_max*t.exchange_rate+t.extra_cost+t.oversea_shipping)*t.vat+(t.china_price_max*t.exchange_rate+t.extra_cost+t.oversea_shipping)
-            total_cost_avg=(t.china_price_avg*t.exchange_rate+t.extra_cost+t.oversea_shipping)*t.tax_rate+(t.china_price_avg*t.exchange_rate+t.extra_cost+t.oversea_shipping)*t.vat+(t.china_price_avg*t.exchange_rate+t.extra_cost+t.oversea_shipping)
-
-            total_cost1_min=(t.china_price_min*t.exchange_rate+t.extra_cost+t.oversea_shipping)
-            total_cost1_max=(t.china_price_max*t.exchange_rate+t.extra_cost+t.oversea_shipping)
-            total_cost1_avg=(t.china_price_avg*t.exchange_rate+t.extra_cost+t.oversea_shipping)	
-		
-            t.selling_price_min=total_cost_min
-            t.selling_price_avg=total_cost_avg
-            t.selling_price_max=total_cost_max
+            t=user_profit(buying_price_avg=prof[key]['avg'],buying_price_min=prof[key]['min'],buying_price_max=prof[key]['max'],product_name=prof[key]['title'],name=profit_groups.objects.get(name='Uncategorized',user=request.user))
+            if request.POST.get('product_name')!='':
+                t.exchange_rate=request.POST.get('product_name')
+            if request.POST.get('exchange_rate')!='':
+                t.exchange_rate=request.POST.get('exchange_rate')
+            if request.POST.get('oversea_shipping')!='':
+                t.oversea_shipping=request.POST.get('oversea_shipping')
+            if request.POST.get('tax_rate')!='':
+                tax_rate=request.POST.get('tax_rate')
+            if request.POST.get('roi')!='':
+                tax_rate=request.POST.get('roi')
+            if request.POST.get('vat')!='':
+                vat=request.POST.get('vat')
+            if request.POST.get('local_delievery_cost')!='':
+                local_delievery_cost=request.POST.get('local_delievery_cost')
+            if request.POST.get('extra_cost')!='':
+                extra_cost=request.POST.get('extra_cost')                            
+            if request.POST.get('commision')!='':
+                commision=request.POST.get('commision')                            
+            if request.POST.get('sales_goal')!='':
+                sales_goal=request.POST.get('sales_goal')                            
             t.save()
-            net_profit_min=(t.selling_price_min-t.local_delievery_cost)-total_cost_min-((t.selling_price_min-t.local_delievery_cost)-total_cost_min)*t.vat
-            net_profit_max=(t.selling_price_max-t.local_delievery_cost)-total_cost_max-((t.selling_price_max-t.local_delievery_cost)-total_cost_max)*t.vat
-            net_profit_avg=(t.selling_price_avg-t.local_delievery_cost)-total_cost_avg-((t.selling_price_avg-t.local_delievery_cost)-total_cost_avg)*t.vat
-
             profs[key]={}
-            profs[key]['Group']="Uncategorized"
-            profs[key]['Title']=t.product_name
-            profs[key]['china-price']=str(prof[key]['min'])+','+str(prof[key]['avg'])+','+str(prof[key]['max'])
+            profs[key]['group']="Uncategorized"
+            profs[key]['product_name']=t.product_name
+            profs[key]['buying_price_min']=prof[key]['min']
+            profs[key]['buying_price_avg']=prof[key]['avg']
+            profs[key]['buying_price_max']=prof[key]['max']
             profs[key]['exchange_rate']=t.exchange_rate
-            profs[key]['Currency']=str(t.china_price_min*t.exchange_rate)+','+str(t.china_price_avg*t.exchange_rate)+','+str(t.china_price_max*t.exchange_rate)
-            profs[key]['shipping']=str(t.oversea_shipping)
+            profs[key]['oversea_shipping']=str(t.oversea_shipping)
             profs[key]['extra_cost']=t.extra_cost
-            profs[key]['total-cost']=str(total_cost1_min)+','+str(total_cost1_avg)+','+str(total_cost1_max)
             profs[key]['tax_rate']=t.tax_rate
-            profs[key]['tax_rate1']=str((t.china_price_min*t.exchange_rate+t.extra_cost+t.oversea_shipping)*t.tax_rate)+','+str((t.china_price_avg*t.exchange_rate+t.extra_cost+t.oversea_shipping)*t.tax_rate)+','+str((t.china_price_max*t.exchange_rate+t.extra_cost+t.oversea_shipping)*t.tax_rate)
             profs[key]['vat']=t.vat
-            profs[key]['vat1']=str((t.china_price_min*t.exchange_rate+t.extra_cost+t.oversea_shipping)*t.vat)+','+str((t.china_price_avg*t.exchange_rate+t.extra_cost+t.oversea_shipping)*t.vat)+','+str((t.china_price_max*t.exchange_rate+t.extra_cost+t.oversea_shipping)*t.vat)
-            profs[key]['final-cost']=str(total_cost_min)+','+str(total_cost_avg)+','+str(total_cost_max)
-            profs[key]['selling_price']=str(t.selling_price_min)+','+str(t.selling_price_avg)+','+str(t.selling_price_max)
-            profs[key]['local']=t.local_delievery_cost
-            profs[key]['consumer_price']=str(t.selling_price_min-t.local_delievery_cost)+','+str(t.selling_price_avg-t.local_delievery_cost)+','+str(t.selling_price_max-t.local_delievery_cost)
-            profs[key]['final_vat']=str(((t.selling_price_min-t.local_delievery_cost)-total_cost_min)*t.vat)+','+str(((t.selling_price_avg-t.local_delievery_cost)-total_cost_avg)*t.vat)+','+str(((t.selling_price_max-t.local_delievery_cost)-total_cost_max)*t.vat)
-            profs[key]['net profit']=str(net_profit_min)+','+str(net_profit_avg)+','+str(net_profit_max)
+            profs[key]['roi']=t.roi
+            profs[key]['commision']=t.commision
+            profs[key]['sales_goal']=t.sales_goal
+            profs[key]['local_delievery_cost']=t.local_delievery_cost
             profs[key]['id']=t.id
-    
         return HttpResponse(json.dumps(profs), content_type='application/json')
     if request.user.is_authenticated:
         overview={}
@@ -271,44 +233,26 @@ def profitcalculator(request):
         Groups=profit_groups.objects.filter(user=request.user)
         i=0
         for grp in Groups:
-            if grp.name!="Uncategorized":
-                groups_show.append(grp.name)
+            groups_show.append(grp.name)
             Overview=user_profit.objects.filter(name=grp)
             for over in Overview:
                 overview[i]={}
-                total_cost_min=(over.china_price_min*over.exchange_rate+over.extra_cost+over.oversea_shipping)*over.tax_rate+(over.china_price_min*over.exchange_rate+over.extra_cost+over.oversea_shipping)*over.vat+(over.china_price_min*over.exchange_rate+over.extra_cost+over.oversea_shipping)
-                total_cost_max=(over.china_price_max*over.exchange_rate+over.extra_cost+over.oversea_shipping)*over.tax_rate+(over.china_price_max*over.exchange_rate+over.extra_cost+over.oversea_shipping)*over.vat+(over.china_price_max*over.exchange_rate+over.extra_cost+over.oversea_shipping)
-                total_cost_avg=(over.china_price_avg*over.exchange_rate+over.extra_cost+over.oversea_shipping)*over.tax_rate+(over.china_price_avg*over.exchange_rate+over.extra_cost+over.oversea_shipping)*over.vat+(over.china_price_avg*over.exchange_rate+over.extra_cost+over.oversea_shipping)
-
-                total_cost1_min=(over.china_price_min*over.exchange_rate+over.extra_cost+over.oversea_shipping)
-                total_cost1_max=(over.china_price_max*over.exchange_rate+over.extra_cost+over.oversea_shipping)
-                total_cost1_avg=(over.china_price_avg*over.exchange_rate+over.extra_cost+over.oversea_shipping)	
-
-                net_profit_min=(over.selling_price_min-over.local_delievery_cost)-total_cost_min-((over.selling_price_min-over.local_delievery_cost)-total_cost_min)*over.vat
-                net_profit_max=(over.selling_price_max-over.local_delievery_cost)-total_cost_max-((over.selling_price_max-over.local_delievery_cost)-total_cost_max)*over.vat
-                net_profit_avg=(over.selling_price_avg-over.local_delievery_cost)-total_cost_avg-((over.selling_price_avg-over.local_delievery_cost)-total_cost_avg)*over.vat
-                
-                overview[i]['Group']=over.name.name
-                overview[i]['Title']=over.product_name
-                overview[i]['china-price']=str(over.china_price_min)+','+str(over.china_price_avg)+','+str(over.china_price_max)
+                overview[i]['group']=over.name.name
+                overview[i]['product_name']=over.product_name
+                overview[i]['buying_price_min']=over.buying_price_min
+                overview[i]['buying_price_avg']=over.buying_price_avg
+                overview[i]['buying_price_max']=over.buying_price_max
                 overview[i]['exchange_rate']=over.exchange_rate
-                overview[i]['Currency']=str(over.china_price_min*over.exchange_rate)+','+str(over.china_price_avg*over.exchange_rate)+','+str(over.china_price_max*over.exchange_rate)
-                overview[i]['shipping']=str(over.oversea_shipping)
+                overview[i]['oversea_shipping']=over.oversea_shipping
                 overview[i]['extra_cost']=over.extra_cost
-                overview[i]['total-cost']=str(total_cost1_min)+','+str(total_cost1_avg)+','+str(total_cost1_max)
                 overview[i]['tax_rate']=over.tax_rate
-                overview[i]['tax_rate1']=str((over.china_price_min*over.exchange_rate+over.extra_cost+over.oversea_shipping)*over.tax_rate)+','+str((over.china_price_avg*over.exchange_rate+over.extra_cost+over.oversea_shipping)*over.tax_rate)+','+str((over.china_price_max*over.exchange_rate+over.extra_cost+over.oversea_shipping)*over.tax_rate)
                 overview[i]['vat']=over.vat
-                overview[i]['vat1']=str((over.china_price_min*over.exchange_rate+over.extra_cost+over.oversea_shipping)*over.vat)+','+str((over.china_price_avg*over.exchange_rate+over.extra_cost+over.oversea_shipping)*over.vat)+','+str((over.china_price_max*over.exchange_rate+over.extra_cost+over.oversea_shipping)*over.vat)
-                overview[i]['final-cost']=str(total_cost_min)+','+str(total_cost_avg)+','+str(total_cost_max)
-                overview[i]['selling_price']=str(over.selling_price_min)+','+str(over.selling_price_avg)+','+str(over.selling_price_max)
-                overview[i]['local']=over.local_delievery_cost
-                overview[i]['consumer_price']=str(over.selling_price_min-over.local_delievery_cost)+','+str(over.selling_price_avg-over.local_delievery_cost)+','+str(over.selling_price_max-over.local_delievery_cost)
-                overview[i]['final_vat']=str(((over.selling_price_min-over.local_delievery_cost)-total_cost_min)*over.vat)+','+str(((over.selling_price_avg-over.local_delievery_cost)-total_cost_avg)*over.vat)+','+str(((over.selling_price_max-over.local_delievery_cost)-total_cost_max)*over.vat)
-                overview[i]['net profit']=str(net_profit_min)+','+str(net_profit_avg)+','+str(net_profit_max)
+                overview[i]['roi']=over.roi
+                overview[i]['local_delievery_cost']=over.local_delievery_cost
+                overview[i]['commision']=over.commision
+                overview[i]['sales_goal']=over.sales_goal
                 overview[i]['id']=over.id
                 i+=1
-
         context={
         'overview':json.dumps(overview),
         'groups':groups_show,
